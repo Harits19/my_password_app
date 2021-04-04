@@ -97,6 +97,8 @@ class SnackBarWidget {
   static void show({required title, required message}) {
     Get.snackbar(title, message,
         margin: EdgeInsets.symmetric(
-            vertical: UIHelper.edgeLarge, horizontal: UIHelper.edgeMedium));
+          vertical: UIHelper.edgeLarge,
+          horizontal: UIHelper.edgeMedium,
+        ));
   }
 }

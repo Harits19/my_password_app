@@ -19,22 +19,30 @@ class AppModel extends GetxController {
         items.add(App.fromJson(post));
       }
     }
-    updateApp();
+    updateAppData();
   }
 
-  Future<void> updateApp() async {
+  Future<void> updateAppData() async {
     await SecureStorage.writeStorageAppModel(data: items);
     print('called update pref');
   }
 
-  Future<void> addApp({required App appItem}) async {
+  Future<void> addAppItem({required App appItem}) async {
     items.add(appItem);
-    await updateApp();
+    await updateAppData();
+  }
+
+  Future<void> updateAppItem({required App appItem, required int index}) async {
+    items.elementAt(index).name = appItem.name;
+    items.elementAt(index).password = appItem.password;
+    print(items.elementAt(index));
+    await updateAppData();
+    await getApp();
   }
 
   Future<void> removeApp({required int index}) async {
     items.removeAt(index);
-    await updateApp();
+    await updateAppData();
   }
 
   Future<void> removeAllApp() async {

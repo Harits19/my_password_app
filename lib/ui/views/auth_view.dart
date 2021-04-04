@@ -16,7 +16,7 @@ import 'package:my_password_app/ui/views/home_view.dart';
 import 'package:my_password_app/ui/widgets/custom_widget.dart';
 
 class CheckAuth extends StatelessWidget {
-  final AuthModel authModel = Get.put(AuthModel());
+  final AuthModel authModel = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +42,12 @@ class CheckAuth extends StatelessWidget {
                                   pin = newValue;
                                   print(pin);
                                   if (pin == authModel.data.value.pin) {
-                                    SnackBarWidget.show(
-                                        title: 'Autentikasi',
-                                        message:
-                                            'Autentikasi dengan PIN berhasil');
-                                    Get.off(() => HomeView());
+                                    // SnackBarWidget.show(
+                                    //     title: 'Autentikasi',
+                                    //     message:
+                                    //         'Autentikasi dengan PIN berhasil');
+                                    // Get.off(() => HomeView());
+                                    Get.offAll(() => HomeView());
                                   }
                                 },
                               ),
@@ -65,11 +66,12 @@ class CheckAuth extends StatelessWidget {
                                             bool runLocalAuth =
                                                 await authModel.runLocalAuth();
                                             if (runLocalAuth) {
-                                              SnackBarWidget.show(
-                                                  title: 'Autentikasi',
-                                                  message:
-                                                      'Autentikasi lokal berhasil');
-                                              Get.off(() => HomeView());
+                                              // SnackBarWidget.show(
+                                              //     title: 'Autentikasi',
+                                              //     message:
+                                              //         'Autentikasi lokal berhasil');
+                                              // Get.off(() => HomeView());
+                                              Get.offAll(() => HomeView());
                                             }
                                           }),
                                     )
