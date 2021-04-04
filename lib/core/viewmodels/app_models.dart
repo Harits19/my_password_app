@@ -2,42 +2,42 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:my_password_app/core/models/app_item.dart';
+import 'package:my_password_app/core/models/app.dart';
 import 'package:my_password_app/core/services/secure_storage_service.dart';
 import 'package:my_password_app/core/services/share_pref_service.dart';
 
 class AppModel extends GetxController {
   RxList items = [].obs;
 
-  Future<void> getItem() async {
+  Future<void> getApp() async {
     items.clear(); // reset items
     var temp = await SecureStorage.readStorageAppModel();
     if (temp != null) {
       var parsed = json.decode(temp) as List<dynamic>;
       print(parsed);
       for (var post in parsed) {
-        items.add(AppItem.fromJson(post));
+        items.add(App.fromJson(post));
       }
     }
-    updateItemPref();
+    updateApp();
   }
 
-  Future<void> updateItemPref() async {
+  Future<void> updateApp() async {
     await SecureStorage.writeStorageAppModel(data: items);
     print('called update pref');
   }
 
-  Future<void> addItem({required AppItem appItem}) async {
+  Future<void> addApp({required App appItem}) async {
     items.add(appItem);
-    await updateItemPref();
+    await updateApp();
   }
 
-  Future<void> removeItem({required int index}) async {
+  Future<void> removeApp({required int index}) async {
     items.removeAt(index);
-    await updateItemPref();
+    await updateApp();
   }
 
-  Future<void> removeAllItem() async {
+  Future<void> removeAllApp() async {
     items.clear();
     await SharePref.removePrefsListApp();
   }

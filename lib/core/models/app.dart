@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:my_password_app/core/services/share_pref_service.dart';
 
-class AppItem extends ChangeNotifier{
+class App {
   String? name;
   String? password;
 
-  AppItem({this.name, this.password});
+  App({required this.name, required this.password});
 
-  AppItem.fromJson(Map<String, dynamic> json) {
+  App.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     password = json['password'];
   }
@@ -18,6 +18,4 @@ class AppItem extends ChangeNotifier{
     data['password'] = this.password;
     return data;
   }
-
-
 }

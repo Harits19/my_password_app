@@ -1,16 +1,19 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:my_password_app/core/services/local_auth_service.dart';
-import 'package:provider/provider.dart';
 
-class LocalAuthModel extends ChangeNotifier {
-  bool authenticate;
+class LocalAuthModel extends GetxController {
+  var authenticate = false.obs;
 
-  LocalAuthModel({this.authenticate = false});
+  @override
+  void onInit() {
+    // called immediately after the widget is allocated memory
+    super.onInit();
+  }
 
-  void _setAuthenticated({required bool value}) {
+  void _setAuthenticated({required value}) {
     authenticate = value;
-    notifyListeners();
     print(authenticate);
   }
 

@@ -1,19 +1,57 @@
+import 'dart:convert';
+
+import 'package:get/get.dart';
 import 'package:my_password_app/core/enums/auth_state_enum.dart';
+import 'package:my_password_app/core/models/auth.dart';
+import 'package:my_password_app/core/services/local_auth_service.dart';
+import 'package:my_password_app/core/services/secure_storage_service.dart';
 
-class AuthModel {
-  late AuthStateEnum authWith;
+class AuthModel extends GetxController {
+  RxBool loading = false.obs;
+  RxBool error = false.obs;
+  RxBool pending = false.obs;
 
-  AuthModel({required this.authWith});
+  var data = Auth(pin: '', isLocalAuth: false).obs;
 
-  AuthModel.initial() : this.authWith = AuthStateEnum.unknown;
-
-  AuthModel.fromJson(Map<String, dynamic> json) {
-    authWith = json['authWith'];
+  @override
+  void onInit() {
+    super.onInit();
+    getAuthModel();
+    // deleteAll();
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['authWith'] = this.authWith;
-    return data;
+  Future<void> getAuthModel() async {
+    loading.toggle();
+    //simulasi loading animation
+    await Future.delayed(Duration(seconds: 3), () async {
+      var temp = await SecureStorage.readStorageAuthModel();
+      if (temp != null) {
+        var parsed = json.decode(temp);
+        print(parsed);
+
+        data = Auth.fromJson(parsed).obs;
+      } else {
+        data = Auth(pin: '', isLocalAuth: false).obs;
+        ;
+      }
+    });
+    loading.toggle();
+  }
+
+  Future<void> addAuthModel({required Auth auth}) async {
+    await SecureStorage.writeStorageAuthModel(data: auth);
+    var temp = await SecureStorage.readStorageAuthModel();
+  }
+
+  Future<void> deleteAll() async {
+    await SecureStorage.deleteStorageAuthModel();
+  }
+
+  Future<bool> checkLocalAuth() async {
+    return await LocalAuthService.isDeviceSupported();
+  }
+
+  Future<bool> runLocalAuth() async {
+    return await LocalAuthService.authenticate();
   }
 }

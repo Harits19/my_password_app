@@ -16,4 +16,18 @@ class LocalAuthService {
     }
     return authenticated;
   }
+
+  static Future<bool> isDeviceSupported() async {
+    late bool isSupported;
+    late bool canCheckBiometrics;
+    try {
+      isSupported = await auth.isDeviceSupported();
+      canCheckBiometrics = await auth.canCheckBiometrics;
+      if (isSupported && canCheckBiometrics) return true;
+      return false;
+    } on PlatformException catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }

@@ -1,1 +1,1 @@
-enum AuthStateEnum { localAuth, customPin, unknown }
+enum AuthWith { localAuth, customPin, unknown }
