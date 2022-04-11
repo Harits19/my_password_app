@@ -218,7 +218,7 @@ class HomeView extends StatelessWidget {
     return StatefulBuilder(
       builder: (context, setState) {
         return Card(
-          color: isDelete ? Colors.red : Get.theme!.cardTheme.color,
+          color: isDelete ? Colors.red : Get.theme.cardTheme.color,
           child: InkWell(
             child: Column(
               children: [
