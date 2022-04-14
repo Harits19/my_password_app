@@ -1,8 +1,8 @@
 # My Password App
 
-Ini adalah proyek untuk pribadi untuk mengisi waktu dan mempelajari mengenai bagaimana cara mengupload aplikasi ke playstore
+This is my peronal project for filling my time dan learn how to deploy app on playstore
 
-# Teknologi
+# Technology
 
 - [**local_auth**](https://pub.dev/packages/local_auth)
 - [**shared_preferences**](https://pub.dev/packages/shared_preferences)
@@ -11,4 +11,4 @@ Ini adalah proyek untuk pribadi untuk mengisi waktu dan mempelajari mengenai bag
 
 # Demo
 
-![enter image description here](https://github.com/Harits19/my_password_app/blob/main/demo/demo.gif?raw=true)
+![Demo](https://github.com/Harits19/my_password_app/blob/main/demo/demo.gif?raw=true)
