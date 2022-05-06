@@ -32,7 +32,6 @@ class AuthModel extends GetxController {
         data = Auth.fromJson(parsed).obs;
       } else {
         data = Auth(pin: '', isLocalAuth: false).obs;
-        ;
       }
     });
     loading.toggle();
