@@ -2,6 +2,39 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+class SecureStorageV2 {
+  final storage = FlutterSecureStorage();
+
+  Future<void> writeStorageAppModel({required data}) async {
+    final result = json.encode(data);
+    await storage.write(key: 'AppModel', value: result);
+  }
+
+  Future<dynamic> readStorageAppModel() async {
+    final result = await storage.read(key: 'AppModel');
+    return result;
+  }
+
+  Future<void> deleteStorageAppModel() async {
+    await storage.delete(key: 'AppModel');
+  }
+
+  /// Auth Model
+  Future<void> writeStorageAuthModel({required data}) async {
+    final result = json.encode(data);
+    await storage.write(key: 'AuthWith', value: result);
+  }
+
+  Future<dynamic> readStorageAuthModel() async {
+    final result = await storage.read(key: 'AuthWith');
+    return result;
+  }
+
+  Future<void> deleteStorageAuthModel() async {
+    await storage.delete(key: 'AuthWith');
+  }
+}
+
 class SecureStorage {
   static final storage = FlutterSecureStorage();
 

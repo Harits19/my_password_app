@@ -11,7 +11,7 @@ class AuthModel extends GetxController {
   RxBool error = false.obs;
   RxBool pending = false.obs;
 
-  var data = Auth(pin: '', isLocalAuth: false).obs;
+  var data = Auth(pin: '', useLocalAuth: false).obs;
 
   @override
   void onInit() {
@@ -23,17 +23,15 @@ class AuthModel extends GetxController {
   Future<void> getAuthModel() async {
     loading.toggle();
     //simulasi loading animation
-    await Future.delayed(Duration(seconds: 3), () async {
-      var temp = await SecureStorage.readStorageAuthModel();
-      if (temp != null) {
-        var parsed = json.decode(temp);
-        print(parsed);
+    var temp = await SecureStorage.readStorageAuthModel();
+    if (temp != null) {
+      var parsed = json.decode(temp);
+      print(parsed);
 
-        data = Auth.fromJson(parsed).obs;
-      } else {
-        data = Auth(pin: '', isLocalAuth: false).obs;
-      }
-    });
+      data = Auth.fromJson(parsed).obs;
+    } else {
+      data = Auth(pin: '', useLocalAuth: false).obs;
+    }
     loading.toggle();
   }
 

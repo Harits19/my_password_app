@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:my_password_app/ui/page/auth_view.dart';
 // import 'package:get/get.dart';
 import 'package:my_password_app/ui/shared/image_assets.dart';
-import 'package:my_password_app/ui/views/auth_view.dart';
 import 'package:my_password_app/utils/k_navigator.dart';
 
 class SplashView extends StatelessWidget {

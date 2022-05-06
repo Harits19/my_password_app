@@ -10,12 +10,12 @@ import 'package:my_password_app/core/viewmodels/app_models.dart';
 import 'package:my_password_app/core/viewmodels/app_models.dart';
 import 'package:my_password_app/core/viewmodels/auth_model.dart';
 import 'package:my_password_app/core/viewmodels/local_auth_model.dart';
+import 'package:my_password_app/ui/page/home_view.dart';
 import 'package:my_password_app/ui/shared/custom_styles.dart';
 import 'package:my_password_app/ui/shared/ui_helpers.dart';
-import 'package:my_password_app/ui/views/home_view.dart';
 import 'package:my_password_app/ui/widgets/custom_widget.dart';
 
-class CheckAuth extends StatelessWidget {
+class CheckAuthOld extends StatelessWidget {
   final AuthModel authModel = Get.find();
 
   @override
@@ -56,7 +56,7 @@ class CheckAuth extends StatelessWidget {
                                 style: CustomStyle.subtitleStyle,
                               ),
                               UIHelper.verticalSpaceLarge,
-                              authModel.data.value.isLocalAuth == true
+                              authModel.data.value.useLocalAuth == true
                                   ? SizedBox(
                                       width: Get.size.width,
                                       child: ElevatedButtonWidget(
@@ -124,7 +124,7 @@ class CheckAuth extends StatelessWidget {
                   message: 'PIN masih kosong, harap isi terlebih dahulu');
             } else {
               authModel.addAuthModel(
-                auth: Auth(pin: pin, isLocalAuth: isLocalAuth),
+                auth: Auth(pin: pin, useLocalAuth: isLocalAuth),
               );
             }
           },
