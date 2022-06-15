@@ -11,7 +11,9 @@ environment:
 dependencies:
   clipboard: ^0.1.3
   cupertino_icons: ^1.0.2
+  device_preview: ^1.1.0
   dio: ^4.0.6
+  easy_localization: ^3.0.1
   equatable: ^2.0.3
   flutter:
     sdk: flutter
@@ -19,12 +21,13 @@ dependencies:
   flutter_secure_storage: ^5.0.2
   get: ^4.1.1
   get_it: ^7.2.0
-  local_auth: ^1.1.1
+  local_auth: ^2.1.0
   pretty_dio_logger: ^1.1.1
+  responsive_framework: ^0.2.0
   shared_preferences: ^2.0.5
 
 dev_dependencies:
-  flutter_launcher_icons: "^0.8.0"
+  flutter_launcher_icons: ^0.9.3
   flutter_test:
     sdk: flutter
 
@@ -37,3 +40,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/translations

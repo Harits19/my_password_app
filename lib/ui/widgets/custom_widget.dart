@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_password_app/ui/konstan/k_style.dart';
-import 'package:my_password_app/ui/konstan/k_ui.dart';
+import 'package:my_password_app/konstan/k_style.dart';
+import 'package:my_password_app/konstan/k_ui.dart';
 
 class ElevatedButtonWidget extends StatelessWidget {
   final onPressedParam;

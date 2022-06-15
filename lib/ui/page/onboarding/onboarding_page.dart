@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_password_app/konstan/k_ui.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class OnboardingPage extends StatelessWidget {
   static const routeName = "/onboarding";
@@ -8,7 +10,22 @@ class OnboardingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("OnboardingPage")),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(KUi.edgeLarge),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(),
+              KUi.verticalMedium,
+              Text(
+                "onboarding".tr(),
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

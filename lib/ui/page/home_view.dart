@@ -6,8 +6,8 @@ import 'package:my_password_app/core/models/app.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/core/viewmodels/app_models.dart';
 import 'package:my_password_app/core/viewmodels/auth_model.dart';
-import 'package:my_password_app/ui/konstan/k_style.dart';
-import 'package:my_password_app/ui/konstan/k_ui.dart';
+import 'package:my_password_app/konstan/k_style.dart';
+import 'package:my_password_app/konstan/k_ui.dart';
 import 'package:my_password_app/ui/widgets/custom_widget.dart';
 
 class HomeView extends StatelessWidget {
@@ -141,7 +141,7 @@ class HomeView extends StatelessWidget {
                   hintText: 'Password',
                   controller: passwordController,
                 ),
-                KUi.verticalSpaceSmall,
+                KUi.verticalSmall,
                 StatefulBuilder(builder: (context, setState) {
                   return Row(
                     // crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -192,11 +192,11 @@ class HomeView extends StatelessWidget {
                         print(temp);
                       });
                 }),
-                KUi.verticalSpaceSmall,
+                KUi.verticalSmall,
                 ElevatedButtonWidget(
                     text: 'Simpan', onPressedParam: onPressedSave),
-                KUi.horizontalSpaceLarge,
-                KUi.horizontalSpaceLarge,
+                KUi.horizontalLarge,
+                KUi.horizontalLarge,
               ],
             ),
           ),
@@ -248,7 +248,7 @@ class HomeView extends StatelessWidget {
                                 },
                               ),
                             ),
-                            KUi.horizontalSpaceSmall,
+                            KUi.horizontalSmall,
                             Expanded(
                               child: ElevatedButton(
                                 child: Text('Tidak'),
@@ -269,7 +269,7 @@ class HomeView extends StatelessWidget {
                                 },
                               ),
                             ),
-                            KUi.horizontalSpaceSmall,
+                            KUi.horizontalSmall,
                             isSearch
                                 ? Container()
                                 : Expanded(
@@ -306,7 +306,7 @@ class HomeView extends StatelessWidget {
                                       },
                                     ),
                                   ),
-                            KUi.horizontalSpaceSmall,
+                            KUi.horizontalSmall,
                             Expanded(
                               child: ElevatedButton(
                                 child: Icon(Icons.copy),

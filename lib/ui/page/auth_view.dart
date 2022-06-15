@@ -5,8 +5,8 @@ import 'package:my_password_app/core/models/auth.dart';
 import 'package:my_password_app/core/services/local_auth_service.dart';
 import 'package:my_password_app/cubit/password_cubit.dart';
 import 'package:my_password_app/ui/page/home_view.dart';
-import 'package:my_password_app/ui/konstan/k_style.dart';
-import 'package:my_password_app/ui/konstan/k_ui.dart';
+import 'package:my_password_app/konstan/k_style.dart';
+import 'package:my_password_app/konstan/k_ui.dart';
 import 'package:my_password_app/ui/helper/show.dart';
 import 'package:my_password_app/ui/widgets/custom_widget.dart';
 import 'package:my_password_app/utils/extensions.dart';
@@ -74,7 +74,7 @@ class _CheckAuthState extends State<CheckAuth> {
         'Masukkan pin dan otomatis akan masuk',
         style: KStyle.subtitleStyle,
       ),
-      KUi.verticalSpaceLarge,
+      KUi.verticalLarge,
       if (state.isLocalAuthSupported)
         SizedBox(
           width: double.infinity,
@@ -106,7 +106,7 @@ class _CheckAuthState extends State<CheckAuth> {
           setState(() {});
         },
       ),
-      KUi.verticalSpaceSmall,
+      KUi.verticalSmall,
       if (state.isLocalAuthSupported)
         CheckboxWidget(
           value: _useLocalAuth,

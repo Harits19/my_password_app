@@ -6,9 +6,8 @@ class LocalAuthServiceV2 {
 
   Future<bool> authenticate() async {
     return await auth.authenticate(
-        localizedReason: 'Let OS determine authentication method',
-        useErrorDialogs: true,
-        stickyAuth: true);
+      localizedReason: 'Let OS determine authentication method',
+    );
   }
 
   Future<bool> isDeviceSupported() async {
@@ -27,9 +26,8 @@ class LocalAuthService {
 
   static Future<bool> authenticate() async {
     return await auth.authenticate(
-        localizedReason: 'Let OS determine authentication method',
-        useErrorDialogs: true,
-        stickyAuth: true);
+      localizedReason: 'Let OS determine authentication method',
+    );
   }
 
   static Future<bool> isDeviceSupported() async {
