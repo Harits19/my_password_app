@@ -9,16 +9,6 @@ import 'package:my_password_app/utils/app_bloc_observer.dart';
 import 'package:my_password_app/utils/k_injection.dart';
 import 'package:my_password_app/utils/k_log.dart';
 
-void mainOld() {
-  final AuthModel authModel = Get.put(AuthModel());
-  runApp(
-    GetMaterialApp(
-      home: SplashView(),
-      theme: ThemeData.dark(),
-    ),
-  );
-}
-
 void main() async {
   log(DateTime.now());
   await setupDepedencyInjection();

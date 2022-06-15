@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class WidgetHelper {
-  static void showSnackbar(BuildContext context, String text) {
+class Show {
+  static void snackbar(BuildContext context, String text) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(text),

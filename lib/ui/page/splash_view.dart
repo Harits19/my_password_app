@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:my_password_app/ui/page/auth_view.dart';
 // import 'package:get/get.dart';
-import 'package:my_password_app/ui/shared/image_assets.dart';
+import 'package:my_password_app/ui/konstan/k_assets.dart';
 import 'package:my_password_app/utils/k_navigator.dart';
 
 class SplashView extends StatelessWidget {
@@ -25,7 +25,7 @@ class SplashView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Flexible(
-                child: Image.asset(AssetConst.letterIconAppDark),
+                child: Image.asset(KAssets.letterIconAppDark),
               ),
             ],
           ),

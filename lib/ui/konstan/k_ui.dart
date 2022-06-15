@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class UIHelper {
+class KUi {
   // Vertical spacing constants. Adjust to your liking.
   static const double _VerticalSpaceSmall = 8.0;
   static const double _VerticalSpaceMedium = 16.0;

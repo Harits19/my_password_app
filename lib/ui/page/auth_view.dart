@@ -5,9 +5,9 @@ import 'package:my_password_app/core/models/auth.dart';
 import 'package:my_password_app/core/services/local_auth_service.dart';
 import 'package:my_password_app/cubit/password_cubit.dart';
 import 'package:my_password_app/ui/page/home_view.dart';
-import 'package:my_password_app/ui/shared/custom_styles.dart';
-import 'package:my_password_app/ui/shared/ui_helpers.dart';
-import 'package:my_password_app/ui/shared/widget_helper.dart';
+import 'package:my_password_app/ui/konstan/k_style.dart';
+import 'package:my_password_app/ui/konstan/k_ui.dart';
+import 'package:my_password_app/ui/helper/show.dart';
 import 'package:my_password_app/ui/widgets/custom_widget.dart';
 import 'package:my_password_app/utils/extensions.dart';
 import 'package:my_password_app/utils/k_navigator.dart';
@@ -28,7 +28,7 @@ class _CheckAuthState extends State<CheckAuth> {
         child: BlocConsumer<PasswordCubit, PasswordState>(
           listener: (context, state) {
             if (state is PasswordError) {
-              WidgetHelper.showSnackbar(context, state.error);
+              Show.snackbar(context, state.error);
             }
           },
           builder: (context, state) {
@@ -37,7 +37,7 @@ class _CheckAuthState extends State<CheckAuth> {
             }
             if (state is PasswordLoaded) {
               return Padding(
-                padding: const EdgeInsets.all(UIHelper.edgeSmall),
+                padding: const EdgeInsets.all(KUi.edgeSmall),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -65,16 +65,16 @@ class _CheckAuthState extends State<CheckAuth> {
           _pin = newValue;
           print(_pin);
           if (_pin == state.auth.pin) {
-            WidgetHelper.showSnackbar(context, "Autentikasi Berhasil");
+            Show.snackbar(context, "Autentikasi Berhasil");
             // KNavigator.pushAndReplace(context, HomeView());
           }
         },
       ),
       Text(
         'Masukkan pin dan otomatis akan masuk',
-        style: CustomStyle.subtitleStyle,
+        style: KStyle.subtitleStyle,
       ),
-      UIHelper.verticalSpaceLarge,
+      KUi.verticalSpaceLarge,
       if (state.isLocalAuthSupported)
         SizedBox(
           width: double.infinity,
@@ -106,7 +106,7 @@ class _CheckAuthState extends State<CheckAuth> {
           setState(() {});
         },
       ),
-      UIHelper.verticalSpaceSmall,
+      KUi.verticalSpaceSmall,
       if (state.isLocalAuthSupported)
         CheckboxWidget(
           value: _useLocalAuth,
@@ -122,7 +122,7 @@ class _CheckAuthState extends State<CheckAuth> {
           text: 'Save',
           onPressedParam: () {
             if (_pin.isEmpty) {
-              WidgetHelper.showSnackbar(
+              Show.snackbar(
                   context, 'PIN masih kosong, harap isi terlebih dahulu');
             } else {
               context.read<PasswordCubit>().postDataAuth(

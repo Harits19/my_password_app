@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomStyle {
+class KStyle {
   static const titleStyle =
       TextStyle(fontSize: 16.0, fontWeight: FontWeight.w900);
   static const subtitleStyle =

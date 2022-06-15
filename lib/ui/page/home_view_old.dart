@@ -6,8 +6,8 @@ import 'package:my_password_app/core/models/app.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/core/viewmodels/app_models.dart';
 import 'package:my_password_app/core/viewmodels/auth_model.dart';
-import 'package:my_password_app/ui/shared/custom_styles.dart';
-import 'package:my_password_app/ui/shared/ui_helpers.dart';
+import 'package:my_password_app/ui/konstan/k_style.dart';
+import 'package:my_password_app/ui/konstan/k_ui.dart';
 import 'package:my_password_app/ui/widgets/custom_widget.dart';
 
 class HomeViewOld extends StatelessWidget {
@@ -24,7 +24,7 @@ class HomeViewOld extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(UIHelper.edgeMedium),
+          padding: const EdgeInsets.all(KUi.edgeMedium),
           child: Column(
             children: <Widget>[
               // TextFieldWidget(
@@ -39,7 +39,7 @@ class HomeViewOld extends StatelessWidget {
                       ? Center(
                           child: Text(
                             'Data tidak ditemukan',
-                            style: CustomStyle.titleStyle,
+                            style: KStyle.titleStyle,
                           ),
                         )
                       : ListView.builder(
@@ -128,8 +128,7 @@ class HomeViewOld extends StatelessWidget {
         return SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: UIHelper.edgeMedium,
-                vertical: UIHelper.edgeLarge * 2),
+                horizontal: KUi.edgeMedium, vertical: KUi.edgeLarge * 2),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -142,7 +141,7 @@ class HomeViewOld extends StatelessWidget {
                   hintText: 'Password',
                   controller: passwordController,
                 ),
-                UIHelper.verticalSpaceSmall,
+                KUi.verticalSpaceSmall,
                 StatefulBuilder(builder: (context, setState) {
                   return Row(
                     // crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -193,11 +192,11 @@ class HomeViewOld extends StatelessWidget {
                         print(temp);
                       });
                 }),
-                UIHelper.verticalSpaceSmall,
+                KUi.verticalSpaceSmall,
                 ElevatedButtonWidget(
                     text: 'Simpan', onPressedParam: onPressedSave),
-                UIHelper.horizontalSpaceLarge,
-                UIHelper.horizontalSpaceLarge,
+                KUi.horizontalSpaceLarge,
+                KUi.horizontalSpaceLarge,
               ],
             ),
           ),
@@ -224,19 +223,19 @@ class HomeViewOld extends StatelessWidget {
               children: [
                 ListTile(
                   title: Text(isDelete ? 'Hapus data' : name,
-                      style: CustomStyle.titleStyle),
+                      style: KStyle.titleStyle),
                   subtitle: Text(
                     isDelete
                         ? 'Apakah kamu yakin?'
                         : isObscure
                             ? toObscureText(password)
                             : password,
-                    style: CustomStyle.subtitleStyle,
+                    style: KStyle.subtitleStyle,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: UIHelper.edgeMedium),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: KUi.edgeMedium),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: isDelete
@@ -249,7 +248,7 @@ class HomeViewOld extends StatelessWidget {
                                 },
                               ),
                             ),
-                            UIHelper.horizontalSpaceSmall,
+                            KUi.horizontalSpaceSmall,
                             Expanded(
                               child: ElevatedButton(
                                 child: Text('Tidak'),
@@ -270,7 +269,7 @@ class HomeViewOld extends StatelessWidget {
                                 },
                               ),
                             ),
-                            UIHelper.horizontalSpaceSmall,
+                            KUi.horizontalSpaceSmall,
                             isSearch
                                 ? Container()
                                 : Expanded(
@@ -307,7 +306,7 @@ class HomeViewOld extends StatelessWidget {
                                       },
                                     ),
                                   ),
-                            UIHelper.horizontalSpaceSmall,
+                            KUi.horizontalSpaceSmall,
                             Expanded(
                               child: ElevatedButton(
                                 child: Icon(Icons.copy),
