@@ -4,6 +4,9 @@ import 'package:my_password_app/core/viewmodels/auth_model.dart';
 
 import 'package:get/get.dart';
 import 'package:my_password_app/cubit/password_cubit.dart';
+import 'package:my_password_app/ui/page/home/home_page.dart';
+import 'package:my_password_app/ui/page/onboarding/onboarding_page.dart';
+import 'package:my_password_app/ui/page/splash/splash_page.dart';
 import 'package:my_password_app/ui/page/splash_view.dart';
 import 'package:my_password_app/utils/app_bloc_observer.dart';
 import 'package:my_password_app/utils/k_injection.dart';
@@ -11,7 +14,7 @@ import 'package:my_password_app/utils/k_log.dart';
 
 void main() async {
   log(DateTime.now());
-  await setupDepedencyInjection();
+  await setupDependencyInjection();
   BlocOverrides.runZoned(() {
     runApp(
       App(),
@@ -32,8 +35,14 @@ class App extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        home: SplashView(),
+        debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(),
+        initialRoute: SplashScreen.routeName,
+        routes: {
+          SplashScreen.routeName: (context) => const SplashScreen(),
+          OnboardingPage.routeName: (context) => const OnboardingPage(),
+          HomePage.routeName: (context) => const HomePage(),
+        },
       ),
     );
   }
