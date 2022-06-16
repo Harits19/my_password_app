@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "746846482403",
+    "project_id": "protect-56d92",
+    "storage_bucket": "protect-56d92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746846482403:android:26f3b36786c30c6f39bad6",
+        "android_client_info": {
+          "package_name": "com.my_password_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "746846482403-49gfk9fq0sis8mj0kbg5ieqkjknqm6al.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.my_password_app",
+            "certificate_hash": "f75aa6c41cdcee1fcd3e29172e8d55222a2c499e"
+          }
+        },
+        {
+          "client_id": "746846482403-8fgt88dfjt5jegjnjijsjoi56h37215q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANPa0B-0S0LZLqUbLd1duu-kmoapPFvFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "746846482403-8fgt88dfjt5jegjnjijsjoi56h37215q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "746846482403-34979fpecgh3rekohnoohvhgba4h02im.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.myPasswordApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

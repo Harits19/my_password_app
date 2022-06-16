@@ -11,4 +11,9 @@ class KNavigator {
   static pop(BuildContext context) {
     Navigator.pop(context);
   }
+
+  static popAll(BuildContext context, String routeName) {
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(routeName, (Route<dynamic> route) => false);
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/core/models/auth.dart';
-import 'package:my_password_app/cubit/password_cubit.dart';
+import 'package:my_password_app/cubit/password/password_cubit.dart';
 import 'package:my_password_app/konstan/k_style.dart';
 import 'package:my_password_app/konstan/k_ui.dart';
 import 'package:my_password_app/ui/helper/show.dart';

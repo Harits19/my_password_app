@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_password_app/ui/page/onboarding/onboarding_page.dart';
+import 'package:my_password_app/utils/k_navigator.dart';
 
 class SplashScreen extends StatelessWidget {
   static const routeName = "/";
@@ -8,7 +9,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushNamed(context, OnboardingPage.routeName);
+      KNavigator.popAll(context, OnboardingPage.routeName);
     });
     return Scaffold(
       body: Center(
