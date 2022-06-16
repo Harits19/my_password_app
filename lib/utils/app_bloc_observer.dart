@@ -1,7 +1,5 @@
-import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_password_app/utils/k_log.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override

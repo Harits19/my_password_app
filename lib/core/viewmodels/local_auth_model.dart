@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:my_password_app/core/services/local_auth_service.dart';
 
 class LocalAuthModel extends GetxController {

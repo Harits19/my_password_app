@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:my_password_app/core/enums/auth_state_enum.dart';
 import 'package:my_password_app/core/models/auth.dart';
 import 'package:my_password_app/core/services/local_auth_service.dart';
 import 'package:my_password_app/core/services/secure_storage_service.dart';

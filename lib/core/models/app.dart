@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:my_password_app/core/services/share_pref_service.dart';
 
 class App {
   String? name;

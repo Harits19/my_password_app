@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:my_password_app/core/models/auth.dart';
-import 'package:my_password_app/core/services/local_auth_service.dart';
 import 'package:my_password_app/cubit/password_cubit.dart';
-import 'package:my_password_app/ui/page/home_view.dart';
 import 'package:my_password_app/konstan/k_style.dart';
 import 'package:my_password_app/konstan/k_ui.dart';
 import 'package:my_password_app/ui/helper/show.dart';
 import 'package:my_password_app/ui/widgets/custom_widget.dart';
 import 'package:my_password_app/utils/extensions.dart';
-import 'package:my_password_app/utils/k_navigator.dart';
 
 class CheckAuth extends StatefulWidget {
   @override

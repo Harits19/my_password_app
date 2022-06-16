@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-import 'package:get/get.dart';
-import 'package:my_password_app/core/models/app.dart';
-import 'package:my_password_app/core/viewmodels/app_models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharePref {

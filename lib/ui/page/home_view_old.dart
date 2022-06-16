@@ -1,5 +1,4 @@
 import 'package:clipboard/clipboard.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_password_app/core/models/app.dart';
@@ -19,7 +18,6 @@ class HomeViewOld extends StatelessWidget {
     TextEditingController passwordController = TextEditingController();
     TextEditingController nameController = TextEditingController();
     appModel.getApp();
-    var searchList = [];
     // print(authModel.data.value.pin);
     return Scaffold(
       body: SafeArea(
@@ -334,7 +332,7 @@ class HomeViewOld extends StatelessWidget {
 
   String toObscureText(String string) {
     String obscureText = '';
-    for (var character in string.characters) {
+    for (var _ in string.characters) {
       obscureText += '*';
     }
     return obscureText;

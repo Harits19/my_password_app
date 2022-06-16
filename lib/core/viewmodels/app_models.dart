@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:my_password_app/core/models/app.dart';
 import 'package:my_password_app/core/services/secure_storage_service.dart';
