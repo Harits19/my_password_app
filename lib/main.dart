@@ -11,7 +11,7 @@ import 'package:my_password_app/firebase_options.dart';
 
 import 'package:my_password_app/konstan/k_assets.dart';
 import 'package:my_password_app/ui/page/home/home_page.dart';
-import 'package:my_password_app/ui/page/onboarding/onboarding_page.dart';
+import 'package:my_password_app/ui/page/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/page/splash/splash_page.dart';
 import 'package:my_password_app/utils/app_bloc_observer.dart';
 import 'package:my_password_app/utils/k_injection.dart';
@@ -47,9 +47,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => AuthCubit())
-      ],
+      providers: [BlocProvider(create: (_) => AuthCubit())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(),
@@ -62,7 +60,7 @@ class App extends StatelessWidget {
         locale: context.locale,
         routes: {
           SplashScreen.routeName: (context) => const SplashScreen(),
-          OnboardingPage.routeName: (context) => const OnboardingPage(),
+          SignInPage.routeName: (context) => const SignInPage(),
           HomePage.routeName: (context) => const HomePage(),
         },
       ),

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/core/models/auth.dart';
 import 'package:my_password_app/cubit/password/password_cubit.dart';
 import 'package:my_password_app/konstan/k_style.dart';
-import 'package:my_password_app/konstan/k_ui.dart';
+import 'package:my_password_app/konstan/k_size.dart';
 import 'package:my_password_app/ui/helper/show.dart';
 import 'package:my_password_app/ui/widgets/custom_widget.dart';
 import 'package:my_password_app/utils/extensions.dart';
@@ -33,7 +33,7 @@ class _CheckAuthState extends State<CheckAuth> {
             }
             if (state is PasswordLoaded) {
               return Padding(
-                padding: const EdgeInsets.all(KUi.edgeSmall),
+                padding: const EdgeInsets.all(KSize.edgeSmall),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -70,7 +70,7 @@ class _CheckAuthState extends State<CheckAuth> {
         'Masukkan pin dan otomatis akan masuk',
         style: KStyle.subtitleStyle,
       ),
-      KUi.verticalLarge,
+      KSize.verticalLarge,
       if (state.isLocalAuthSupported)
         SizedBox(
           width: double.infinity,
@@ -102,7 +102,7 @@ class _CheckAuthState extends State<CheckAuth> {
           setState(() {});
         },
       ),
-      KUi.verticalSmall,
+      KSize.verticalSmall,
       if (state.isLocalAuthSupported)
         CheckboxWidget(
           value: _useLocalAuth,

@@ -14,7 +14,33 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       final userModel = await GoogleService.signInWithGoogle();
-      emit(AuthLoaded(userModel));
+      emit(AuthSignIn(userModel));
+    } catch (e) {
+      onError(e.toString());
+    }
+  }
+
+  Future<void> checkSignInStatus({
+    required ValueChanged<String> onError,
+  }) async {
+    try {
+      final userModel = await GoogleService.checkCurrentUser();
+      if (userModel != null) {
+        emit(AuthSignIn(userModel));
+      } else {
+        emit(AuthSignOut());
+      }
+    } catch (e) {
+      onError(e.toString());
+    }
+  }
+
+  Future<void> signOutWithGoogle({
+    required ValueChanged<String> onError,
+  }) async {
+    try {
+      await GoogleService.signOutWithGoogle();
+      emit(AuthSignOut());
     } catch (e) {
       onError(e.toString());
     }

@@ -6,7 +6,7 @@ import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/core/viewmodels/app_models.dart';
 import 'package:my_password_app/core/viewmodels/auth_model.dart';
 import 'package:my_password_app/konstan/k_style.dart';
-import 'package:my_password_app/konstan/k_ui.dart';
+import 'package:my_password_app/konstan/k_size.dart';
 import 'package:my_password_app/ui/widgets/custom_widget.dart';
 
 class HomeView extends StatelessWidget {
@@ -22,7 +22,7 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(KUi.edgeMedium),
+          padding: const EdgeInsets.all(KSize.edgeMedium),
           child: Column(
             children: <Widget>[
               // TextFieldWidget(
@@ -126,7 +126,7 @@ class HomeView extends StatelessWidget {
         return SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: KUi.edgeMedium, vertical: KUi.edgeLarge * 2),
+                horizontal: KSize.edgeMedium, vertical: KSize.edgeLarge * 2),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -139,7 +139,7 @@ class HomeView extends StatelessWidget {
                   hintText: 'Password',
                   controller: passwordController,
                 ),
-                KUi.verticalSmall,
+                KSize.verticalSmall,
                 StatefulBuilder(builder: (context, setState) {
                   return Row(
                     // crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -190,11 +190,11 @@ class HomeView extends StatelessWidget {
                         print(temp);
                       });
                 }),
-                KUi.verticalSmall,
+                KSize.verticalSmall,
                 ElevatedButtonWidget(
                     text: 'Simpan', onPressedParam: onPressedSave),
-                KUi.horizontalLarge,
-                KUi.horizontalLarge,
+                KSize.horizontalLarge,
+                KSize.horizontalLarge,
               ],
             ),
           ),
@@ -233,7 +233,7 @@ class HomeView extends StatelessWidget {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: KUi.edgeMedium),
+                      const EdgeInsets.symmetric(horizontal: KSize.edgeMedium),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: isDelete
@@ -246,7 +246,7 @@ class HomeView extends StatelessWidget {
                                 },
                               ),
                             ),
-                            KUi.horizontalSmall,
+                            KSize.horizontalSmall,
                             Expanded(
                               child: ElevatedButton(
                                 child: Text('Tidak'),
@@ -267,7 +267,7 @@ class HomeView extends StatelessWidget {
                                 },
                               ),
                             ),
-                            KUi.horizontalSmall,
+                            KSize.horizontalSmall,
                             isSearch
                                 ? Container()
                                 : Expanded(
@@ -304,7 +304,7 @@ class HomeView extends StatelessWidget {
                                       },
                                     ),
                                   ),
-                            KUi.horizontalSmall,
+                            KSize.horizontalSmall,
                             Expanded(
                               child: ElevatedButton(
                                 child: Icon(Icons.copy),

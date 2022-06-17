@@ -4,7 +4,7 @@ import 'package:my_password_app/core/models/auth.dart';
 import 'package:my_password_app/core/viewmodels/auth_model.dart';
 import 'package:my_password_app/ui/page/home_view.dart';
 import 'package:my_password_app/konstan/k_style.dart';
-import 'package:my_password_app/konstan/k_ui.dart';
+import 'package:my_password_app/konstan/k_size.dart';
 import 'package:my_password_app/ui/widgets/custom_widget.dart';
 
 class CheckAuthOld extends StatelessWidget {
@@ -21,7 +21,7 @@ class CheckAuthOld extends StatelessWidget {
             child: authModel.loading.isTrue
                 ? LoadingWidget()
                 : Padding(
-                    padding: const EdgeInsets.all(KUi.edgeSmall),
+                    padding: const EdgeInsets.all(KSize.edgeSmall),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: authModel.data.value.pin!.isEmpty
@@ -47,7 +47,7 @@ class CheckAuthOld extends StatelessWidget {
                                 'Masukkan pin dan otomatis akan masuk',
                                 style: KStyle.subtitleStyle,
                               ),
-                              KUi.verticalLarge,
+                              KSize.verticalLarge,
                               authModel.data.value.useLocalAuth == true
                                   ? SizedBox(
                                       width: Get.size.width,
@@ -87,7 +87,7 @@ class CheckAuthOld extends StatelessWidget {
           print(pin);
         },
       ),
-      KUi.verticalSmall,
+      KSize.verticalSmall,
       StatefulBuilder(
         builder: (context, setState) => CheckboxWidget(
           value: isLocalAuth,

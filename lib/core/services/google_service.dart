@@ -5,27 +5,34 @@ import 'package:my_password_app/core/models/user_model.dart';
 class GoogleService {
   GoogleService._();
 
+  static final _google = GoogleSignIn();
+
   static Future<UserModel> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final googleUser = await _google.signIn();
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+    print("google user => " + googleUser.toString());
 
-    // Create a new credential
+    final googleAuth = await googleUser?.authentication;
+
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
 
-    print("google user => " + googleUser.toString());
-    print("google auth => " + googleAuth.toString());
-    print("credential => " + credential.toString());
-    // Once signed in, return the UserCredential
     final firebaseCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
     print("firebase credential => " + firebaseCredential.toString());
     return firebaseCredential;
+  }
+
+  static Future<UserModel?> checkCurrentUser() async {
+    if (await _google.isSignedIn() == false) {
+      return null;
+    }
+    return await signInWithGoogle();
+  }
+
+  static Future<void> signOutWithGoogle() async {
+    await _google.disconnect();
   }
 }

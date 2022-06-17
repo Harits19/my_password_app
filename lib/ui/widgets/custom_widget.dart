@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_password_app/konstan/k_style.dart';
-import 'package:my_password_app/konstan/k_ui.dart';
+import 'package:my_password_app/konstan/k_size.dart';
 
 class ElevatedButtonWidget extends StatelessWidget {
   final onPressedParam;
@@ -13,8 +13,8 @@ class ElevatedButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: KUi.buttonHeight,
-      margin: EdgeInsets.symmetric(horizontal: KUi.edgeSmall),
+      height: KSize.buttonHeight,
+      margin: EdgeInsets.symmetric(horizontal: KSize.edgeSmall),
       child: ElevatedButton(
         onPressed: onPressedParam,
         child: Text(
@@ -43,7 +43,7 @@ class TextFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: KUi.edgeLarge),
+        padding: const EdgeInsets.symmetric(horizontal: KSize.edgeLarge),
         child: TextField(
           controller: controller,
           decoration: InputDecoration(
@@ -97,8 +97,8 @@ class SnackBarWidget {
   static void show({required title, required message}) {
     Get.snackbar(title, message,
         margin: EdgeInsets.symmetric(
-          vertical: KUi.edgeLarge,
-          horizontal: KUi.edgeMedium,
+          vertical: KSize.edgeLarge,
+          horizontal: KSize.edgeMedium,
         ));
   }
 }
