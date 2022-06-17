@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_password_app/core/services/share_pref_service.dart';
 import 'package:my_password_app/cubit/auth/auth_cubit.dart';
 import 'package:my_password_app/firebase_options.dart';
 
@@ -23,6 +24,7 @@ void main() async {
   );
   await EasyLocalization.ensureInitialized();
   await setupDependencyInjection();
+  await SharePref.initializePrefInstances();
   final useDevicePreview =
       !kReleaseMode && !Platform.isAndroid && !Platform.isIOS;
   BlocOverrides.runZoned(() {
