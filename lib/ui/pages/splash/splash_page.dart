@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_password_app/cubit/auth/auth_cubit.dart';
+import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/ui/helper/show.dart';
-import 'package:my_password_app/ui/page/home/home_page.dart';
-import 'package:my_password_app/ui/page/sign_in/sign_in_page.dart';
+import 'package:my_password_app/ui/pages/home/home_page.dart';
+import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/utils/k_navigator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/utils/k_state.dart';

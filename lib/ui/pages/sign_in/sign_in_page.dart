@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_password_app/cubit/auth/auth_cubit.dart';
+import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/konstan/k_size.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:my_password_app/ui/helper/show.dart';
-import 'package:my_password_app/ui/page/home/home_page.dart';
+import 'package:my_password_app/ui/pages/home/home_page.dart';
 import 'package:my_password_app/utils/k_navigator.dart';
 
 class SignInPage extends StatelessWidget {
