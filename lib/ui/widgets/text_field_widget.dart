@@ -3,8 +3,8 @@ import 'package:my_password_app/konstan/k_size.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final String hintText;
-  final onChanged;
-  final controller;
+  final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
   final obscureText;
 
   TextFieldWidget(

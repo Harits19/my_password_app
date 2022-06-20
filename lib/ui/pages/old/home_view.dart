@@ -71,22 +71,6 @@ class HomeView extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          Show.modalPassword(
-              context: context,
-              passwordController: passwordController,
-              nameController: nameController,
-              onPressedSave: () {
-                if (nameController.text.isEmpty ||
-                    passwordController.text.isEmpty) {
-                  Show.snackbar(context, 'Data tidak lengkap');
-                } else {
-                  appModel.addAppItem(
-                      appItem: App(
-                          name: nameController.text,
-                          password: passwordController.text));
-                  Get.back();
-                }
-              });
           passwordController.text = '';
           nameController.text = '';
         },
@@ -184,29 +168,6 @@ class HomeView extends StatelessWidget {
                                       onPressed: () {
                                         nameController.text = name;
                                         passwordController.text = password;
-                                        Show.modalPassword(
-                                            context: context,
-                                            passwordController:
-                                                passwordController,
-                                            nameController: nameController,
-                                            onPressedSave: () {
-                                              if (nameController.text.isEmpty ||
-                                                  passwordController
-                                                      .text.isEmpty) {
-                                                Show.snackbar(context,
-                                                    'Data tidak lengkap');
-                                              } else {
-                                                appModel.updateAppItem(
-                                                    appItem: App(
-                                                        name:
-                                                            nameController.text,
-                                                        password:
-                                                            passwordController
-                                                                .text),
-                                                    index: index);
-                                                Get.back();
-                                              }
-                                            });
                                       },
                                     ),
                                   ),

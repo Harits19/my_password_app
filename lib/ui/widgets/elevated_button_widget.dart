@@ -3,7 +3,7 @@ import 'package:my_password_app/konstan/k_size.dart';
 import 'package:my_password_app/konstan/k_style.dart';
 
 class ElevatedButtonWidget extends StatelessWidget {
-  final onPressedParam;
+  final VoidCallback? onPressedParam;
   final String text;
 
   const ElevatedButtonWidget(
