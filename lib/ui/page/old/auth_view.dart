@@ -68,7 +68,7 @@ class _CheckAuthState extends State<CheckAuth> {
       ),
       Text(
         'Masukkan pin dan otomatis akan masuk',
-        style: KStyle.subtitleStyle,
+        style: KStyle.h2,
       ),
       KSize.verticalLarge,
       if (state.isLocalAuthSupported)

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:my_password_app/ui/page/auth_view.dart';
+import 'package:my_password_app/ui/page/old/auth_view.dart';
 // import 'package:get/get.dart';
 import 'package:my_password_app/konstan/k_assets.dart';
 import 'package:my_password_app/utils/k_navigator.dart';

@@ -37,7 +37,7 @@ class HomeViewOld extends StatelessWidget {
                       ? Center(
                           child: Text(
                             'Data tidak ditemukan',
-                            style: KStyle.titleStyle,
+                            style: KStyle.h1,
                           ),
                         )
                       : ListView.builder(
@@ -220,15 +220,14 @@ class HomeViewOld extends StatelessWidget {
             child: Column(
               children: [
                 ListTile(
-                  title: Text(isDelete ? 'Hapus data' : name,
-                      style: KStyle.titleStyle),
+                  title: Text(isDelete ? 'Hapus data' : name, style: KStyle.h1),
                   subtitle: Text(
                     isDelete
                         ? 'Apakah kamu yakin?'
                         : isObscure
                             ? toObscureText(password)
                             : password,
-                    style: KStyle.subtitleStyle,
+                    style: KStyle.h2,
                   ),
                 ),
                 Padding(
