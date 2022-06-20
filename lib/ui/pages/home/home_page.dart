@@ -4,6 +4,7 @@ import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/konstan/k_size.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/ui/helper/show.dart';
+import 'package:my_password_app/ui/pages/home/view/password_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/utils/k_navigator.dart';
 
@@ -48,8 +49,16 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
-        body: Center(
-          child: Text(routeName),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(KSize.small),
+          child: Column(
+            children: [
+              PasswordView(
+                password: "password",
+                name: "name",
+              )
+            ],
+          ),
         ),
       ),
     );

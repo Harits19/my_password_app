@@ -1,12 +1,14 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_password_app/core/extensions/string_extension.dart';
 import 'package:my_password_app/core/models/app.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/core/viewmodels/app_models.dart';
 import 'package:my_password_app/core/viewmodels/auth_model.dart';
 import 'package:my_password_app/konstan/k_style.dart';
 import 'package:my_password_app/konstan/k_size.dart';
+import 'package:my_password_app/ui/helper/show.dart';
 import 'package:my_password_app/ui/widgets/custom_widget.dart';
 
 class HomeView extends StatelessWidget {
@@ -69,15 +71,14 @@ class HomeView extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          buildShowModalBottomSheet(
+          Show.modalPassword(
               context: context,
               passwordController: passwordController,
               nameController: nameController,
               onPressedSave: () {
                 if (nameController.text.isEmpty ||
                     passwordController.text.isEmpty) {
-                  SnackBarWidget.show(
-                      title: 'Gagal', message: 'Data tidak lengkap');
+                  Show.snackbar(context, 'Data tidak lengkap');
                 } else {
                   appModel.addAppItem(
                       appItem: App(
@@ -111,98 +112,6 @@ class HomeView extends StatelessWidget {
   //   value = newValue;
   // }
 
-  Future<void> buildShowModalBottomSheet(
-      {required BuildContext context,
-      passwordController,
-      nameController,
-      required onPressedSave}) {
-    bool number = false;
-    bool letter = false;
-    bool symbol = false;
-    return showModalBottomSheet<void>(
-      isScrollControlled: true,
-      context: context,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: KSize.edgeMedium, vertical: KSize.edgeLarge * 2),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                TextFieldWidget(
-                  hintText: 'Nama Aplikasi',
-                  controller: nameController,
-                ),
-                TextFieldWidget(
-                  hintText: 'Password',
-                  controller: passwordController,
-                ),
-                KSize.verticalSmall,
-                StatefulBuilder(builder: (context, setState) {
-                  return Row(
-                    // crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: CheckboxWidget(
-                          text: 'Number',
-                          value: number,
-                          onChanged: (newValue) {
-                            setState(() => {number = newValue});
-                            print(number);
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: CheckboxWidget(
-                          text: 'Letter',
-                          value: letter,
-                          onChanged: (newValue) {
-                            setState(() => {letter = newValue});
-                            print(letter);
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: CheckboxWidget(
-                          text: 'Symbol',
-                          value: symbol,
-                          onChanged: (newValue) {
-                            setState(() => {symbol = newValue});
-                            print(symbol);
-                          },
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-                StatefulBuilder(builder: (context, setState) {
-                  return ElevatedButtonWidget(
-                      text: 'Generate Random Password',
-                      onPressedParam: () {
-                        var temp = GeneratePassword.getRandomString(
-                            letter: letter, number: number, symbol: symbol);
-                        setState(() {
-                          passwordController.text = temp;
-                        });
-                        print(temp);
-                      });
-                }),
-                KSize.verticalSmall,
-                ElevatedButtonWidget(
-                    text: 'Simpan', onPressedParam: onPressedSave),
-                KSize.horizontalLarge,
-                KSize.horizontalLarge,
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   StatefulBuilder buildItemData(
       {required String name,
       required String password,
@@ -225,7 +134,7 @@ class HomeView extends StatelessWidget {
                     isDelete
                         ? 'Apakah kamu yakin?'
                         : isObscure
-                            ? toObscureText(password)
+                            ? password.toObscureText()
                             : password,
                     style: KStyle.h2,
                   ),
@@ -275,7 +184,7 @@ class HomeView extends StatelessWidget {
                                       onPressed: () {
                                         nameController.text = name;
                                         passwordController.text = password;
-                                        buildShowModalBottomSheet(
+                                        Show.modalPassword(
                                             context: context,
                                             passwordController:
                                                 passwordController,
@@ -284,10 +193,8 @@ class HomeView extends StatelessWidget {
                                               if (nameController.text.isEmpty ||
                                                   passwordController
                                                       .text.isEmpty) {
-                                                SnackBarWidget.show(
-                                                    title: 'Gagal',
-                                                    message:
-                                                        'Data tidak lengkap');
+                                                Show.snackbar(context,
+                                                    'Data tidak lengkap');
                                               } else {
                                                 appModel.updateAppItem(
                                                     appItem: App(
@@ -309,9 +216,8 @@ class HomeView extends StatelessWidget {
                                 child: Icon(Icons.copy),
                                 onPressed: () {
                                   FlutterClipboard.copy(password).then(
-                                      (value) => SnackBarWidget.show(
-                                          title: 'Salin',
-                                          message: 'Berhasil disalin'));
+                                      (value) => Show.snackbar(
+                                          context, 'Berhasil disalin'));
                                 },
                               ),
                             ),
@@ -327,13 +233,5 @@ class HomeView extends StatelessWidget {
         );
       },
     );
-  }
-
-  String toObscureText(String string) {
-    String obscureText = '';
-    for (var character in string.characters) {
-      obscureText += '*';
-    }
-    return obscureText;
   }
 }
