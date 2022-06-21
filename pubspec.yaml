@@ -24,7 +24,9 @@ dependencies:
   get: ^4.1.1
   get_it: ^7.2.0
   google_sign_in: ^5.3.3
+  googleapis: ^9.1.0
   local_auth: ^2.1.0
+  path_provider: ^2.0.11
   pretty_dio_logger: ^1.1.1
   responsive_framework: ^0.2.0
   shared_preferences: ^2.0.5

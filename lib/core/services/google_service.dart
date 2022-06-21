@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_password_app/core/models/user_model.dart';
+import 'package:googleapis/drive/v3.dart' as drive;
+import 'package:google_sign_in/google_sign_in.dart' as google;
 
 class GoogleService {
   GoogleService._();
 
-  static final _google = GoogleSignIn();
+  static final _google = google.GoogleSignIn.standard(scopes: [
+    drive.DriveApi.driveScope,
+  ]);
 
   static Future<UserModel> signInWithGoogle() async {
     final googleUser = await _google.signIn();
@@ -22,7 +25,9 @@ class GoogleService {
     final firebaseCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
     print("firebase credential => " + firebaseCredential.toString());
-    return firebaseCredential;
+    if (googleUser == null) throw "Empty Google User";
+    return UserModel(
+        userCredential: firebaseCredential, googleSignInAccount: googleUser);
   }
 
   static Future<UserModel?> checkCurrentUser() async {
