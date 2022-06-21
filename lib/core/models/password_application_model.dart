@@ -1,10 +1,10 @@
-class PasswordApplicationModel {
+class PasswordModel {
   String? name;
   String? password;
 
-  PasswordApplicationModel({required this.name, required this.password});
+  PasswordModel({required this.name, required this.password});
 
-  PasswordApplicationModel.fromJson(Map<String, dynamic> json) {
+  PasswordModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     password = json['password'];
   }

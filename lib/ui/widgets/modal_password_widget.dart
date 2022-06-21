@@ -14,7 +14,7 @@ class ModalPasswordWidget extends StatefulWidget {
   }) : super(key: key);
 
   final String? name, password;
-  final ValueChanged<PasswordApplicationModel>? onPressSave;
+  final ValueChanged<PasswordModel>? onPressSave;
 
   @override
   State<ModalPasswordWidget> createState() => _ModalPasswordWidgetState();

@@ -1,9 +1,14 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:googleapis/drive/v3.dart' as drive;
+import 'package:my_password_app/core/exceptions/file_not_found_exception.dart';
+import 'package:my_password_app/core/exceptions/id_not_found_exception.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
+import 'package:path_provider/path_provider.dart';
 
 class _GoogleAuthClient extends http.BaseClient {
   final Map<String, String> _headers;
@@ -18,41 +23,72 @@ class _GoogleAuthClient extends http.BaseClient {
 }
 
 class DriveService {
-  static void createFilePassword({
+  static Future<void> initFilePassword({
     required GoogleSignInAccount googleSignInAccount,
-    required PasswordApplicationModel password,
   }) async {
     final driveApi = await _driveApi(googleSignInAccount);
-
-    final jsonString = json.encode(password.toJson());
 
     final driveFile = new drive.File();
     driveFile.name = _fileName(googleSignInAccount);
 
-    final result = await driveApi.files
-        .create(driveFile, uploadMedia: _toMedia(jsonString));
+    final result = await driveApi.files.create(driveFile);
     print("Upload result: $result");
   }
 
   static void updateFilePassword({
     required GoogleSignInAccount googleSignInAccount,
-    required PasswordApplicationModel password,
+    required List<PasswordModel> password,
   }) async {
-    final driveApi = await _driveApi(googleSignInAccount);
+    late final String fileId;
+    try {
+      fileId = await getFileId(googleSignInAccount: googleSignInAccount);
+    } on FileNotFoundException catch (_) {
+      await initFilePassword(googleSignInAccount: googleSignInAccount);
+    }
 
-    final jsonString = json.encode(password.toJson());
+    final driveApi = await _driveApi(googleSignInAccount);
+    final jsonString = json.encode(password.map((e) => e.toJson()).toList());
 
     final driveFile = new drive.File();
     driveFile.name = _fileName(googleSignInAccount);
-
-    final fileId = await getFile(googleSignInAccount: googleSignInAccount);
 
     final result = await driveApi.files
         .update(driveFile, fileId, uploadMedia: _toMedia(jsonString));
     print("Update result: $result");
   }
 
-  static Future<String> getFile({
+  static Future<List<PasswordModel>> receiveFilePassword({
+    required GoogleSignInAccount googleSignInAccount,
+  }) async {
+    final driveApi = await _driveApi(googleSignInAccount);
+    final fileId = await getFileId(googleSignInAccount: googleSignInAccount);
+    final result = await driveApi.files
+        .get(fileId, downloadOptions: drive.DownloadOptions.fullMedia);
+    if (!(result is drive.Media)) {
+      throw "Not Receive Media Object";
+    }
+
+    List<PasswordModel> listPassword = [];
+    final dataStore = await result.stream.first;
+
+    Directory tempDir =
+        await getTemporaryDirectory(); //Get temp folder using Path Provider
+    String tempPath = tempDir.path; //Get path to that location
+    File file = File('$tempPath/temporary_file'); //Create a dummy file
+    await file.writeAsBytes(
+        dataStore); //Write to that file from the datastore you created from the Media stream
+    String jsonString = file.readAsStringSync(); // Read String from the file
+    print("jsonString => $jsonString"); //Finally you have your text
+    final jsonMap = json.decode(jsonString);
+    print("jsonMap => $jsonMap");
+    if (!(jsonMap is List)) {
+      throw "Result Not List";
+    }
+    listPassword = jsonMap.map((e) => PasswordModel.fromJson(e)).toList();
+    return listPassword;
+  }
+
+  static Future<String> getFileId({
     required GoogleSignInAccount googleSignInAccount,
   }) async {
     final driveApi = await _driveApi(googleSignInAccount);
@@ -67,11 +103,11 @@ class DriveService {
     print("List result: ${result.files?.toString()}");
 
     if (result.files?.isEmpty ?? true) {
-      throw "File Not Found";
+      throw FileNotFoundException("File Not Found");
     }
 
     if (result.files!.first.id == null) {
-      throw "Id Not Found";
+      throw IdNotFoundException("Id Not Found");
     }
 
     return result.files!.first.id!;

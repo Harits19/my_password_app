@@ -47,47 +47,35 @@ class HomePage extends StatelessWidget {
                 name: "name",
               ),
               ElevatedButton(
-                child: Text("Create File"),
-                onPressed: () {
-                  if (authState is AuthSignIn) {
-                    DriveService.createFilePassword(
-                      googleSignInAccount:
-                          authState.userModel.googleSignInAccount,
-                      password: PasswordApplicationModel(
-                        name: "name1",
-                        password: "password1",
-                      ),
-                    );
-                  } else {
-                    Show.snackbar(context, "User already sign out");
-                  }
-                },
-              ),
-              ElevatedButton(
-                child: Text("Get File"),
-                onPressed: () {
-                  if (authState is AuthSignIn) {
-                    DriveService.getFile(
-                      googleSignInAccount:
-                          authState.userModel.googleSignInAccount,
-                    );
-                  } else {
-                    Show.snackbar(context, "User already sign out");
-                  }
-                },
-              ),
-              ElevatedButton(
                 child: Text("Update File"),
                 onPressed: () {
                   if (authState is AuthSignIn) {
                     DriveService.updateFilePassword(
+                        googleSignInAccount:
+                            authState.userModel.googleSignInAccount,
+                        password: [
+                          ...List.generate(
+                            10,
+                            (index) => PasswordModel(
+                              name: "name$index",
+                              password: "password$index",
+                            ),
+                          )
+                        ]);
+                  } else {
+                    Show.snackbar(context, "User already sign out");
+                  }
+                },
+              ),
+              ElevatedButton(
+                child: Text("Receive File"),
+                onPressed: () async {
+                  if (authState is AuthSignIn) {
+                    final listPassword = await DriveService.receiveFilePassword(
                       googleSignInAccount:
                           authState.userModel.googleSignInAccount,
-                      password: PasswordApplicationModel(
-                        name: "name2",
-                        password: "password2",
-                      ),
                     );
+                    print("HomePage => ${listPassword.length}");
                   } else {
                     Show.snackbar(context, "User already sign out");
                   }
