@@ -121,7 +121,16 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
             KSize.verticalSmall,
             ElevatedButtonWidget(
               text: 'Simpan',
-              onPressedParam: _disableSavePassword ? null : () {},
+              onPressedParam: _disableSavePassword
+                  ? null
+                  : () {
+                      if (widget.onPressSave == null) return;
+                      widget.onPressSave!(
+                        PasswordModel(
+                            name: _nameController.text,
+                            password: _passwordController.text),
+                      );
+                    },
             ),
             KSize.horizontalLarge,
             KSize.horizontalLarge,

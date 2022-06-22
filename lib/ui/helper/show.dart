@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/konstan/k_size.dart';
 import 'package:my_password_app/ui/widgets/custom_widget.dart';
@@ -38,7 +39,7 @@ class Show {
       {required BuildContext context,
       String? name,
       String? password,
-      required onPressedSave}) {
+      required ValueChanged<PasswordModel>? onPressedSave}) {
     return showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,
@@ -46,6 +47,7 @@ class Show {
         return ModalPasswordWidget(
           name: name,
           password: password,
+          onPressSave: onPressedSave,
         );
       },
     );

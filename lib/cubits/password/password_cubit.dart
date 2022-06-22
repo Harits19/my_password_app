@@ -1,47 +1,38 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
-import 'package:my_password_app/core/models/auth.dart';
-import 'package:my_password_app/core/services/local_auth_service.dart';
-import 'package:my_password_app/core/services/secure_storage_service.dart';
 import 'package:equatable/equatable.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_password_app/core/models/password_application_model.dart';
+import 'package:my_password_app/core/services/drive_service.dart';
 
 part 'password_state.dart';
 
 class PasswordCubit extends Cubit<PasswordState> {
-  PasswordCubit() : super(PasswordInitial());
+  PasswordCubit() : super(PasswordLoaded(listPassword: []));
 
-  final _secureStorage = GetIt.I.get<SecureStorageV2>();
-  final _localAuth = GetIt.I.get<LocalAuthServiceV2>();
-
-  Future<void> getDataAuth() async {
-    emit(PasswordLoading());
-    try {
-      final temp = await _secureStorage.readStorageAuthModel();
-      final isLocalAuthSupported = await _localAuth.isDeviceSupported();
-      if (temp != null) {
-        var parsed = json.decode(temp);
-        final data = Auth.fromJson(parsed);
-        emit(PasswordLoaded(data, isLocalAuthSupported: isLocalAuthSupported));
-      } else {
-        final data = Auth(pin: '', useLocalAuth: false);
-        emit(PasswordLoaded(data, isLocalAuthSupported: isLocalAuthSupported));
-      }
-    } catch (e) {
-      print(e);
-      emit(PasswordError(e));
+  Future<void> receivePassword(GoogleSignInAccount googleSignInAccount) async {
+    final currentState = this.state;
+    if (currentState is PasswordLoaded) {
+      emit(PasswordIdle(listPassword: currentState.listPassword));
     }
+    final listPassword = await DriveService.receiveFilePassword(
+        googleSignInAccount: googleSignInAccount);
+    emit(PasswordLoaded(listPassword: listPassword));
   }
 
-  Future<void> postDataAuth({required Auth auth}) async {
-    try {
-      emit(PasswordLoading());
-      await _secureStorage.writeStorageAuthModel(data: auth);
-      getDataAuth();
-    } catch (e) {
-      emit(PasswordError(e));
+  Future<void> addPassword({
+    required GoogleSignInAccount googleSignInAccount,
+    required PasswordModel password,
+  }) async {
+    final currentState = this.state;
+    if (currentState is PasswordLoaded) {
+      currentState.listPassword.add(password);
+      await DriveService.updateFilePassword(
+        googleSignInAccount: googleSignInAccount,
+        password: List.from(
+          currentState.listPassword,
+        ),
+      );
+      await receivePassword(googleSignInAccount);
     }
   }
 }

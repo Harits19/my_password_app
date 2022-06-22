@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/core/services/share_pref_service.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
+import 'package:my_password_app/cubits/password/password_cubit.dart';
 import 'package:my_password_app/firebase_options.dart';
 
 import 'package:my_password_app/konstan/k_assets.dart';
@@ -49,7 +50,14 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => AuthCubit())],
+      providers: [
+        BlocProvider(
+          create: (_) => AuthCubit(),
+        ),
+         BlocProvider(
+          create: (_) => PasswordCubit(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(),

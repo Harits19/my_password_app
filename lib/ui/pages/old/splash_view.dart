@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:my_password_app/ui/pages/old/auth_view.dart';
 // import 'package:get/get.dart';
 import 'package:my_password_app/konstan/k_assets.dart';
 import 'package:my_password_app/utils/k_navigator.dart';
@@ -10,7 +9,6 @@ class SplashView extends StatelessWidget {
   Future<Timer> _startSplashScreen(BuildContext context) async {
     var duration = const Duration(seconds: 3);
     return Timer(duration, () {
-      KNavigator.pushAndReplace(context, CheckAuth());
     });
   }
 

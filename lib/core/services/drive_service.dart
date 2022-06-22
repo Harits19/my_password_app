@@ -36,15 +36,16 @@ class DriveService {
     print("Upload result: $result");
   }
 
-  static void updateFilePassword({
+  static Future<void> updateFilePassword({
     required GoogleSignInAccount googleSignInAccount,
     required List<PasswordModel> password,
   }) async {
-    late final String fileId;
+    String fileId;
     try {
       fileId = await getFileId(googleSignInAccount: googleSignInAccount);
     } on FileNotFoundException catch (_) {
       await initFilePassword(googleSignInAccount: googleSignInAccount);
+      fileId = await getFileId(googleSignInAccount: googleSignInAccount);
     }
 
     final driveApi = await _driveApi(googleSignInAccount);
@@ -69,7 +70,14 @@ class DriveService {
     required GoogleSignInAccount googleSignInAccount,
   }) async {
     final driveApi = await _driveApi(googleSignInAccount);
-    final fileId = await getFileId(googleSignInAccount: googleSignInAccount);
+    String fileId;
+    try {
+      fileId = await getFileId(googleSignInAccount: googleSignInAccount);
+    } on FileNotFoundException catch (_) {
+      await initFilePassword(googleSignInAccount: googleSignInAccount);
+      fileId = await getFileId(googleSignInAccount: googleSignInAccount);
+    }
+
     final result = await driveApi.files
         .get(fileId, downloadOptions: drive.DownloadOptions.fullMedia);
     if (!(result is drive.Media)) {
@@ -77,14 +85,18 @@ class DriveService {
     }
 
     List<PasswordModel> listPassword = [];
-    final dataStore = await result.stream.first;
+    final dataStore = await result.stream.toList();
+    if (await dataStore.isEmpty) {
+      return [];
+    }
+    
 
     Directory tempDir =
         await getTemporaryDirectory(); //Get temp folder using Path Provider
     String tempPath = tempDir.path; //Get path to that location
     File file = File('$tempPath/temporary_file'); //Create a dummy file
     await file.writeAsBytes(
-        dataStore); //Write to that file from the datastore you created from the Media stream
+        dataStore.first); //Write to that file from the datastore you created from the Media stream
     String jsonString = file.readAsStringSync(); // Read String from the file
     print("jsonString => $jsonString"); //Finally you have your text
     final jsonMap = json.decode(jsonString);

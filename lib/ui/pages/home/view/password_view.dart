@@ -9,12 +9,12 @@ import 'package:easy_localization/easy_localization.dart';
 class PasswordView extends StatefulWidget {
   PasswordView({
     Key? key,
-    required this.password,
-    required this.name,
+    this.password,
+    this.name,
   }) : super(key: key);
 
-  final String password;
-  final String name;
+  final String? password;
+  final String? name;
 
   @override
   State<PasswordView> createState() => _PasswordViewState();
@@ -39,9 +39,9 @@ class _PasswordViewState extends State<PasswordView> {
         child: Column(
           children: [
             ListTile(
-              title: Text(title, style: KStyle.h1),
+              title: Text(title ?? "", style: KStyle.h1),
               subtitle: Text(
-                subtitle,
+                subtitle ?? "",
                 style: KStyle.h2,
               ),
             ),
@@ -78,7 +78,7 @@ class _PasswordViewState extends State<PasswordView> {
             _isDelete = false;
             setState(() {});
           },
-        ), 
+        ),
       ),
     ];
   }
@@ -108,7 +108,7 @@ class _PasswordViewState extends State<PasswordView> {
         child: ElevatedButton(
           child: Icon(Icons.copy),
           onPressed: () {
-            FlutterClipboard.copy(widget.password)
+            FlutterClipboard.copy(widget.password ?? "")
                 .then((value) => Show.snackbar(context, 'successCopy'.tr()));
           },
         ),

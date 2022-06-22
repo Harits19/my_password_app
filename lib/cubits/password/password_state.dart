@@ -1,25 +1,24 @@
 part of 'password_cubit.dart';
 
-@immutable
 abstract class PasswordState extends Equatable {
+  const PasswordState();
+
   @override
   List<Object> get props => [];
 }
 
-class PasswordInitial extends PasswordState {}
+class PasswordIdle extends PasswordState {
+   final List<PasswordModel> listPassword;
 
-class PasswordLoading extends PasswordState {}
-
-class PasswordLoaded extends PasswordState {
-  final Auth auth;
-  final bool isLocalAuthSupported;
-  PasswordLoaded(
-    this.auth, {
-    this.isLocalAuthSupported = false,
+  PasswordIdle({
+    required this.listPassword,
   });
 }
 
-class PasswordError extends PasswordState {
-  final String error;
-  PasswordError(dynamic error) : this.error = error.toString();
+class PasswordLoaded extends PasswordState {
+  final List<PasswordModel> listPassword;
+
+  PasswordLoaded({
+    required this.listPassword,
+  });
 }
