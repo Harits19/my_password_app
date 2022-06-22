@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:my_password_app/core/extensions/string_extension.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/core/services/drive_service.dart';
 import 'package:my_password_app/core/services/google_service.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
+import 'package:my_password_app/env.dart';
 import 'package:my_password_app/konstan/k_size.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/ui/helper/show.dart';
 import 'package:my_password_app/ui/pages/home/view/drawer_view.dart';
 import 'package:my_password_app/ui/pages/home/view/password_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
+import 'package:my_password_app/utils/extensions.dart';
 import 'package:my_password_app/utils/k_navigator.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -81,6 +84,19 @@ class HomePage extends StatelessWidget {
                   }
                 },
               ),
+              ElevatedButton(
+                onPressed: () {
+                  print("length => " + Env.encryptKey.length.toString());
+
+                  final password = "123";
+
+                  final passwordEncrypt = password.encrypt;
+                  print("password encrypted =>" + passwordEncrypt);
+                  final passwordDecrypt = passwordEncrypt.decrypt;
+                  print("password decrypt => " + passwordDecrypt);
+                },
+                child: Text("Encrypt Decrypt"),
+              )
             ],
           ),
         ),

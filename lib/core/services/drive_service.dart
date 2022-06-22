@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:my_password_app/core/exceptions/file_not_found_exception.dart';
 import 'package:my_password_app/core/exceptions/id_not_found_exception.dart';
+import 'package:my_password_app/core/extensions/string_extension.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -47,7 +48,14 @@ class DriveService {
     }
 
     final driveApi = await _driveApi(googleSignInAccount);
-    final jsonString = json.encode(password.map((e) => e.toJson()).toList());
+    final jsonString = json.encode(password
+        .map(
+          (e) => PasswordModel(
+            name: e.name,
+            password: e.password.encrypt,
+          ),
+        )
+        .toList());
 
     final driveFile = new drive.File();
     driveFile.name = _fileName(googleSignInAccount);
@@ -85,6 +93,9 @@ class DriveService {
       throw "Result Not List";
     }
     listPassword = jsonMap.map((e) => PasswordModel.fromJson(e)).toList();
+    listPassword = listPassword
+        .map((e) => PasswordModel(name: e.name, password: e.password.decrypt))
+        .toList();
     return listPassword;
   }
 
