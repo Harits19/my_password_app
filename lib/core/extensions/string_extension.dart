@@ -1,12 +1,18 @@
 import 'package:characters/characters.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:my_password_app/env.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class StringExtensionHelper {
   StringExtensionHelper._();
 }
 
 extension StringNullExtension on String? {
+
+  bool get isNullEmpty{
+    return this?.isEmpty ?? true;
+  }
+
   String toObscureText() {
     if (this == null) return "";
     String obscureText = '';
@@ -17,8 +23,8 @@ extension StringNullExtension on String? {
   }
 
   String get encrypt {
-    if (this == null) {
-      throw "Empty String";
+    if (this.isNullEmpty) {
+      throw "emptyString".tr();
     }
 
     final encrypted = _encrypter.encrypt(this!, iv: _iv);
@@ -27,8 +33,8 @@ extension StringNullExtension on String? {
   }
 
   String get decrypt {
-    if (this == null) {
-      throw "Empty String";
+    if (this.isNullEmpty) {
+      throw "emptyString".tr();
     }
 
     final decrypted = _encrypter.decrypt64(this!, iv: _iv);

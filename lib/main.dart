@@ -12,11 +12,15 @@ import 'package:my_password_app/cubits/password/password_cubit.dart';
 import 'package:my_password_app/firebase_options.dart';
 
 import 'package:my_password_app/konstan/k_assets.dart';
+import 'package:my_password_app/konstan/k_locale.dart';
 import 'package:my_password_app/ui/pages/home/home_page.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/utils/app_bloc_observer.dart';
 import 'package:my_password_app/utils/k_injection.dart';
+import 'package:my_password_app/utils/k_state.dart';
+
+/// TODO : Implement change language
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,19 +30,15 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await setupDependencyInjection();
   await SharePref.initializePrefInstances();
-  final useDevicePreview =
-      !kReleaseMode && !Platform.isAndroid && !Platform.isIOS;
   BlocOverrides.runZoned(() {
     runApp(
       EasyLocalization(
-        child: DevicePreview(
-          enabled: useDevicePreview,
-          builder: (context) => App(),
-        ),
-        supportedLocales: [
-          Locale('id', 'ID'),
-        ],
+        child: App(),
+        supportedLocales: KLocale.supportedLocale,
+        fallbackLocale: KLocale.id,
         path: KAssets.translations,
+        saveLocale: true,
+        startLocale: KLocale.id,
       ),
     );
   }, blocObserver: AppBlocObserver());
@@ -47,6 +47,7 @@ void main() async {
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -54,7 +55,7 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (_) => AuthCubit(),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (_) => PasswordCubit(),
         ),
       ],
@@ -62,9 +63,6 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark(),
         initialRoute: SplashScreen.routeName,
-        useInheritedMediaQuery: true,
-        // locale: DevicePreview.locale(context),
-        builder: DevicePreview.appBuilder,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,

@@ -1,10 +1,9 @@
 class FileNotFoundException implements Exception {
-  final String _message;
 
-  FileNotFoundException(this._message);
+  FileNotFoundException();
 
   @override
   String toString() {
-    return _message;
+    return "File Not Found";
   }
 }

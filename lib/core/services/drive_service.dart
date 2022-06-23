@@ -126,11 +126,11 @@ class DriveService {
     print("List result: ${result.files?.toString()}");
 
     if (result.files?.isEmpty ?? true) {
-      throw FileNotFoundException("File Not Found");
+      throw FileNotFoundException();
     }
 
     if (result.files!.first.id == null) {
-      throw IdNotFoundException("Id Not Found");
+      throw IdNotFoundException();
     }
 
     return result.files!.first.id!;

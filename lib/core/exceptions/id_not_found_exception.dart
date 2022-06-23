@@ -1,10 +1,9 @@
 class IdNotFoundException implements Exception {
-  final String _message;
 
-  IdNotFoundException(this._message);
+  IdNotFoundException();
 
   @override
   String toString() {
-    return _message;
+    return "Id Not Found";
   }
 }

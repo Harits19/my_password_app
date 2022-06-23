@@ -1,1 +1,0 @@
-enum ViewStateEnum { Idle, Busy }

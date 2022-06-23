@@ -6,6 +6,7 @@ import 'package:my_password_app/core/services/google_service.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/cubits/password/password_cubit.dart';
 import 'package:my_password_app/env.dart';
+import 'package:my_password_app/konstan/k_locale.dart';
 import 'package:my_password_app/konstan/k_size.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/ui/helper/show.dart';
@@ -14,8 +15,7 @@ import 'package:my_password_app/ui/pages/home/view/password_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/utils/k_navigator.dart';
 import 'package:my_password_app/utils/k_state.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -81,6 +81,19 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(KSize.small),
                 child: Column(
                   children: [
+                    Text("language".tr()),
+                    ElevatedButton(
+                      onPressed: () {
+                        EasyLocalization.of(context)?.setLocale(KLocale.id);
+                      },
+                      child: Text("Indonesia"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        EasyLocalization.of(context)?.setLocale(KLocale.en);
+                      },
+                      child: Text("English"),
+                    ),
                     ...List.generate(
                       items.length,
                       (index) {
