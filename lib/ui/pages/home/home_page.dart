@@ -74,41 +74,36 @@ class _HomePageState extends State<HomePage> {
             print(passwordState.toString());
 
             return Scaffold(
-              floatingActionButton: FloatingActionButton(
-                child: Icon(Icons.add),
-                onPressed: () {
-                  Show.modalPassword(
-                    context: context,
-                    onPressedSave: (val) async {
-                      print("called");
-                      Navigator.pop(context);
-                      Show.showLoading(context);
-                      try {
-                        if ((authState is AuthSignIn)) {
-                          print("called auth sign in");
-                          await passwordRead.addPassword(
-                            googleSignInAccount:
-                                authState.userModel.googleSignInAccount,
-                            password: val,
-                          );
-                        }
-                      } catch (e) {
-                        Show.snackbar(context, e.toString());
-                      }
-                      Navigator.pop(context);
-                      print("end called");
-                    },
-                  );
-                },
-              ),
+              floatingActionButton: _floatingButton(authState),
               appBar: AppBar(),
               drawer: DrawerView(),
               body: SingleChildScrollView(
                 padding: EdgeInsets.all(KSize.small),
                 child: Column(
                   children: [
-                    ...items.map((e) =>
-                        PasswordView(password: e.password, name: e.name)),
+                    ...List.generate(
+                      items.length,
+                      (index) {
+                        final e = items[index];
+                        return PasswordView(
+                          password: e.password,
+                          name: e.name,
+                          onTapEdit: () {
+                            _handlerEdit(
+                              authState: authState,
+                              index: index,
+                              e: e,
+                            );
+                          },
+                          onTapDelete: () {
+                            _handlerDelete(
+                              authState: authState,
+                              index: index,
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -118,40 +113,78 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
-}
 
-class CounterStorage {
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-
-    return directory.path;
+  Widget _floatingButton(
+    AuthState authState,
+  ) {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: () {
+        Show.modalPassword(
+          context: context,
+          onPressedSave: (val) async {
+            Navigator.pop(context);
+            Show.showLoading(context);
+            try {
+              if ((authState is AuthSignIn)) {
+                await passwordRead.addPassword(
+                  googleSignInAccount: authState.userModel.googleSignInAccount,
+                  password: val,
+                );
+              }
+            } catch (e) {
+              Show.snackbar(context, e.toString());
+            }
+            Navigator.pop(context);
+          },
+        );
+      },
+    );
   }
 
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('$path/counter.txt');
+  void _handlerEdit({
+    required AuthState authState,
+    required int index,
+    required PasswordModel e,
+  }) async {
+    Show.modalPassword(
+      name: e.name,
+      password: e.password,
+      context: context,
+      onPressedSave: (val) async {
+        Navigator.pop(context);
+        Show.showLoading(context);
+        try {
+          if ((authState is AuthSignIn)) {
+            await passwordRead.editPassword(
+              index: index,
+              googleSignInAccount: authState.userModel.googleSignInAccount,
+              password: val,
+            );
+          }
+        } catch (e) {
+          Show.snackbar(context, e.toString());
+        }
+        Navigator.pop(context);
+      },
+    );
   }
 
-  Future<int> readCounter() async {
+  void _handlerDelete({
+    required AuthState authState,
+    required int index,
+  }) async {
+    Show.showLoading(context);
     try {
-      final file = await _localFile;
-
-      file.readAsBytes();
-
-      // Read the file
-      final contents = await file.readAsString();
-
-      return int.parse(contents);
+      if ((authState is AuthSignIn)) {
+        await passwordRead.deletePassword(
+          index: index,
+          googleSignInAccount: authState.userModel.googleSignInAccount,
+        );
+      }
     } catch (e) {
-      // If encountering an error, return 0
-      return 0;
+      Show.snackbar(context, e.toString());
     }
-  }
-
-  Future<File> writeCounter(int counter) async {
-    final file = await _localFile;
-
-    // Write the file
-    return file.writeAsString('$counter');
+    Navigator.pop(context);
   }
 }

@@ -28,9 +28,38 @@ class PasswordCubit extends Cubit<PasswordState> {
       currentState.listPassword.add(password);
       await DriveService.updateFilePassword(
         googleSignInAccount: googleSignInAccount,
-        password: List.from(
-          currentState.listPassword,
-        ),
+        password: currentState.listPassword,
+      );
+      await receivePassword(googleSignInAccount);
+    }
+  }
+
+  Future<void> editPassword({
+    required GoogleSignInAccount googleSignInAccount,
+    required int index,
+    required PasswordModel password,
+  }) async {
+    final currentState = this.state;
+    if (currentState is PasswordLoaded) {
+      currentState.listPassword[index] = password;
+      await DriveService.updateFilePassword(
+        googleSignInAccount: googleSignInAccount,
+        password: currentState.listPassword,
+      );
+      await receivePassword(googleSignInAccount);
+    }
+  }
+
+  Future<void> deletePassword({
+    required GoogleSignInAccount googleSignInAccount,
+    required int index,
+  }) async {
+    final currentState = this.state;
+    if (currentState is PasswordLoaded) {
+      currentState.listPassword.removeAt(index);
+      await DriveService.updateFilePassword(
+        googleSignInAccount: googleSignInAccount,
+        password: currentState.listPassword,
       );
       await receivePassword(googleSignInAccount);
     }

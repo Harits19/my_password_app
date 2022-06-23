@@ -11,10 +11,14 @@ class PasswordView extends StatefulWidget {
     Key? key,
     this.password,
     this.name,
+    this.onTapEdit,
+    this.onTapDelete,
   }) : super(key: key);
 
   final String? password;
   final String? name;
+  final VoidCallback? onTapEdit;
+  final VoidCallback? onTapDelete;
 
   @override
   State<PasswordView> createState() => _PasswordViewState();
@@ -67,7 +71,12 @@ class _PasswordViewState extends State<PasswordView> {
       Expanded(
         child: ElevatedButton(
           child: Text('yes'.tr()),
-          onPressed: () {},
+          onPressed: () {
+            _isDelete = false;
+            setState(() {});
+            if (widget.onTapDelete == null) return;
+            widget.onTapDelete!();
+          },
         ),
       ),
       KSize.horizontalSmall,
@@ -100,7 +109,7 @@ class _PasswordViewState extends State<PasswordView> {
       Expanded(
         child: ElevatedButton(
           child: Icon(Icons.edit),
-          onPressed: () {},
+          onPressed: widget.onTapEdit,
         ),
       ),
       KSize.horizontalSmall,
