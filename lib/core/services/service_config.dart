@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-class ApiConfig {
+class ServiceConfig {
+  ServiceConfig._();
+
   static createInstance() {
     final options = BaseOptions(
       baseUrl: "https://recruitment.dev.rollingglory.com/api/v2",
@@ -19,5 +21,4 @@ class ApiConfig {
         maxWidth: 90));
     return dioInstance;
   }
-
 }

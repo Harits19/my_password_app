@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class KNavigator {
-  KNavigator._();
+class NavigatorHelper {
+  NavigatorHelper._();
 
   static pushAndReplace(BuildContext context, Widget page) {
     Navigator.pushReplacement(

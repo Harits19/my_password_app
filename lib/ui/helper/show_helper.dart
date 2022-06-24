@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
-import 'package:my_password_app/core/services/generate_password_service.dart';
-import 'package:my_password_app/konstan/k_size.dart';
-import 'package:my_password_app/ui/widgets/custom_widget.dart';
 import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 
-class Show {
-  Show._();
+class ShowHelper {
+  ShowHelper._();
 
   static void snackbar(BuildContext context, String text) {
     ScaffoldMessenger.of(context).showSnackBar(

@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/konstan/k_size.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:my_password_app/ui/helper/show.dart';
+import 'package:my_password_app/ui/helper/show_helper.dart';
 import 'package:my_password_app/ui/pages/home/home_page.dart';
-import 'package:my_password_app/utils/k_navigator.dart';
+import 'package:my_password_app/ui/helper/navigator_helper.dart';
 
 class SignInPage extends StatelessWidget {
   static const routeName = "/sign-in";
@@ -27,7 +27,7 @@ class SignInPage extends StatelessWidget {
                 child: BlocListener<AuthCubit, AuthState>(
                   listener: (context, state) {
                     if (state is AuthSignIn) {
-                      KNavigator.popAll(context, HomePage.routeName);
+                      NavigatorHelper.popAll(context, HomePage.routeName);
                     }
                   },
                   child: ElevatedButton(
@@ -35,9 +35,9 @@ class SignInPage extends StatelessWidget {
                       "signInGoogle".tr(),
                     ),
                     onPressed: () async {
-                      Show.showLoading(context);
+                      ShowHelper.showLoading(context);
                       await authCubit.signInWithGoogle(onError: (error) {
-                        Show.snackbar(context, error);
+                        ShowHelper.snackbar(context, error);
                       });
                       Navigator.pop(context);
                     },

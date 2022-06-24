@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:my_password_app/core/extensions/string_extension.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
-import 'package:my_password_app/core/services/drive_service.dart';
-import 'package:my_password_app/core/services/google_service.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/cubits/password/password_cubit.dart';
-import 'package:my_password_app/env.dart';
 import 'package:my_password_app/konstan/k_locale.dart';
 import 'package:my_password_app/konstan/k_size.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_password_app/ui/helper/show.dart';
+import 'package:my_password_app/ui/helper/show_helper.dart';
 import 'package:my_password_app/ui/pages/home/view/drawer_view.dart';
 import 'package:my_password_app/ui/pages/home/view/password_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
-import 'package:my_password_app/utils/k_navigator.dart';
-import 'package:my_password_app/utils/k_state.dart';
+import 'package:my_password_app/ui/helper/navigator_helper.dart';
+import 'package:my_password_app/ui/helper/state_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,8 +32,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _receivePassword() async {
-    KState.afterBuildDo(() async {
-      Show.showLoading(context);
+    StateHelper.afterBuildDo(() async {
+      ShowHelper.showLoading(context);
       try {
         if (!(authRead.state is AuthSignIn)) {
           throw "User Sign Out";
@@ -45,7 +41,7 @@ class _HomePageState extends State<HomePage> {
         await passwordRead.receivePassword(
             (authRead.state as AuthSignIn).userModel.googleSignInAccount);
       } catch (e) {
-        Show.snackbar(context, e.toString());
+        ShowHelper.snackbar(context, e.toString());
       }
       Navigator.pop(context);
     });
@@ -56,7 +52,7 @@ class _HomePageState extends State<HomePage> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, authState) {
         if (authState is AuthSignOut) {
-          KNavigator.popAll(context, SignInPage.routeName);
+          NavigatorHelper.popAll(context, SignInPage.routeName);
         }
       },
       builder: (context, authState) {
@@ -133,11 +129,11 @@ class _HomePageState extends State<HomePage> {
     return FloatingActionButton(
       child: Icon(Icons.add),
       onPressed: () {
-        Show.modalPassword(
+        ShowHelper.modalPassword(
           context: context,
           onPressedSave: (val) async {
             Navigator.pop(context);
-            Show.showLoading(context);
+            ShowHelper.showLoading(context);
             try {
               if ((authState is AuthSignIn)) {
                 await passwordRead.addPassword(
@@ -146,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                 );
               }
             } catch (e) {
-              Show.snackbar(context, e.toString());
+              ShowHelper.snackbar(context, e.toString());
             }
             Navigator.pop(context);
           },
@@ -160,13 +156,13 @@ class _HomePageState extends State<HomePage> {
     required int index,
     required PasswordModel e,
   }) async {
-    Show.modalPassword(
+    ShowHelper.modalPassword(
       name: e.name,
       password: e.password,
       context: context,
       onPressedSave: (val) async {
         Navigator.pop(context);
-        Show.showLoading(context);
+        ShowHelper.showLoading(context);
         try {
           if ((authState is AuthSignIn)) {
             await passwordRead.editPassword(
@@ -176,7 +172,7 @@ class _HomePageState extends State<HomePage> {
             );
           }
         } catch (e) {
-          Show.snackbar(context, e.toString());
+          ShowHelper.snackbar(context, e.toString());
         }
         Navigator.pop(context);
       },
@@ -187,7 +183,7 @@ class _HomePageState extends State<HomePage> {
     required AuthState authState,
     required int index,
   }) async {
-    Show.showLoading(context);
+    ShowHelper.showLoading(context);
     try {
       if ((authState is AuthSignIn)) {
         await passwordRead.deletePassword(
@@ -196,7 +192,7 @@ class _HomePageState extends State<HomePage> {
         );
       }
     } catch (e) {
-      Show.snackbar(context, e.toString());
+      ShowHelper.snackbar(context, e.toString());
     }
     Navigator.pop(context);
   }

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/konstan/k_size.dart';
-import 'package:my_password_app/main.dart';
-import 'package:my_password_app/ui/widgets/custom_widget.dart';
+import 'package:my_password_app/ui/widgets/checkbox_widget.dart';
+import 'package:my_password_app/ui/widgets/elevated_button_widget.dart';
+import 'package:my_password_app/ui/widgets/text_field_widget.dart';
 
 class ModalPasswordWidget extends StatefulWidget {
   ModalPasswordWidget({

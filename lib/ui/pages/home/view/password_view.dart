@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_password_app/core/extensions/string_extension.dart';
 import 'package:my_password_app/konstan/k_size.dart';
 import 'package:my_password_app/konstan/k_style.dart';
-import 'package:my_password_app/ui/helper/show.dart';
+import 'package:my_password_app/ui/helper/show_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class PasswordView extends StatefulWidget {
@@ -35,7 +35,7 @@ class _PasswordViewState extends State<PasswordView> {
     final subtitle = _isDelete
         ? "areYouSure".tr()
         : _isObscure
-            ? widget.password.toObscureText()
+            ? widget.password.toObscureText
             : widget.password;
     return Card(
       color: _isDelete ? Colors.red : null,
@@ -117,8 +117,8 @@ class _PasswordViewState extends State<PasswordView> {
         child: ElevatedButton(
           child: Icon(Icons.copy),
           onPressed: () {
-            FlutterClipboard.copy(widget.password ?? "")
-                .then((value) => Show.snackbar(context, 'successCopy'.tr()));
+            FlutterClipboard.copy(widget.password ?? "").then(
+                (value) => ShowHelper.snackbar(context, 'successCopy'.tr()));
           },
         ),
       ),

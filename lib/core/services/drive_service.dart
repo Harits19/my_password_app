@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:my_password_app/core/exceptions/file_not_found_exception.dart';
 import 'package:my_password_app/core/exceptions/id_not_found_exception.dart';
-import 'package:my_password_app/core/extensions/string_extension.dart';
+import 'package:my_password_app/core/extensions/password_extension.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -89,14 +89,13 @@ class DriveService {
     if (await dataStore.isEmpty) {
       return [];
     }
-    
 
     Directory tempDir =
         await getTemporaryDirectory(); //Get temp folder using Path Provider
     String tempPath = tempDir.path; //Get path to that location
     File file = File('$tempPath/temporary_file'); //Create a dummy file
-    await file.writeAsBytes(
-        dataStore.first); //Write to that file from the datastore you created from the Media stream
+    await file.writeAsBytes(dataStore
+        .first); //Write to that file from the datastore you created from the Media stream
     String jsonString = file.readAsStringSync(); // Read String from the file
     print("jsonString => $jsonString"); //Finally you have your text
     final jsonMap = json.decode(jsonString);

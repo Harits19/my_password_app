@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
-import 'package:my_password_app/ui/helper/show.dart';
+import 'package:my_password_app/ui/helper/show_helper.dart';
 import 'package:my_password_app/ui/pages/home/home_page.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
-import 'package:my_password_app/utils/k_navigator.dart';
+import 'package:my_password_app/ui/helper/navigator_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_password_app/utils/k_state.dart';
+import 'package:my_password_app/ui/helper/state_helper.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = "/";
@@ -23,11 +23,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _checkLogin() {
-    KState.afterBuildDo(() async {
+    StateHelper.afterBuildDo(() async {
       final authRead = context.read<AuthCubit>();
       await authRead.checkSignInStatus(onError: (error) {
         print(error);
-        Show.snackbar(context, error);
+        ShowHelper.snackbar(context, error);
       });
     });
   }
@@ -37,10 +37,10 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSignIn) {
-          KNavigator.popAll(context, HomePage.routeName);
+          NavigatorHelper.popAll(context, HomePage.routeName);
         }
         if (state is AuthSignOut) {
-          KNavigator.popAll(context, SignInPage.routeName);
+          NavigatorHelper.popAll(context, SignInPage.routeName);
         }
       },
       child: Scaffold(
