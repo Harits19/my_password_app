@@ -12,8 +12,8 @@ class ElevatedButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: KSize.buttonHeight,
-      margin: EdgeInsets.symmetric(horizontal: KSize.edgeSmall),
+      height: KSize.s48,
+      margin: EdgeInsets.symmetric(horizontal: KSize.s4),
       child: ElevatedButton(
         onPressed: onPressedParam,
         child: Text(

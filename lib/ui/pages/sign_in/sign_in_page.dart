@@ -19,7 +19,7 @@ class SignInPage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(KSize.edgeLarge),
+          padding: const EdgeInsets.all(KSize.s16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

@@ -1,10 +1,10 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/cubits/password/password_cubit.dart';
+import 'package:my_password_app/cubits/theme/theme_cubit.dart';
 import 'package:my_password_app/firebase_options.dart';
 
 import 'package:my_password_app/konstan/k_assets.dart';
@@ -18,7 +18,7 @@ import 'package:my_password_app/utils/app_bloc_observer.dart';
 /// TODO : Implement dark and light mode
 /// TODO : Implement launcher icon
 /// TODO : Release apk
-/// 
+///
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,7 +43,6 @@ void main() async {
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -54,18 +53,30 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (_) => PasswordCubit(),
         ),
+        BlocProvider(
+          create: (_) => ThemeCubit(),
+        )
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark(),
-        initialRoute: SplashScreen.routeName,
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        routes: {
-          SplashScreen.routeName: (context) => const SplashScreen(),
-          SignInPage.routeName: (context) => const SignInPage(),
-          HomePage.routeName: (context) => const HomePage(),
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: () {
+              if (state is ThemeDarkMode)
+                return ThemeData.dark();
+              else
+                return ThemeData.light();
+            }(),
+            initialRoute: SplashScreen.routeName,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            routes: {
+              SplashScreen.routeName: (context) => const SplashScreen(),
+              SignInPage.routeName: (context) => const SignInPage(),
+              HomePage.routeName: (context) => const HomePage(),
+            },
+          );
         },
       ),
     );

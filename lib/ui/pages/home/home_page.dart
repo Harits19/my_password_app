@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/cubits/password/password_cubit.dart';
+import 'package:my_password_app/cubits/theme/theme_cubit.dart';
 import 'package:my_password_app/konstan/k_locale.dart';
 import 'package:my_password_app/konstan/k_size.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -71,10 +72,28 @@ class _HomePageState extends State<HomePage> {
 
             return Scaffold(
               floatingActionButton: _floatingButton(authState),
-              appBar: AppBar(),
+              appBar: AppBar(
+                actions: [
+                  BlocBuilder<ThemeCubit, ThemeState>(
+                    builder: (context, state) {
+                      return IconButton(
+                        onPressed: () {
+                          context.read<ThemeCubit>().toggleTheme();
+                        },
+                        icon: () {
+                          if (state is ThemeDarkMode) {
+                            return Icon(Icons.sunny);
+                          }
+                          return Icon(Icons.nightlight);
+                        }(),
+                      );
+                    },
+                  ),
+                ],
+              ),
               drawer: DrawerView(),
               body: SingleChildScrollView(
-                padding: EdgeInsets.all(KSize.small),
+                padding: EdgeInsets.all(KSize.s8),
                 child: Column(
                   children: [
                     Text("language".tr()),

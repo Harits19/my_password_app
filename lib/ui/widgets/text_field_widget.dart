@@ -17,7 +17,7 @@ class TextFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: KSize.edgeLarge),
+        padding: const EdgeInsets.symmetric(horizontal: KSize.s16),
         child: TextField(
           controller: controller,
           decoration: InputDecoration(
@@ -33,4 +33,3 @@ class TextFieldWidget extends StatelessWidget {
     );
   }
 }
-

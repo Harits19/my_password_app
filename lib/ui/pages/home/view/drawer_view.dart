@@ -12,7 +12,7 @@ class DrawerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Padding(
-        padding: EdgeInsets.all(KSize.medium),
+        padding: EdgeInsets.all(KSize.s16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

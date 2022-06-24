@@ -50,7 +50,7 @@ class _PasswordViewState extends State<PasswordView> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: KSize.edgeMedium),
+              padding: const EdgeInsets.symmetric(horizontal: KSize.s8),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: _isDelete ? _deleteButton() : _toolWidget(),
@@ -79,7 +79,7 @@ class _PasswordViewState extends State<PasswordView> {
           },
         ),
       ),
-      KSize.horizontalSmall,
+      KSize.hori8,
       Expanded(
         child: ElevatedButton(
           child: Text('no'.tr()),
@@ -105,14 +105,14 @@ class _PasswordViewState extends State<PasswordView> {
           },
         ),
       ),
-      KSize.horizontalSmall,
+      KSize.hori8,
       Expanded(
         child: ElevatedButton(
           child: Icon(Icons.edit),
           onPressed: widget.onTapEdit,
         ),
       ),
-      KSize.horizontalSmall,
+      KSize.hori8,
       Expanded(
         child: ElevatedButton(
           child: Icon(Icons.copy),

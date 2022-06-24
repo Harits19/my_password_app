@@ -49,8 +49,8 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
     return SingleChildScrollView(
       padding: MediaQuery.of(context).viewInsets,
       child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: KSize.edgeMedium, vertical: KSize.edgeLarge * 2),
+        padding:
+            EdgeInsets.symmetric(horizontal: KSize.s8, vertical: KSize.s16 * 2),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -69,7 +69,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                 setState(() {});
               },
             ),
-            KSize.verticalSmall,
+            KSize.verti8,
             Row(
               // crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -119,7 +119,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                         setState(() {});
                         print(temp);
                       }),
-            KSize.verticalSmall,
+            KSize.verti8,
             ElevatedButtonWidget(
               text: 'Simpan',
               onPressedParam: _disableSavePassword
@@ -133,8 +133,8 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                       );
                     },
             ),
-            KSize.horizontalLarge,
-            KSize.horizontalLarge,
+            KSize.hori24,
+            KSize.hori24,
           ],
         ),
       ),
