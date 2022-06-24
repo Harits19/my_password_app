@@ -15,7 +15,6 @@ import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/utils/app_bloc_observer.dart';
 
 /// TODO : Implement change language
-/// TODO : Implement dark and light mode
 /// TODO : Implement launcher icon
 /// TODO : Release apk
 ///

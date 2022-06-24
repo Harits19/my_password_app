@@ -96,19 +96,6 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(KSize.s8),
                 child: Column(
                   children: [
-                    Text("language".tr()),
-                    ElevatedButton(
-                      onPressed: () {
-                        EasyLocalization.of(context)?.setLocale(KLocale.id);
-                      },
-                      child: Text("Indonesia"),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        EasyLocalization.of(context)?.setLocale(KLocale.en);
-                      },
-                      child: Text("English"),
-                    ),
                     ...List.generate(
                       items.length,
                       (index) {
