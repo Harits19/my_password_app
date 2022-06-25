@@ -19,6 +19,7 @@ import 'package:my_password_app/utils/app_bloc_observer.dart';
 /// TODO : Implement nigtmode
 /// TODO : Implement encyrpt decrypt
 /// TODO : Release apk
+/// TODO : Implement easy localization
 ///
 
 void main() async {
