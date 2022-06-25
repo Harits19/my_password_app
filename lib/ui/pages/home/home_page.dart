@@ -3,7 +3,6 @@ import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/cubits/password/password_cubit.dart';
 import 'package:my_password_app/cubits/theme/theme_cubit.dart';
-import 'package:my_password_app/konstan/k_locale.dart';
 import 'package:my_password_app/konstan/k_size.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/ui/helper/show_helper.dart';
@@ -12,7 +11,6 @@ import 'package:my_password_app/ui/pages/home/view/password_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/helper/navigator_helper.dart';
 import 'package:my_password_app/ui/helper/state_helper.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";

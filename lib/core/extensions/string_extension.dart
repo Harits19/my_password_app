@@ -1,4 +1,6 @@
 import 'package:characters/characters.dart';
+
+class StringExtensionHelper{}
 extension StringNullExtension on String? {
 
   bool get isNullEmpty{

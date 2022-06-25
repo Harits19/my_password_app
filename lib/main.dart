@@ -15,12 +15,10 @@ import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/utils/app_bloc_observer.dart';
 
-/// TODO : Implement launcher icon
-/// TODO : Implement nigtmode
 /// TODO : Implement encyrpt decrypt
 /// TODO : Release apk
 /// TODO : Implement easy localization
-///
+/// TODO : Update night mode
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
