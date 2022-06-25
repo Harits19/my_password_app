@@ -9,8 +9,7 @@ class MyTheme {
   /// Standard `ThemeData` for My UI.
   static ThemeData get standard {
     return ThemeData(
-      colorScheme:
-          ColorScheme.fromSwatch(accentColor: MyColors.primary),
+      colorScheme: ColorScheme.fromSwatch(accentColor: MyColors.primary),
       appBarTheme: _appBarTheme,
       elevatedButtonTheme: _elevatedButtonTheme,
       outlinedButtonTheme: _outlinedButtonTheme,
@@ -22,6 +21,14 @@ class MyTheme {
       tabBarTheme: _tabBarTheme,
       dividerTheme: _dividerTheme,
     );
+  }
+
+  static ThemeData get light {
+    return standard.copyWith(brightness: Brightness.light);
+  }
+
+  static ThemeData get dark {
+    return ThemeData.dark();
   }
 
   /// `ThemeData` for My UI for small screens.

@@ -15,8 +15,9 @@ import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/utils/app_bloc_observer.dart';
 
-/// TODO : Implement change language
 /// TODO : Implement launcher icon
+/// TODO : Implement nigtmode
+/// TODO : Implement encyrpt decrypt
 /// TODO : Release apk
 ///
 
@@ -61,25 +62,11 @@ class App extends StatelessWidget {
         builder: (context, state) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: MyTheme.standard,
-            initialRoute: SplashScreen.routeName,
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            routes: {
-              SplashScreen.routeName: (context) => const SplashScreen(),
-              SignInPage.routeName: (context) => const SignInPage(),
-              HomePage.routeName: (context) => const HomePage(),
-            },
-          );
-
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
             theme: () {
               if (state is ThemeDarkMode)
-                return ThemeData.dark();
+                return MyTheme.dark;
               else
-                return ThemeData.light();
+                return MyTheme.light;
             }(),
             initialRoute: SplashScreen.routeName,
             localizationsDelegates: context.localizationDelegates,
