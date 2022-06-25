@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_password_app/core/app_ui/app_ui.dart';
+import 'package:my_password_app/ui/app_ui/app_ui.dart';
 
 const _smallTextScaleFactor = 0.80;
 const _largeTextScaleFactor = 1.20;

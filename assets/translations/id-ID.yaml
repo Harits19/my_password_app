@@ -1,0 +1,24 @@
+## dont forget to add number each new text
+
+# 1
+onboarding: (indonesia) Untuk memulai menggunakan aplikasi ini silahkan masukkan pin untuk pertama kali
+signInGoogle: Sign In Google
+signOutGoogle: Sign Out
+areYouSure: Apakah Kamu Yakin?
+deleteData: Hapus Data
+yes: Ya
+no: Tidak
+successCopy: Berhasil Disalin
+emptyString: Empty String
+language: Bahasa
+
+# 2
+applicationName: Nama Aplikasi
+password: Password
+generateRandomPassword: Generate Random Password
+save: Simpan
+letter: Letter
+symbol: Symbol
+number: Number
+loading: Loading
+userSignOut: User Sign Out

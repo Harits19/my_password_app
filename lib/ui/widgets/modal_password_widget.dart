@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
-import 'package:my_password_app/konstan/k_size.dart';
+import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ModalPasswordWidget extends StatefulWidget {
   ModalPasswordWidget({
@@ -20,9 +21,9 @@ class ModalPasswordWidget extends StatefulWidget {
 
 class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
   var _passwordConfig = {
-    "Letter": true,
-    "Symbol": true,
-    "Number": true,
+    ("letter"): true,
+    ("symbol"): true,
+    ("number"): true,
   };
   late final _nameController = TextEditingController(text: widget.name);
   late final _passwordController = TextEditingController(text: widget.password);
@@ -56,7 +57,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
-                hintText: 'Nama Aplikasi',
+                hintText: 'applicationName'.tr(),
               ),
               onChanged: (val) {
                 setState(() {});
@@ -65,7 +66,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
-                hintText: 'Password',
+                hintText: tr("password"),
               ),
               onChanged: (val) {
                 setState(() {});
@@ -89,7 +90,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                           },
                         ),
                         Text(
-                          e.key,
+                          tr(e.key),
                         )
                       ],
                     ),
@@ -98,14 +99,14 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
               ],
             ),
             ElevatedButton(
-                child: Text('Generate Random Password'),
+                child: Text(tr("generateRandomPassword")),
                 onPressed: _disableGeneratePassword
                     ? null
                     : () {
                         final temp = GeneratePassword.getRandomString(
-                          letter: _passwordConfig["Letter"]!,
-                          number: _passwordConfig["Number"]!,
-                          symbol: _passwordConfig["Symbol"]!,
+                          letter: _passwordConfig["letter"]!,
+                          number: _passwordConfig["number"]!,
+                          symbol: _passwordConfig["symbol"]!,
                         );
                         _passwordController.text = temp;
 
@@ -114,7 +115,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                       }),
             KSize.verti8,
             ElevatedButton(
-              child: Text("Simpan"),
+              child: Text(tr("save")),
               onPressed: _disableSavePassword
                   ? null
                   : () {

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:my_password_app/core/app_ui/app_ui.dart';
+import 'package:my_password_app/ui/app_ui/app_ui.dart';
 
 /// My Text Style Definitions
 class MyTextStyle {

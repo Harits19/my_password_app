@@ -2,22 +2,21 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_password_app/core/app_ui/app_ui.dart';
+import 'package:my_password_app/ui/app_ui/app_ui.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/cubits/password/password_cubit.dart';
 import 'package:my_password_app/cubits/theme/theme_cubit.dart';
 import 'package:my_password_app/firebase_options.dart';
 
-import 'package:my_password_app/konstan/k_assets.dart';
-import 'package:my_password_app/konstan/k_locale.dart';
+import 'package:my_password_app/ui/app_ui/konstans/k_assets.dart';
+import 'package:my_password_app/ui/app_ui/konstans/k_locale.dart';
 import 'package:my_password_app/ui/pages/home/home_page.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/utils/app_bloc_observer.dart';
 
-/// TODO : Implement encyrpt decrypt
-/// TODO : Release apk
 /// TODO : Implement easy localization
+/// TODO : Release apk
 /// TODO : Update night mode
 
 void main() async {

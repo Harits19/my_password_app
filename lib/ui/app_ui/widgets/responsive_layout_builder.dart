@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:my_password_app/core/app_ui/app_ui.dart';
+import 'package:my_password_app/ui/app_ui/app_ui.dart';
 
 /// Signature for the individual builders (`small`, `large`, etc.).
 typedef ResponsiveLayoutWidgetBuilder = Widget Function(BuildContext, Widget?);

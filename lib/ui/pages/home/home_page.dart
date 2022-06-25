@@ -1,16 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/cubits/password/password_cubit.dart';
 import 'package:my_password_app/cubits/theme/theme_cubit.dart';
-import 'package:my_password_app/konstan/k_size.dart';
+import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_password_app/ui/helper/show_helper.dart';
+import 'package:my_password_app/ui/app_ui/show_helper.dart';
 import 'package:my_password_app/ui/pages/home/view/drawer_view.dart';
 import 'package:my_password_app/ui/pages/home/view/password_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
-import 'package:my_password_app/ui/helper/navigator_helper.dart';
-import 'package:my_password_app/ui/helper/state_helper.dart';
+import 'package:my_password_app/ui/app_ui/navigator_helper.dart';
+import 'package:my_password_app/ui/app_ui/state_helper.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -35,7 +36,7 @@ class _HomePageState extends State<HomePage> {
       ShowHelper.showLoading(context);
       try {
         if (!(authRead.state is AuthSignIn)) {
-          throw "User Sign Out";
+          throw tr("userSignOut");
         }
         await passwordRead.receivePassword(
             (authRead.state as AuthSignIn).userModel.googleSignInAccount);

@@ -1,9 +1,8 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:my_password_app/core/extensions/string_extension.dart';
-import 'package:my_password_app/konstan/k_size.dart';
-import 'package:my_password_app/konstan/k_style.dart';
-import 'package:my_password_app/ui/helper/show_helper.dart';
+import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
+import 'package:my_password_app/ui/app_ui/show_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class PasswordView extends StatefulWidget {
@@ -43,10 +42,11 @@ class _PasswordViewState extends State<PasswordView> {
         child: Column(
           children: [
             ListTile(
-              title: Text(title ?? "", style: KStyle.h1),
+              title: Text(
+                title ?? "",
+              ),
               subtitle: Text(
                 subtitle ?? "",
-                style: KStyle.h2,
               ),
             ),
             Padding(
