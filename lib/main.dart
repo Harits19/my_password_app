@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +21,7 @@ import 'package:my_password_app/utils/app_bloc_observer.dart';
 /// TODO : Update night mode
 
 void main() async {
+  print("hot restart app ");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -27,14 +29,17 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   BlocOverrides.runZoned(() {
     runApp(
-      EasyLocalization(
-        child: App(),
-        supportedLocales: KLocale.supportedLocale,
-        fallbackLocale: KLocale.id,
-        path: KAssets.translations,
-        saveLocale: true,
-        startLocale: KLocale.id,
-      ),
+      false
+          ? App()
+          : EasyLocalization(
+              child: App(),
+              supportedLocales: KLocale.supportedLocale,
+              fallbackLocale: KLocale.id,
+              path: KAssets.translations,
+              saveLocale: true,
+              startLocale: KLocale.id,
+              assetLoader: JsonAssetLoader(),
+            ),
     );
   }, blocObserver: AppBlocObserver());
 }

@@ -31,6 +31,7 @@ dependencies:
   pretty_dio_logger: ^1.1.1
   responsive_framework: ^0.2.0
   shared_preferences: ^2.0.5
+  easy_localization_loader: ^1.0.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.9.3
@@ -48,8 +49,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-    - assets/translations/id-ID.yaml
-    - assets/translations/en-US.yaml
+    - assets/translation/id-ID.yaml
+    - assets/translation/en-US.yaml
+    - assets/translation/
 
   fonts:
     - family: OpenSans

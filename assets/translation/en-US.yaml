@@ -20,3 +20,5 @@ save: Simpan
 letter: Letter
 symbol: Symbol
 number: Number
+loading: Loading
+userSignOut: User Sign Out
