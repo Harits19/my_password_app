@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_password_app/core/app_ui/app_ui.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/cubits/password/password_cubit.dart';
 import 'package:my_password_app/cubits/theme/theme_cubit.dart';
@@ -58,6 +59,20 @@ class App extends StatelessWidget {
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: MyTheme.standard,
+            initialRoute: SplashScreen.routeName,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            routes: {
+              SplashScreen.routeName: (context) => const SplashScreen(),
+              SignInPage.routeName: (context) => const SignInPage(),
+              HomePage.routeName: (context) => const HomePage(),
+            },
+          );
+
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: () {
