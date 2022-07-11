@@ -15,12 +15,15 @@ import 'package:my_password_app/ui/pages/home/home_page.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/utils/app_bloc_observer.dart';
+import 'package:secure_application/secure_application.dart';
 
-/// TODO : Make pin
 /// TODO : Release apk
 /// TODO : Update night mode
 /// TODO : make a screen for explaination why the app need google drive
 /// TODO : make a screen for explaination why the app need pin
+/// TODO : blur recent app
+/// TODO : timer idle user force to show the dialog authentication
+/// TODO : add forget password
 
 void main() async {
   print("hot restart app ");
@@ -79,6 +82,16 @@ class App extends StatelessWidget {
               SplashScreen.routeName: (context) => const SplashScreen(),
               SignInPage.routeName: (context) => const SignInPage(),
               HomePage.routeName: (context) => const HomePage(),
+            },
+            builder: (context, child) {
+              return SecureApplication(
+                nativeRemoveDelay: 800,
+                onNeedUnlock: (secure) {
+                  print("onNeedUnlock");
+                  return null;
+                },
+                child: child ?? SizedBox(),
+              );
             },
           );
         },

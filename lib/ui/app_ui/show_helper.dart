@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_password_app/core/konstans/key.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 
@@ -40,19 +41,19 @@ class ShowHelper {
       {required BuildContext context,
       String? name,
       String? password,
-      bool isAppPassword = false,
       required ValueChanged<PasswordModel>? onPressedSave}) {
+    final isDismissible = name == AppKey.appPassword ? false : true;
     return showModalBottomSheet<void>(
-      isScrollControlled: true,
       context: context,
-      isDismissible: isAppPassword ? false : true,
+      isDismissible: isDismissible,
       enableDrag: false,
+      
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return ModalPasswordWidget(
           name: name,
           password: password,
           onPressSave: onPressedSave,
-          isAppPassword: isAppPassword,
         );
       },
     );

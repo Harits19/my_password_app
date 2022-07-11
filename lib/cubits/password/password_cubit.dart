@@ -8,15 +8,27 @@ import 'package:my_password_app/core/services/drive_service.dart';
 part 'password_state.dart';
 
 class PasswordCubit extends Cubit<PasswordState> {
-  PasswordCubit() : super(PasswordLoaded(listPassword: []));
+  PasswordCubit()
+      : super(PasswordLoaded(
+          listPassword: [],
+          isAuthenticated: false,
+        ));
 
   Future<void> receivePassword(
     GoogleSignInAccount googleSignInAccount,
   ) async {
+    bool isAuthenticated = false;
+    final state = this.state;
+    if (state is PasswordLoaded) {
+      isAuthenticated = state.isAuthenticated;
+    }
     final listPassword = await DriveService.receiveFilePassword(
       googleSignInAccount: googleSignInAccount,
     );
-    if (!listPassword.any((element) => element.name == AppKey.appPassword)) {
+    final appPassword = listPassword
+        .where((element) => element.name == AppKey.appPassword)
+        .toList();
+    if (appPassword.isEmpty) {
       emit(PasswordCreatePasswordApp());
     }
 
@@ -24,6 +36,8 @@ class PasswordCubit extends Cubit<PasswordState> {
     emit(
       PasswordLoaded(
         listPassword: listPassword,
+        appPassword: appPassword.first,
+        isAuthenticated: isAuthenticated,
       ),
     );
   }
@@ -74,6 +88,26 @@ class PasswordCubit extends Cubit<PasswordState> {
         password: currentState.listPassword,
       );
       await receivePassword(googleSignInAccount);
+    }
+  }
+
+  void checkAuthenticated(String password) {
+    final state = this.state;
+    if (state is PasswordLoaded) {
+      if (password == state.appPassword?.password) {
+        emit(PasswordIdle(listPassword: state.listPassword));
+        emit(
+          PasswordLoaded(
+            listPassword: state.listPassword,
+            isAuthenticated: true,
+            appPassword: state.appPassword,
+          ),
+        );
+      } else {
+        print("called check auth");
+
+        throw "Wrong Password";
+      }
     }
   }
 }

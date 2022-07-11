@@ -5,19 +5,18 @@ import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:my_password_app/ui/app_ui/show_helper.dart';
 
 class ModalPasswordWidget extends StatefulWidget {
   ModalPasswordWidget({
     Key? key,
     required this.name,
     required this.password,
-    this.isAppPassword = false,
     this.onPressSave,
-  }) : super(key: key);
+  }) : super(key: key) {}
 
   final String? name, password;
   final ValueChanged<PasswordModel>? onPressSave;
-  final bool isAppPassword;
 
   @override
   State<ModalPasswordWidget> createState() => _ModalPasswordWidgetState();
@@ -29,8 +28,9 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
     ("symbol"): true,
     ("number"): true,
   };
+  late final _isAppPassword = widget.name == AppKey.appPassword ? true : false;
   late final _nameController = TextEditingController(
-    text: widget.isAppPassword ? AppKey.appPassword : widget.name,
+    text: _isAppPassword ? AppKey.appPassword : widget.name,
   );
   late final _passwordController = TextEditingController(text: widget.password);
 
@@ -53,7 +53,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return widget.isAppPassword ? false : true;
+        return _isAppPassword ? false : true;
       },
       child: SingleChildScrollView(
         padding: MediaQuery.of(context).viewInsets,
@@ -64,7 +64,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              if (widget.isAppPassword) ...[
+              if (_isAppPassword) ...[
                 Text(
                   tr("create_password_app_to_secure_your_account"),
                 ),
@@ -72,8 +72,8 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
               KSize.verti16,
               TextField(
                 controller: _nameController,
-                readOnly: widget.isAppPassword,
-                enabled: !widget.isAppPassword,
+                readOnly: _isAppPassword,
+                enabled: !_isAppPassword,
                 decoration: InputDecoration(
                   hintText: 'applicationName'.tr(),
                 ),
@@ -91,7 +91,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                 },
               ),
               KSize.verti8,
-              if (!widget.isAppPassword)
+              if (!_isAppPassword)
                 Row(
                   // crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -117,7 +117,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                     ),
                   ],
                 ),
-              if (!widget.isAppPassword)
+              if (!_isAppPassword)
                 ElevatedButton(
                     child: Text(tr("generateRandomPassword")),
                     onPressed: _disableGeneratePassword
@@ -131,7 +131,6 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                             _passwordController.text = temp;
 
                             setState(() {});
-                            print(temp);
                           }),
               KSize.verti8,
               ElevatedButton(
@@ -140,7 +139,13 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                     ? null
                     : () {
                         if (widget.onPressSave == null) return;
-                        print("called on save modal");
+                        if (_nameController.text.trim() == AppKey.appPassword &&
+                            !_isAppPassword) {
+                          Navigator.pop(context);
+                          ShowHelper.snackbar(context,
+                              'Dont fill name with "${AppKey.appPassword}"');
+                          return;
+                        }
 
                         widget.onPressSave!(
                           PasswordModel(
