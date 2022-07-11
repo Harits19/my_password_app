@@ -36,9 +36,11 @@ class SignInPage extends StatelessWidget {
                     ),
                     onPressed: () async {
                       ShowHelper.showLoading(context);
-                      await authCubit.signInWithGoogle(onError: (error) {
-                        ShowHelper.snackbar(context, error);
-                      });
+                      try {
+                        await authCubit.signInWithGoogle();
+                      } catch (e) {
+                        ShowHelper.snackbar(context, e);
+                      }
                       Navigator.pop(context);
                     },
                   ),

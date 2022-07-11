@@ -22,3 +22,10 @@ symbol: Symbol
 number: Number
 loading: Loading
 userSignOut: User Sign Out
+
+# 3
+signIn: Sign In
+password_is_required: Password is required
+confirm_password_is_required: Confirm Password is required
+password_not_match: Confirm Password not match
+create_password_app_to_secure_your_account : Create password app to secure your account

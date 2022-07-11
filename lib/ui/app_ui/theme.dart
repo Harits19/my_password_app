@@ -24,7 +24,9 @@ class MyTheme {
   }
 
   static ThemeData get light {
-    return standard.copyWith(brightness: Brightness.light);
+    return ThemeData.light();
+    return standard.copyWith(
+        brightness: Brightness.light); // TODO implement my custom theme
   }
 
   static ThemeData get dark {

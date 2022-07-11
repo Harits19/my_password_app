@@ -5,12 +5,16 @@ import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 class ShowHelper {
   ShowHelper._();
 
-  static void snackbar(BuildContext context, String text) {
+  static void snackbar(BuildContext context, dynamic text) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(text),
+        content: Text(text.toString()),
       ),
     );
+  }
+
+  static void pop(BuildContext context) {
+    Navigator.pop(context);
   }
 
   static void showLoading(BuildContext context) {
@@ -36,15 +40,19 @@ class ShowHelper {
       {required BuildContext context,
       String? name,
       String? password,
+      bool isAppPassword = false,
       required ValueChanged<PasswordModel>? onPressedSave}) {
     return showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,
+      isDismissible: isAppPassword ? false : true,
+      enableDrag: false,
       builder: (BuildContext context) {
         return ModalPasswordWidget(
           name: name,
           password: password,
           onPressSave: onPressedSave,
+          isAppPassword: isAppPassword,
         );
       },
     );

@@ -7,31 +7,19 @@ import 'package:my_password_app/core/services/google_service.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthInitial());
+  AuthCubit() : super(AuthSignOut());
 
-  Future<void> signInWithGoogle({
-    required ValueChanged<String> onError,
-  }) async {
-    try {
-      final userModel = await GoogleService.signInWithGoogle();
-      emit(AuthSignIn(userModel));
-    } catch (e) {
-      onError(e.toString());
-    }
+  Future<void> signInWithGoogle() async {
+    final userModel = await GoogleService.signInWithGoogle();
+    emit(AuthSignIn(userModel));
   }
 
-  Future<void> checkSignInStatus({
-    required ValueChanged<String> onError,
-  }) async {
-    try {
-      final userModel = await GoogleService.checkCurrentUser();
-      if (userModel != null) {
-        emit(AuthSignIn(userModel));
-      } else {
-        emit(AuthSignOut());
-      }
-    } catch (e) {
-      onError(e.toString());
+  Future<void> checkSignInStatus() async {
+    final userModel = await GoogleService.checkCurrentUser();
+    if (userModel != null) {
+      emit(AuthSignIn(userModel));
+    } else {
+      emit(AuthSignOut());
     }
   }
 

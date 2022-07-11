@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_password_app/core/extensions/string_extension.dart';
+import 'package:my_password_app/core/konstans/key.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
@@ -9,11 +11,13 @@ class ModalPasswordWidget extends StatefulWidget {
     Key? key,
     required this.name,
     required this.password,
+    this.isAppPassword = false,
     this.onPressSave,
   }) : super(key: key);
 
   final String? name, password;
   final ValueChanged<PasswordModel>? onPressSave;
+  final bool isAppPassword;
 
   @override
   State<ModalPasswordWidget> createState() => _ModalPasswordWidgetState();
@@ -25,7 +29,9 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
     ("symbol"): true,
     ("number"): true,
   };
-  late final _nameController = TextEditingController(text: widget.name);
+  late final _nameController = TextEditingController(
+    text: widget.isAppPassword ? AppKey.appPassword : widget.name,
+  );
   late final _passwordController = TextEditingController(text: widget.password);
 
   @override
@@ -41,95 +47,112 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
   bool get _disableSavePassword => [
         _nameController,
         _passwordController,
-      ].any((element) => element.text.isEmpty);
+      ].any((element) => element.text.isNullEmpty);
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: MediaQuery.of(context).viewInsets,
-      child: Padding(
-        padding:
-            EdgeInsets.symmetric(horizontal: KSize.s8, vertical: KSize.s16 * 2),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                hintText: 'applicationName'.tr(),
-              ),
-              onChanged: (val) {
-                setState(() {});
-              },
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                hintText: tr("password"),
-              ),
-              onChanged: (val) {
-                setState(() {});
-              },
-            ),
-            KSize.verti8,
-            Row(
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ..._passwordConfig.entries.map(
-                  (e) => Expanded(
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          value: e.value,
-                          onChanged: (newValue) {
-                            if (newValue == null) return;
-                            _passwordConfig[e.key] = newValue;
-                            setState(() {});
-                          },
-                        ),
-                        Text(
-                          tr(e.key),
-                        )
-                      ],
-                    ),
-                  ),
+    return WillPopScope(
+      onWillPop: () async {
+        return widget.isAppPassword ? false : true;
+      },
+      child: SingleChildScrollView(
+        padding: MediaQuery.of(context).viewInsets,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: KSize.s8, vertical: KSize.s16 * 2),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              if (widget.isAppPassword) ...[
+                Text(
+                  tr("create_password_app_to_secure_your_account"),
                 ),
               ],
-            ),
-            ElevatedButton(
-                child: Text(tr("generateRandomPassword")),
-                onPressed: _disableGeneratePassword
+              KSize.verti16,
+              TextField(
+                controller: _nameController,
+                readOnly: widget.isAppPassword,
+                enabled: !widget.isAppPassword,
+                decoration: InputDecoration(
+                  hintText: 'applicationName'.tr(),
+                ),
+                onChanged: (val) {
+                  setState(() {});
+                },
+              ),
+              TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  hintText: tr("password"),
+                ),
+                onChanged: (val) {
+                  setState(() {});
+                },
+              ),
+              KSize.verti8,
+              if (!widget.isAppPassword)
+                Row(
+                  // crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ..._passwordConfig.entries.map(
+                      (e) => Expanded(
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              value: e.value,
+                              onChanged: (newValue) {
+                                if (newValue == null) return;
+                                _passwordConfig[e.key] = newValue;
+                                setState(() {});
+                              },
+                            ),
+                            Text(
+                              tr(e.key),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              if (!widget.isAppPassword)
+                ElevatedButton(
+                    child: Text(tr("generateRandomPassword")),
+                    onPressed: _disableGeneratePassword
+                        ? null
+                        : () {
+                            final temp = GeneratePassword.getRandomString(
+                              letter: _passwordConfig["letter"]!,
+                              number: _passwordConfig["number"]!,
+                              symbol: _passwordConfig["symbol"]!,
+                            );
+                            _passwordController.text = temp;
+
+                            setState(() {});
+                            print(temp);
+                          }),
+              KSize.verti8,
+              ElevatedButton(
+                child: Text(tr("save")),
+                onPressed: _disableSavePassword
                     ? null
                     : () {
-                        final temp = GeneratePassword.getRandomString(
-                          letter: _passwordConfig["letter"]!,
-                          number: _passwordConfig["number"]!,
-                          symbol: _passwordConfig["symbol"]!,
-                        );
-                        _passwordController.text = temp;
+                        if (widget.onPressSave == null) return;
+                        print("called on save modal");
 
-                        setState(() {});
-                        print(temp);
-                      }),
-            KSize.verti8,
-            ElevatedButton(
-              child: Text(tr("save")),
-              onPressed: _disableSavePassword
-                  ? null
-                  : () {
-                      if (widget.onPressSave == null) return;
-                      widget.onPressSave!(
-                        PasswordModel(
-                            name: _nameController.text,
-                            password: _passwordController.text),
-                      );
-                    },
-            ),
-            KSize.hori24,
-            KSize.hori24,
-          ],
+                        widget.onPressSave!(
+                          PasswordModel(
+                              name: _nameController.text,
+                              password: _passwordController.text),
+                        );
+                      },
+              ),
+              KSize.hori24,
+              KSize.hori24,
+            ],
+          ),
         ),
       ),
     );

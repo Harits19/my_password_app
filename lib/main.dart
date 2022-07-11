@@ -16,10 +16,11 @@ import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/utils/app_bloc_observer.dart';
 
+/// TODO : Make pin
 /// TODO : Release apk
 /// TODO : Update night mode
 /// TODO : make a screen for explaination why the app need google drive
-/// TODO : error google sign in signInFailed u0.b, null, null, null Platform Exception
+/// TODO : make a screen for explaination why the app need pin
 
 void main() async {
   print("hot restart app ");

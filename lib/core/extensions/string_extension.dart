@@ -1,10 +1,10 @@
 import 'package:characters/characters.dart';
 
-class StringExtensionHelper{}
-extension StringNullExtension on String? {
+class StringExtensionHelper {}
 
-  bool get isNullEmpty{
-    return this?.isEmpty ?? true;
+extension StringNullExtension on String? {
+  bool get isNullEmpty {
+    return (this ?? "").trim().isEmpty;
   }
 
   String get toObscureText {
@@ -15,6 +15,4 @@ extension StringNullExtension on String? {
     }
     return obscureText;
   }
-
-  
 }

@@ -26,10 +26,11 @@ class _SplashScreenState extends State<SplashScreen> {
   void _checkLogin() {
     StateHelper.afterBuildDo(() async {
       final authRead = context.read<AuthCubit>();
-      await authRead.checkSignInStatus(onError: (error) {
-        print(error);
-        ShowHelper.snackbar(context, error);
-      });
+      try {
+        await authRead.checkSignInStatus();
+      } catch (e) {
+        ShowHelper.snackbar(context, e);
+      }
     });
   }
 

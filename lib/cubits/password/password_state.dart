@@ -7,14 +7,6 @@ abstract class PasswordState extends Equatable {
   List<Object> get props => [];
 }
 
-class PasswordIdle extends PasswordState {
-   final List<PasswordModel> listPassword;
-
-  PasswordIdle({
-    required this.listPassword,
-  });
-}
-
 class PasswordLoaded extends PasswordState {
   final List<PasswordModel> listPassword;
 
@@ -22,3 +14,14 @@ class PasswordLoaded extends PasswordState {
     required this.listPassword,
   });
 }
+
+class PasswordIdle extends PasswordState {
+  final List<PasswordModel> listPassword;
+
+  PasswordIdle({
+    required this.listPassword,
+  });
+}
+
+
+class PasswordCreatePasswordApp extends PasswordState {} // create password app;

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/cubits/password/password_cubit.dart';
@@ -22,8 +23,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final passwordRead = context.read<PasswordCubit>();
-  late final authRead = context.read<AuthCubit>();
+  late final _passwordRead = context.read<PasswordCubit>();
+  late final _authRead = context.read<AuthCubit>();
 
   @override
   void initState() {
@@ -35,11 +36,11 @@ class _HomePageState extends State<HomePage> {
     StateHelper.afterBuildDo(() async {
       ShowHelper.showLoading(context);
       try {
-        if (!(authRead.state is AuthSignIn)) {
+        if (!(_authRead.state is AuthSignIn)) {
           throw tr("userSignOut");
         }
-        await passwordRead.receivePassword(
-            (authRead.state as AuthSignIn).userModel.googleSignInAccount);
+        await _passwordRead.receivePassword(
+            (_authRead.state as AuthSignIn).userModel.googleSignInAccount);
       } catch (e) {
         ShowHelper.snackbar(context, e.toString());
       }
@@ -56,21 +57,48 @@ class _HomePageState extends State<HomePage> {
         }
       },
       builder: (context, authState) {
-        print(authState.toString());
-        return BlocBuilder<PasswordCubit, PasswordState>(
+        print("authState : " + authState.toString());
+        final googleSignInAccount =
+            (authState as AuthSignIn?)?.userModel.googleSignInAccount;
+        return BlocConsumer<PasswordCubit, PasswordState>(
+          listener: (context, passwordState) {
+            if (passwordState is PasswordCreatePasswordApp) {
+              ShowHelper.modalPassword(
+                context: context,
+                isAppPassword: true,
+                onPressedSave: (val) async {
+                  print("called add password 1");
+                  if (googleSignInAccount == null) return;
+                  print("called add password 2");
+                  Navigator.pop(context);
+                  ShowHelper.showLoading(context);
+                  try {
+                    await _passwordRead.addPassword(
+                      googleSignInAccount: googleSignInAccount,
+                      password: val,
+                    );
+                    print("called add password 3");
+                  } catch (e) {
+                    print("error " + e.toString());
+                    ShowHelper.snackbar(context, e);
+                  }
+                  ShowHelper.pop(context);
+                },
+              );
+            }
+          },
           builder: (context, passwordState) {
             var items = <PasswordModel>[];
-            if (passwordState is PasswordIdle) {
-              items = passwordState.listPassword;
-            }
+
             if (passwordState is PasswordLoaded) {
               items = passwordState.listPassword;
             }
-
-            print(passwordState.toString());
-
+            if (passwordState is PasswordIdle) {
+              items = passwordState.listPassword;
+            }
+            print(items);
             return Scaffold(
-              floatingActionButton: _floatingButton(authState),
+              floatingActionButton: _floatingButton(googleSignInAccount),
               appBar: AppBar(
                 actions: [
                   BlocBuilder<ThemeCubit, ThemeState>(
@@ -99,19 +127,22 @@ class _HomePageState extends State<HomePage> {
                       items.length,
                       (index) {
                         final e = items[index];
+                        final isDisable = googleSignInAccount == null;
                         return PasswordView(
                           password: e.password,
                           name: e.name,
                           onTapEdit: () {
+                            if (isDisable) return;
                             _handlerEdit(
-                              authState: authState,
+                              googleSignInAccount: googleSignInAccount,
                               index: index,
                               e: e,
                             );
                           },
                           onTapDelete: () {
+                            if (isDisable) return;
                             _handlerDelete(
-                              authState: authState,
+                              googleSignInAccount: googleSignInAccount,
                               index: index,
                             );
                           },
@@ -129,7 +160,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _floatingButton(
-    AuthState authState,
+    GoogleSignInAccount? googleSignAccount,
   ) {
     return FloatingActionButton(
       child: Icon(Icons.add),
@@ -140,12 +171,11 @@ class _HomePageState extends State<HomePage> {
             Navigator.pop(context);
             ShowHelper.showLoading(context);
             try {
-              if ((authState is AuthSignIn)) {
-                await passwordRead.addPassword(
-                  googleSignInAccount: authState.userModel.googleSignInAccount,
-                  password: val,
-                );
-              }
+              if (googleSignAccount == null) return;
+              await _passwordRead.addPassword(
+                googleSignInAccount: googleSignAccount,
+                password: val,
+              );
             } catch (e) {
               ShowHelper.snackbar(context, e.toString());
             }
@@ -157,7 +187,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _handlerEdit({
-    required AuthState authState,
+    required GoogleSignInAccount googleSignInAccount,
     required int index,
     required PasswordModel e,
   }) async {
@@ -169,13 +199,11 @@ class _HomePageState extends State<HomePage> {
         Navigator.pop(context);
         ShowHelper.showLoading(context);
         try {
-          if ((authState is AuthSignIn)) {
-            await passwordRead.editPassword(
-              index: index,
-              googleSignInAccount: authState.userModel.googleSignInAccount,
-              password: val,
-            );
-          }
+          await _passwordRead.editPassword(
+            index: index,
+            googleSignInAccount: googleSignInAccount,
+            password: val,
+          );
         } catch (e) {
           ShowHelper.snackbar(context, e.toString());
         }
@@ -185,17 +213,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _handlerDelete({
-    required AuthState authState,
+    required GoogleSignInAccount googleSignInAccount,
     required int index,
   }) async {
     ShowHelper.showLoading(context);
     try {
-      if ((authState is AuthSignIn)) {
-        await passwordRead.deletePassword(
-          index: index,
-          googleSignInAccount: authState.userModel.googleSignInAccount,
-        );
-      }
+      await _passwordRead.deletePassword(
+        index: index,
+        googleSignInAccount: googleSignInAccount,
+      );
     } catch (e) {
       ShowHelper.snackbar(context, e.toString());
     }
