@@ -25,7 +25,6 @@ class _SignInPageState extends State<SignInPage> {
   late final Timer? _timer;
 
   List<int> get _pageItem => [0, 1, 2, 3];
-  int _manySpin = 0;
 
   @override
   void initState() {
