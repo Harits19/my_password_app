@@ -71,11 +71,13 @@ class _HomePageState extends State<HomePage> {
         },
         builder: (context, authState) {
           print("authState : " + authState.toString());
-          final googleSignInAccount =
-              (authState as AuthSignIn?)?.userModel.googleSignInAccount;
+          final googleSignInAccount = authState is AuthSignIn
+              ? authState.userModel.googleSignInAccount
+              : null;
           return BlocConsumer<PasswordCubit, PasswordState>(
             listener: (context, passwordState) {
-              if (passwordState.passwordState == PasswordStateEnum.createAppPassword) {
+              if (passwordState.passwordState ==
+                  PasswordStateEnum.createAppPassword) {
                 ShowHelper.modalPassword(
                   context: context,
                   name: AppKey.appPassword,
