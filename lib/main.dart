@@ -81,7 +81,11 @@ class App extends StatelessWidget {
             routes: {
               SplashScreen.routeName: (context) => const SplashScreen(),
               SignInPage.routeName: (context) => const SignInPage(),
-              HomePage.routeName: (context) => const HomePage(),
+              HomePage.routeName: (context) => SecureGate(
+                    blurr: 60,
+                    opacity: 0.8,
+                    child: const HomePage(),
+                  ),
             },
             builder: (context, child) {
               return SecureApplication(

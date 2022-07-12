@@ -9,19 +9,16 @@ part 'password_state.dart';
 
 class PasswordCubit extends Cubit<PasswordState> {
   PasswordCubit()
-      : super(PasswordLoaded(
+      : super(PasswordState(
           listPassword: [],
           isAuthenticated: false,
+          appPassword: null,
+          passwordState: PasswordStateEnum.loaded,
         ));
 
   Future<void> receivePassword(
     GoogleSignInAccount googleSignInAccount,
   ) async {
-    bool isAuthenticated = false;
-    final state = this.state;
-    if (state is PasswordLoaded) {
-      isAuthenticated = state.isAuthenticated;
-    }
     final listPassword = await DriveService.receiveFilePassword(
       googleSignInAccount: googleSignInAccount,
     );
@@ -29,15 +26,23 @@ class PasswordCubit extends Cubit<PasswordState> {
         .where((element) => element.name == AppKey.appPassword)
         .toList();
     if (appPassword.isEmpty) {
-      emit(PasswordCreatePasswordApp());
+      emit(
+        PasswordState(
+          listPassword: listPassword,
+          isAuthenticated: false,
+          appPassword: null,
+          passwordState: PasswordStateEnum.createAppPassword,
+        ),
+      );
+      return;
     }
 
-    emit(PasswordIdle(listPassword: listPassword));
     emit(
-      PasswordLoaded(
+      PasswordState(
         listPassword: listPassword,
         appPassword: appPassword.first,
-        isAuthenticated: isAuthenticated,
+        isAuthenticated: state.isAuthenticated,
+        passwordState: PasswordStateEnum.loaded,
       ),
     );
   }
@@ -46,11 +51,7 @@ class PasswordCubit extends Cubit<PasswordState> {
     required GoogleSignInAccount googleSignInAccount,
     required PasswordModel password,
   }) async {
-    final currentState = this.state;
-    var tempPassword = <PasswordModel>[];
-    if (currentState is PasswordLoaded) {
-      tempPassword = currentState.listPassword;
-    }
+    final tempPassword = state.listPassword;
     tempPassword.add(password);
     print("temp password " + tempPassword.toString());
     await DriveService.updateFilePassword(
@@ -65,49 +66,41 @@ class PasswordCubit extends Cubit<PasswordState> {
     required int index,
     required PasswordModel password,
   }) async {
-    final currentState = this.state;
-    if (currentState is PasswordLoaded) {
-      currentState.listPassword[index] = password;
-      await DriveService.updateFilePassword(
-        googleSignInAccount: googleSignInAccount,
-        password: currentState.listPassword,
-      );
-      await receivePassword(googleSignInAccount);
-    }
+    state.listPassword[index] = password;
+    await DriveService.updateFilePassword(
+      googleSignInAccount: googleSignInAccount,
+      password: state.listPassword,
+    );
+    await receivePassword(googleSignInAccount);
   }
 
   Future<void> deletePassword({
     required GoogleSignInAccount googleSignInAccount,
     required int index,
   }) async {
-    final currentState = this.state;
-    if (currentState is PasswordLoaded) {
-      currentState.listPassword.removeAt(index);
-      await DriveService.updateFilePassword(
-        googleSignInAccount: googleSignInAccount,
-        password: currentState.listPassword,
-      );
-      await receivePassword(googleSignInAccount);
-    }
+    state.listPassword.removeAt(index);
+    await DriveService.updateFilePassword(
+      googleSignInAccount: googleSignInAccount,
+      password: state.listPassword,
+    );
+    await receivePassword(googleSignInAccount);
   }
 
   void checkAuthenticated(String password) {
     final state = this.state;
-    if (state is PasswordLoaded) {
-      if (password == state.appPassword?.password) {
-        emit(PasswordIdle(listPassword: state.listPassword));
-        emit(
-          PasswordLoaded(
-            listPassword: state.listPassword,
-            isAuthenticated: true,
-            appPassword: state.appPassword,
-          ),
-        );
-      } else {
-        print("called check auth");
+    if (password == state.appPassword?.password) {
+      emit(
+        PasswordState(
+          listPassword: state.listPassword,
+          isAuthenticated: true,
+          appPassword: state.appPassword,
+          passwordState: PasswordStateEnum.loaded,
+        ),
+      );
+    } else {
+      print("called check auth");
 
-        throw "Wrong Password";
-      }
+      throw "Wrong Password";
     }
   }
 }

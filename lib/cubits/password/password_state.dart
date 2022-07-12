@@ -1,20 +1,17 @@
 part of 'password_cubit.dart';
 
-abstract class PasswordState extends Equatable {
-  const PasswordState();
+enum PasswordStateEnum { loaded, createAppPassword }
 
-  @override
-  List<Object?> get props => [];
-}
-
-class PasswordLoaded extends PasswordState {
+class PasswordState extends Equatable {
   final List<PasswordModel> listPassword;
   final PasswordModel? appPassword;
   final bool isAuthenticated;
+  final PasswordStateEnum passwordState;
 
-  PasswordLoaded({
+  PasswordState({
     required this.listPassword,
-    this.appPassword,
+    required this.appPassword,
+    required this.passwordState,
     required this.isAuthenticated,
   });
 
@@ -25,13 +22,3 @@ class PasswordLoaded extends PasswordState {
         isAuthenticated,
       ];
 }
-
-class PasswordIdle extends PasswordState {
-  final List<PasswordModel> listPassword;
-
-  PasswordIdle({
-    required this.listPassword,
-  });
-}
-
-class PasswordCreatePasswordApp extends PasswordState {} // create password app;

@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
               (authState as AuthSignIn?)?.userModel.googleSignInAccount;
           return BlocConsumer<PasswordCubit, PasswordState>(
             listener: (context, passwordState) {
-              if (passwordState is PasswordCreatePasswordApp) {
+              if (passwordState.passwordState == PasswordStateEnum.createAppPassword) {
                 ShowHelper.modalPassword(
                   context: context,
                   name: AppKey.appPassword,
@@ -99,20 +99,13 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               }
-              if (passwordState is PasswordLoaded &&
-                  !passwordState.isAuthenticated) {
-                // _dialogAuthentication();
+              if (!passwordState.isAuthenticated) {
+                _dialogAuthentication();
               }
             },
             builder: (context, passwordState) {
-              var items = <PasswordModel>[];
+              final items = passwordState.listPassword;
 
-              if (passwordState is PasswordLoaded) {
-                items = passwordState.listPassword;
-              }
-              if (passwordState is PasswordIdle) {
-                items = passwordState.listPassword;
-              }
               print(items);
               return Scaffold(
                 floatingActionButton: _floatingButton(googleSignInAccount),
