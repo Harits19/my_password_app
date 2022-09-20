@@ -101,7 +101,8 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               }
-              if (!passwordState.isAuthenticated) {
+              if (!passwordState.isAuthenticated &&
+                  passwordState.listPassword.isNotEmpty) {
                 _dialogAuthentication();
               }
             },
