@@ -3,7 +3,6 @@ import 'package:easy_localization_loader/easy_localization_loader.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:my_password_app/app.dart';
 import 'package:my_password_app/firebase_options.dart';
 
@@ -15,7 +14,6 @@ import 'package:my_password_app/utils/app_bloc_observer.dart';
 /// TODO : Update night mode
 /// TODO : make a screen for explaination why the app need google drive
 /// TODO : make a screen for explaination why the app need pin
-/// TODO : blur recent app
 /// TODO : timer idle user force to show the dialog authentication
 /// TODO : add forget password
 /// TODO : change all method widget to independent widget for readibility

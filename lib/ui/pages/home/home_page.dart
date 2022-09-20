@@ -18,7 +18,6 @@ import 'package:my_password_app/ui/pages/home/view/password_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/app_ui/navigator_helper.dart';
 import 'package:my_password_app/ui/app_ui/state_helper.dart';
-import 'package:secure_application/secure_application.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -245,7 +244,10 @@ class _HomePageState extends State<HomePage> {
         return WillPopScope(
           onWillPop: () async => false,
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+            filter: ImageFilter.blur(
+              sigmaX: 8.0,
+              sigmaY: 8.0,
+            ),
             child: Dialog(
               child: Padding(
                 padding: const EdgeInsets.all(KSize.s16),

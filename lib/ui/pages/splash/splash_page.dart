@@ -28,7 +28,15 @@ class _SplashScreenState extends State<SplashScreen> {
       final authRead = context.read<AuthCubit>();
       try {
         await authRead.checkSignInStatus();
+        final state = authRead.state;
+        if (state is AuthSignIn) {
+          NavigatorHelper.popAll(context, HomePage.routeName);
+        }
+        if (state is AuthSignOut) {
+          NavigatorHelper.popAll(context, SignInPage.routeName);
+        }
       } catch (e) {
+        if (!mounted) return;
         ShowHelper.snackbar(context, e);
       }
     });
@@ -36,20 +44,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthSignIn) {
-          NavigatorHelper.popAll(context, HomePage.routeName);
-        }
-        if (state is AuthSignOut) {
-          NavigatorHelper.popAll(context, SignInPage.routeName);
-        }
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        return Scaffold(
+          body: Center(
+            child: Text(tr("loading")),
+          ),
+        );
       },
-      child: Scaffold(
-        body: Center(
-          child: Text(tr("loading")),
-        ),
-      ),
     );
   }
 }

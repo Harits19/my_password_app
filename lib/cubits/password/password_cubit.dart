@@ -103,4 +103,10 @@ class PasswordCubit extends Cubit<PasswordState> {
       throw "Wrong Password";
     }
   }
+
+  void resetAuthentication() {
+    emit(state.copyWith(
+      isAuthenticated: false,
+    ));
+  }
 }

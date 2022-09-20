@@ -15,10 +15,25 @@ class PasswordState extends Equatable {
     required this.isAuthenticated,
   });
 
+  PasswordState copyWith({
+    List<PasswordModel>? listPassword,
+    PasswordModel? appPassword,
+    bool? isAuthenticated,
+    PasswordStateEnum? passwordState,
+  }) {
+    return PasswordState(
+      listPassword: listPassword ?? this.listPassword,
+      appPassword: appPassword ?? this.appPassword,
+      passwordState: passwordState ?? this.passwordState,
+      isAuthenticated: isAuthenticated ?? this.isAuthenticated,
+    );
+  }
+
   @override
   List<Object?> get props => [
         listPassword,
         appPassword,
+        passwordState,
         isAuthenticated,
       ];
 }
