@@ -6,6 +6,8 @@ const _largeTextScaleFactor = 1.20;
 
 /// Namespace for the My [ThemeData].
 class MyTheme {
+  MyTheme._();
+
   /// Standard `ThemeData` for My UI.
   static ThemeData get standard {
     return ThemeData(

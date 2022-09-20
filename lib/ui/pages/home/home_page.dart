@@ -56,120 +56,112 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SecureGate(
-      blurr: 5,
-      lockedBuilder: (context, secureNotifier) => Center(
-          child: ElevatedButton(
-        child: Text('test'),
-        onPressed: () => secureNotifier?.unlock(),
-      )),
-      child: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, authState) {
-          if (authState is AuthSignOut) {
-            NavigatorHelper.popAll(context, SignInPage.routeName);
-          }
-        },
-        builder: (context, authState) {
-          print("authState : " + authState.toString());
-          final googleSignInAccount = authState is AuthSignIn
-              ? authState.userModel.googleSignInAccount
-              : null;
-          return BlocConsumer<PasswordCubit, PasswordState>(
-            listener: (context, passwordState) {
-              if (passwordState.passwordState ==
-                  PasswordStateEnum.createAppPassword) {
-                ShowHelper.modalPassword(
-                  context: context,
-                  name: AppKey.appPassword,
-                  onPressedSave: (val) async {
-                    print("called add password 1");
-                    if (googleSignInAccount == null) return;
-                    print("called add password 2");
-                    Navigator.pop(context);
-                    ShowHelper.showLoading(context);
-                    try {
-                      await _passwordRead.addPassword(
-                        googleSignInAccount: googleSignInAccount,
-                        password: val,
-                      );
-                      print("called add password 3");
-                    } catch (e) {
-                      print("error " + e.toString());
-                      ShowHelper.snackbar(context, e);
-                    }
-                    ShowHelper.pop(context);
-                  },
-                );
-              }
-              if (!passwordState.isAuthenticated &&
-                  passwordState.listPassword.isNotEmpty) {
-                _dialogAuthentication();
-              }
-            },
-            builder: (context, passwordState) {
-              final items = passwordState.listPassword;
+    return BlocConsumer<AuthCubit, AuthState>(
+      listener: (context, authState) {
+        if (authState is AuthSignOut) {
+          NavigatorHelper.popAll(context, SignInPage.routeName);
+        }
+      },
+      builder: (context, authState) {
+        print("authState : " + authState.toString());
+        final googleSignInAccount = authState is AuthSignIn
+            ? authState.userModel.googleSignInAccount
+            : null;
+        return BlocConsumer<PasswordCubit, PasswordState>(
+          listener: (context, passwordState) {
+            if (passwordState.passwordState ==
+                PasswordStateEnum.createAppPassword) {
+              ShowHelper.modalPassword(
+                context: context,
+                name: AppKey.appPassword,
+                onPressedSave: (val) async {
+                  print("called add password 1");
+                  if (googleSignInAccount == null) return;
+                  print("called add password 2");
+                  Navigator.pop(context);
+                  ShowHelper.showLoading(context);
+                  try {
+                    await _passwordRead.addPassword(
+                      googleSignInAccount: googleSignInAccount,
+                      password: val,
+                    );
+                    print("called add password 3");
+                  } catch (e) {
+                    print("error " + e.toString());
+                    ShowHelper.snackbar(context, e);
+                  }
+                  ShowHelper.pop(context);
+                },
+              );
+            }
+            if (!passwordState.isAuthenticated &&
+                passwordState.listPassword.isNotEmpty) {
+              _dialogAuthentication();
+            }
+          },
+          builder: (context, passwordState) {
+            final items = passwordState.listPassword;
 
-              print(items);
-              return Scaffold(
-                floatingActionButton: _floatingButton(googleSignInAccount),
-                appBar: AppBar(
-                  actions: [
-                    BlocBuilder<ThemeCubit, ThemeState>(
-                      builder: (context, state) {
-                        return IconButton(
-                          onPressed: () {
-                            context.read<ThemeCubit>().toggleTheme();
+            print(items);
+            return Scaffold(
+              floatingActionButton: _floatingButton(googleSignInAccount),
+              appBar: AppBar(
+                actions: [
+                  BlocBuilder<ThemeCubit, ThemeState>(
+                    builder: (context, state) {
+                      return IconButton(
+                        onPressed: () {
+                          context.read<ThemeCubit>().toggleTheme();
+                        },
+                        icon: () {
+                          if (state is ThemeDarkMode) {
+                            return Icon(Icons.sunny);
+                          }
+                          return Icon(Icons.nightlight);
+                        }(),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              drawer: DrawerView(),
+              body: SingleChildScrollView(
+                padding: EdgeInsets.all(KSize.s16),
+                child: Column(
+                  children: [
+                    ...List.generate(
+                      items.length,
+                      (index) {
+                        final e = items[index];
+                        final isDisable = googleSignInAccount == null;
+                        return PasswordView(
+                          password: e.password,
+                          name: e.name,
+                          onTapEdit: () {
+                            if (isDisable) return;
+                            _handlerEdit(
+                              googleSignInAccount: googleSignInAccount,
+                              index: index,
+                              e: e,
+                            );
                           },
-                          icon: () {
-                            if (state is ThemeDarkMode) {
-                              return Icon(Icons.sunny);
-                            }
-                            return Icon(Icons.nightlight);
-                          }(),
+                          onTapDelete: () {
+                            if (isDisable) return;
+                            _handlerDelete(
+                              googleSignInAccount: googleSignInAccount,
+                              index: index,
+                            );
+                          },
                         );
                       },
                     ),
                   ],
                 ),
-                drawer: DrawerView(),
-                body: SingleChildScrollView(
-                  padding: EdgeInsets.all(KSize.s16),
-                  child: Column(
-                    children: [
-                      ...List.generate(
-                        items.length,
-                        (index) {
-                          final e = items[index];
-                          final isDisable = googleSignInAccount == null;
-                          return PasswordView(
-                            password: e.password,
-                            name: e.name,
-                            onTapEdit: () {
-                              if (isDisable) return;
-                              _handlerEdit(
-                                googleSignInAccount: googleSignInAccount,
-                                index: index,
-                                e: e,
-                              );
-                            },
-                            onTapDelete: () {
-                              if (isDisable) return;
-                              _handlerDelete(
-                                googleSignInAccount: googleSignInAccount,
-                                index: index,
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
