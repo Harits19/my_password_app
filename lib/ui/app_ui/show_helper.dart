@@ -42,12 +42,11 @@ class ShowHelper {
       String? name,
       String? password,
       required ValueChanged<PasswordModel>? onPressedSave}) {
-    final isDismissible = name == AppKey.appPassword ? false : true;
+    final isDismissible = name == AppConfig.appPassword ? false : true;
     return showModalBottomSheet<void>(
       context: context,
       isDismissible: isDismissible,
       enableDrag: false,
-      
       isScrollControlled: true,
       builder: (BuildContext context) {
         return ModalPasswordWidget(

@@ -1,10 +1,6 @@
-import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:my_password_app/core/extensions/string_extension.dart';
 import 'package:my_password_app/core/konstans/key.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
@@ -76,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                 PasswordStateEnum.createAppPassword) {
               ShowHelper.modalPassword(
                 context: context,
-                name: AppKey.appPassword,
+                name: AppConfig.appPassword,
                 onPressedSave: (val) async {
                   print("called add password 1");
                   if (googleSignInAccount == null) return;

@@ -12,11 +12,12 @@ part 'password_state.dart';
 class PasswordCubit extends Cubit<PasswordState> {
   PasswordCubit()
       : super(PasswordState(
-          listPassword: [],
-          isAuthenticated: false,
-          appPassword: null,
-          passwordState: PasswordStateEnum.loaded,
-        ));
+            listPassword: [],
+            isAuthenticated: false,
+            appPassword: null,
+            passwordState: PasswordStateEnum.loaded)) {
+    restartTimer();
+  }
 
   Future<void> receivePassword(
     GoogleSignInAccount googleSignInAccount,
@@ -25,7 +26,7 @@ class PasswordCubit extends Cubit<PasswordState> {
       googleSignInAccount: googleSignInAccount,
     );
     final appPassword = listPassword
-        .where((element) => element.name == AppKey.appPassword)
+        .where((element) => element.name == AppConfig.appPassword)
         .toList();
     if (appPassword.isEmpty) {
       emit(
@@ -99,7 +100,7 @@ class PasswordCubit extends Cubit<PasswordState> {
           passwordState: PasswordStateEnum.loaded,
         ),
       );
-      resetTimer();
+      restartTimer();
     } else {
       print("called check auth");
 
@@ -113,14 +114,13 @@ class PasswordCubit extends Cubit<PasswordState> {
     ));
   }
 
-  final _duration = Duration(seconds: 5);
-  late var _sessionTimer = Timer(_duration, _onTimerEnd);
+  Timer? _sessionTimer;
 
-  void resetTimer() {
+  void restartTimer() {
     if (state.showAuthenticationDialog) return;
-    print('reset timer');
-    _sessionTimer.cancel();
-    _sessionTimer = Timer(_duration, _onTimerEnd);
+    print('restart timer');
+    _sessionTimer?.cancel();
+    _sessionTimer = Timer(AppConfig.sessionDuration, _onTimerEnd);
   }
 
   void _onTimerEnd() {

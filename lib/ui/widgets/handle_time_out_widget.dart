@@ -28,6 +28,6 @@ class HandleTimeOutWidget extends StatelessWidget {
 
   void _onInteraction(BuildContext context) {
     final passwordRead = context.read<PasswordCubit>();
-    passwordRead.resetTimer();
+    passwordRead.restartTimer();
   }
 }

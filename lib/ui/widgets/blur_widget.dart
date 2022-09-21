@@ -53,7 +53,6 @@ class _BlurInactiveWidgetState extends State<BlurInactiveWidget>
 
   @override
   Widget build(BuildContext context) {
-    print('is blur now');
     return Stack(
       children: [
         widget.child ?? SizedBox(),

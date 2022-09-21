@@ -28,9 +28,10 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
     ("symbol"): true,
     ("number"): true,
   };
-  late final _isAppPassword = widget.name == AppKey.appPassword ? true : false;
+  late final _isAppPassword =
+      widget.name == AppConfig.appPassword ? true : false;
   late final _nameController = TextEditingController(
-    text: _isAppPassword ? AppKey.appPassword : widget.name,
+    text: _isAppPassword ? AppConfig.appPassword : widget.name,
   );
   late final _passwordController = TextEditingController(text: widget.password);
 
@@ -139,11 +140,12 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                     ? null
                     : () {
                         if (widget.onPressSave == null) return;
-                        if (_nameController.text.trim() == AppKey.appPassword &&
+                        if (_nameController.text.trim() ==
+                                AppConfig.appPassword &&
                             !_isAppPassword) {
                           Navigator.pop(context);
                           ShowHelper.snackbar(context,
-                              'Dont fill name with "${AppKey.appPassword}"');
+                              'Dont fill name with "${AppConfig.appPassword}"');
                           return;
                         }
 
