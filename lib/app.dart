@@ -8,6 +8,7 @@ import 'package:my_password_app/routes.dart';
 import 'package:my_password_app/ui/app_ui/app_ui.dart';
 import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/ui/widgets/blur_widget.dart';
+import 'package:my_password_app/ui/widgets/handle_time_out_widget.dart';
 
 class App extends StatelessWidget {
   App({Key? key}) : super(key: key);
@@ -18,36 +19,38 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => AuthCubit()),
         BlocProvider(create: (_) => PasswordCubit()),
-        BlocProvider(create: (_) => ThemeCubit())
+        BlocProvider(create: (_) => ThemeCubit()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            initialRoute: SplashScreen.routeName,
-            localizationsDelegates: context.localizationDelegates,
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            theme: () {
-              if (state is ThemeDarkMode)
-                return MyTheme.dark;
-              else
-                return MyTheme.light;
-            }(),
-            routes: {
-              ...kRoute.map((key, value) => MapEntry(key, (_) => value))
-            },
-            builder: (context, child) {
-              return Overlay(
-                initialEntries: [
-                  OverlayEntry(
-                    builder: (context) => BlurInactiveWidget(
-                      child: child,
+          return HandleTimeOutWidget(
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              initialRoute: SplashScreen.routeName,
+              localizationsDelegates: context.localizationDelegates,
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              theme: () {
+                if (state is ThemeDarkMode)
+                  return MyTheme.dark;
+                else
+                  return MyTheme.light;
+              }(),
+              routes: {
+                ...kRoute.map((key, value) => MapEntry(key, (_) => value))
+              },
+              builder: (context, child) {
+                return Overlay(
+                  initialEntries: [
+                    OverlayEntry(
+                      builder: (context) => BlurInactiveWidget(
+                        child: child,
+                      ),
                     ),
-                  ),
-                ],
-              );
-            },
+                  ],
+                );
+              },
+            ),
           );
         },
       ),

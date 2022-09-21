@@ -17,6 +17,7 @@ import 'package:my_password_app/utils/app_bloc_observer.dart';
 /// TODO : timer idle user force to show the dialog authentication
 /// TODO : add forget password
 /// TODO : change all method widget to independent widget for readibility
+/// TODO : update package on pubspec.yaml
 
 void main() async {
   print("hot restart app ");

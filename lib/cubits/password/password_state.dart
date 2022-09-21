@@ -7,13 +7,14 @@ class PasswordState extends Equatable {
   final PasswordModel? appPassword;
   final bool isAuthenticated;
   final PasswordStateEnum passwordState;
+  final bool showAuthenticationDialog;
 
   PasswordState({
     required this.listPassword,
     required this.appPassword,
     required this.passwordState,
     required this.isAuthenticated,
-  });
+  }) : showAuthenticationDialog = !isAuthenticated;
 
   PasswordState copyWith({
     List<PasswordModel>? listPassword,

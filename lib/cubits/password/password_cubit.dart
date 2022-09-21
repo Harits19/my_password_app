@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -97,6 +99,7 @@ class PasswordCubit extends Cubit<PasswordState> {
           passwordState: PasswordStateEnum.loaded,
         ),
       );
+      resetTimer();
     } else {
       print("called check auth");
 
@@ -108,5 +111,20 @@ class PasswordCubit extends Cubit<PasswordState> {
     emit(state.copyWith(
       isAuthenticated: false,
     ));
+  }
+
+  final _duration = Duration(seconds: 5);
+  late var _sessionTimer = Timer(_duration, _onTimerEnd);
+
+  void resetTimer() {
+    if (state.showAuthenticationDialog) return;
+    print('reset timer');
+    _sessionTimer.cancel();
+    _sessionTimer = Timer(_duration, _onTimerEnd);
+  }
+
+  void _onTimerEnd() {
+    print('_onTimerEnd');
+    resetAuthentication();
   }
 }

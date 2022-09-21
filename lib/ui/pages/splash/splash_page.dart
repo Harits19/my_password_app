@@ -46,6 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
+        print(state);
         return Scaffold(
           body: Center(
             child: Text(tr("loading")),

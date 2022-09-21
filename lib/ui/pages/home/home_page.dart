@@ -18,6 +18,7 @@ import 'package:my_password_app/ui/pages/home/view/password_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/app_ui/navigator_helper.dart';
 import 'package:my_password_app/ui/app_ui/state_helper.dart';
+import 'package:my_password_app/ui/utils/dialog_util.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -68,6 +69,9 @@ class _HomePageState extends State<HomePage> {
             : null;
         return BlocConsumer<PasswordCubit, PasswordState>(
           listener: (context, passwordState) {
+            if (passwordState.isAuthenticated == false) {
+              DialogUtil.dialogAuthentication(context);
+            }
             if (passwordState.passwordState ==
                 PasswordStateEnum.createAppPassword) {
               ShowHelper.modalPassword(
@@ -92,10 +96,6 @@ class _HomePageState extends State<HomePage> {
                   ShowHelper.pop(context);
                 },
               );
-            }
-            if (!passwordState.isAuthenticated &&
-                passwordState.listPassword.isNotEmpty) {
-              _dialogAuthentication();
             }
           },
           builder: (context, passwordState) {
@@ -231,75 +231,5 @@ class _HomePageState extends State<HomePage> {
       ShowHelper.snackbar(context, e.toString());
     }
     Navigator.pop(context);
-  }
-
-  void _dialogAuthentication() {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        String? password;
-        bool obscureText = false;
-        String? error;
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 8.0,
-              sigmaY: 8.0,
-            ),
-            child: Dialog(
-              child: Padding(
-                padding: const EdgeInsets.all(KSize.s16),
-                child: StatefulBuilder(builder: (context, localState) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextField(
-                        obscureText: obscureText,
-                        onChanged: (val) {
-                          password = val;
-                          localState(() {});
-                        },
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              obscureText = !obscureText;
-                              localState(() {});
-                            },
-                            icon: Icon(
-                              obscureText
-                                  ? CupertinoIcons.eye_fill
-                                  : CupertinoIcons.eye_slash_fill,
-                            ),
-                          ),
-                        ),
-                      ),
-                      KSize.verti8,
-                      Text(error ?? ""),
-                      KSize.verti16,
-                      ElevatedButton(
-                        child: Text("Submit"),
-                        onPressed: password.isNullEmpty
-                            ? null
-                            : () {
-                                try {
-                                  _passwordRead.checkAuthenticated(password!);
-                                  Navigator.pop(context);
-                                } catch (e) {
-                                  error = e.toString();
-                                  localState(() {});
-                                }
-                              },
-                      )
-                    ],
-                  );
-                }),
-              ),
-            ),
-          ),
-        );
-      },
-    );
   }
 }
