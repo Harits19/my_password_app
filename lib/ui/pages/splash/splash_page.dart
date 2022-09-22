@@ -37,6 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       } catch (e) {
         if (!mounted) return;
+        print(e.toString());
         ShowHelper.snackbar(context, e);
       }
     });

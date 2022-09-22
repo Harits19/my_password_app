@@ -1,0 +1,12 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "my_password_app.exe (runner\\my_password_app.exe)",
+      "name": "my_password_app.exe (runner\\my_password_app.exe)"
+    }
+  ]
+}

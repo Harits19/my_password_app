@@ -16,7 +16,6 @@ import 'package:my_password_app/utils/app_bloc_observer.dart';
 /// TODO : make a screen for explaination why the app need pin
 /// TODO : add forget password
 /// TODO : change all method widget to independent widget for readibility
-/// TODO : update package on pubspec.yaml
 
 void main() async {
   print("hot restart app ");
