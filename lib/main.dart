@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/app.dart';
+import 'package:my_password_app/core/services/shared_prefs_service.dart';
 import 'package:my_password_app/firebase_options.dart';
 
 import 'package:my_password_app/ui/app_ui/konstans/k_assets.dart';
@@ -18,13 +19,7 @@ import 'package:my_password_app/utils/app_bloc_observer.dart';
 /// TODO : change all method widget to independent widget for readibility
 
 void main() async {
-  print("hot restart app ");
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await EasyLocalization.ensureInitialized();
-
+  await _loadAllService();
   BlocOverrides.runZoned(() {
     runApp(
       EasyLocalization(
@@ -38,4 +33,13 @@ void main() async {
       ),
     );
   }, blocObserver: AppBlocObserver());
+}
+
+Future<void> _loadAllService() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  await EasyLocalization.ensureInitialized();
+  await SharedPrefService.initPrefService();
 }

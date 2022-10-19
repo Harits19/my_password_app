@@ -10,6 +10,11 @@ import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/ui/widgets/blur_widget.dart';
 import 'package:my_password_app/ui/widgets/handle_time_out_widget.dart';
 
+
+// TODO mengubah menjadi aplikasi full offiline
+// TODO app can send file backup via bluetooth
+// TODO 
+
 class App extends StatelessWidget {
   App({Key? key}) : super(key: key);
 
