@@ -45,7 +45,7 @@ class DrawerView extends StatelessWidget {
                 ),
                 onPressed: () {
                   final authCubit = context.read<AuthCubit>();
-
+                  
                   ShowHelper.showLoading(context);
                   Navigator.pop(context);
                 },

@@ -2,7 +2,7 @@ part of 'password_cubit.dart';
 
 enum PasswordStateEnum { loaded, createAppPassword }
 
-class PasswordState extends Equatable {
+class PasswordState {
   final List<PasswordModel> listPassword;
   final PasswordModel? appPassword;
   final bool isAuthenticated;
@@ -29,12 +29,4 @@ class PasswordState extends Equatable {
       isAuthenticated: isAuthenticated ?? this.isAuthenticated,
     );
   }
-
-  @override
-  List<Object?> get props => [
-        listPassword,
-        appPassword,
-        passwordState,
-        isAuthenticated,
-      ];
 }

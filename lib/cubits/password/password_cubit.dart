@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_password_app/core/extensions/string_extension.dart';
 import 'package:my_password_app/core/konstans/key.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/core/services/shared_prefs_service.dart';
@@ -50,7 +50,12 @@ class PasswordCubit extends Cubit<PasswordState> {
   }
 
   Future<void> setAppPassword(String password) async {
-    state.listPassword.add(
+    final listPassword = state.listPassword;
+    listPassword.removeWhere(
+      (element) => element.name == AppConfig.appPassword,
+    );
+
+    listPassword.add(
       PasswordModel(
         name: AppConfig.appPassword,
         password: password,
@@ -59,6 +64,16 @@ class PasswordCubit extends Cubit<PasswordState> {
     print('updated app password ${state.listPassword}');
     await SharedPrefService.setListPassword(state.listPassword);
     getListPassword();
+  }
+
+  void authenticatingAppPassword(String password) {
+    final appPassword = state.appPassword?.password;
+    if (appPassword.isNullEmpty) {
+      throw 'Empty app password';
+    }
+    if (appPassword != password) {
+      throw 'Password don\'t match';
+    }
   }
 
   void resetAuthentication() {

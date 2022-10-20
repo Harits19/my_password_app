@@ -61,8 +61,10 @@ class DialogUtil {
                             ? null
                             : () {
                                 try {
-                                  final passwordRead = context.read<PasswordCubit>();
-                                  // TODO
+                                  final passwordRead =
+                                      context.read<PasswordCubit>();
+                                  passwordRead
+                                      .authenticatingAppPassword(password!);
                                   Navigator.pop(context);
                                 } catch (e) {
                                   error = e.toString();

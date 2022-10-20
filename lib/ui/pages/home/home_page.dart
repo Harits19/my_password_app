@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_password_app/core/extensions/string_extension.dart';
 import 'package:my_password_app/core/konstans/key.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
@@ -36,16 +37,12 @@ class _HomePageState extends State<HomePage> {
 
   void _receivePassword() async {
     StateHelper.afterBuildDo(() async {
-      ShowHelper.showLoading(context);
-      try {
-        if (!(_authRead.state is AuthSignIn)) {
-          throw tr("userSignOut");
-        }
-       // TODO
-      } catch (e) {
-        ShowHelper.snackbar(context, e.toString());
-      }
-      Navigator.pop(context);
+      _passwordRead.getListPassword();
+      final state = _passwordRead.state;
+
+      if (state.passwordState == PasswordStateEnum.createAppPassword) {}
+
+      if (state.passwordState == PasswordStateEnum.loaded) {}
     });
   }
 
@@ -59,33 +56,33 @@ class _HomePageState extends State<HomePage> {
       },
       builder: (context, authState) {
         print("authState : " + authState.toString());
-        final googleSignInAccount = authState is AuthSignIn
-            ? authState.userModel.googleSignInAccount
-            : null;
+
         return BlocConsumer<PasswordCubit, PasswordState>(
-          listener: (context, passwordState) {
-            if (passwordState.isAuthenticated == false) {
-              DialogUtil.dialogAuthentication(context);
+          listener: (context, state) {
+            final passwordState = state.passwordState;
+            if (state.isAuthenticated == false &&
+                passwordState == PasswordStateEnum.loaded) {
+              DialogUtil.dialogAuthentication(
+                context,
+                
+              );
             }
-            if (passwordState.passwordState ==
-                PasswordStateEnum.createAppPassword) {
+            if (passwordState == PasswordStateEnum.createAppPassword) {
               ShowHelper.modalPassword(
                 context: context,
                 name: AppConfig.appPassword,
                 onPressedSave: (val) async {
-                  print("called add password 1");
-                  if (googleSignInAccount == null) return;
-                  print("called add password 2");
-                  Navigator.pop(context);
+                  final password = val.password;
+                  if (password.isNullEmpty) return;
+                  context.pop();
                   ShowHelper.showLoading(context);
                   try {
-                   // TODO
-                    print("called add password 3");
+                    await _passwordRead.setAppPassword(val.password!);
                   } catch (e) {
                     print("error " + e.toString());
                     ShowHelper.snackbar(context, e);
                   }
-                  ShowHelper.pop(context);
+                  context.pop();
                 },
               );
             }
@@ -95,7 +92,7 @@ class _HomePageState extends State<HomePage> {
 
             print(items);
             return Scaffold(
-              floatingActionButton: _floatingButton(googleSignInAccount),
+              // floatingActionButton: _floatingButton(googleSignInAccount),
               appBar: AppBar(
                 actions: [
                   BlocBuilder<ThemeCubit, ThemeState>(
@@ -124,24 +121,24 @@ class _HomePageState extends State<HomePage> {
                       items.length,
                       (index) {
                         final e = items[index];
-                        final isDisable = googleSignInAccount == null;
+                        final isDisable = false;
                         return PasswordView(
                           password: e.password,
                           name: e.name,
                           onTapEdit: () {
                             if (isDisable) return;
-                            _handlerEdit(
-                              googleSignInAccount: googleSignInAccount,
-                              index: index,
-                              e: e,
-                            );
+                            // _handlerEdit( // TODO
+                            //   googleSignInAccount: googleSignInAccount,
+                            //   index: index,
+                            //   e: e,
+                            // );
                           },
                           onTapDelete: () {
                             if (isDisable) return;
-                            _handlerDelete(
-                              googleSignInAccount: googleSignInAccount,
-                              index: index,
-                            );
+                            // _handlerDelete( // TODO
+                            //   googleSignInAccount: googleSignInAccount,
+                            //   index: index,
+                            // );
                           },
                         );
                       },
