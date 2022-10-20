@@ -55,15 +55,14 @@ class PasswordCubit extends Cubit<PasswordState> {
       (element) => element.name == AppConfig.appPassword,
     );
 
-    listPassword.add(
-      PasswordModel(
+    addPassword(
+      passwordModel: PasswordModel(
         name: AppConfig.appPassword,
         password: password,
       ),
     );
     print('updated app password ${state.listPassword}');
-    await SharedPrefService.setListPassword(state.listPassword);
-    getListPassword();
+    await updateListPassword();
   }
 
   void authenticatingAppPassword(String password) {
@@ -74,6 +73,29 @@ class PasswordCubit extends Cubit<PasswordState> {
     if (appPassword != password) {
       throw 'Password don\'t match';
     }
+  }
+
+  Future<void> updateListPassword() async {
+    await SharedPrefService.setListPassword(state.listPassword);
+    getListPassword();
+  }
+
+  void deletePassword(PasswordModel password) async {
+    state.listPassword.removeWhere((element) => element.name == password.name);
+    await updateListPassword();
+  }
+
+  void updatePassword({
+    required int index,
+    required PasswordModel passwordModel,
+  }) {
+    state.listPassword[index] = passwordModel;
+    updateListPassword();
+  }
+
+  Future<void> addPassword({required PasswordModel passwordModel}) async {
+    state.listPassword.add(passwordModel);
+    await updateListPassword();
   }
 
   void resetAuthentication() {

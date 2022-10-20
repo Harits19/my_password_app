@@ -1,6 +1,10 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_password_app/core/extensions/context_extension.dart';
 import 'package:my_password_app/core/extensions/string_extension.dart';
+import 'package:my_password_app/core/models/password_application_model.dart';
+import 'package:my_password_app/cubits/password/password_cubit.dart';
 import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/app_ui/show_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -8,16 +12,12 @@ import 'package:easy_localization/easy_localization.dart';
 class PasswordView extends StatefulWidget {
   PasswordView({
     Key? key,
-    this.password,
-    this.name,
-    this.onTapEdit,
-    this.onTapDelete,
+    required this.passwordModel,
+    required this.index,
   }) : super(key: key);
 
-  final String? password;
-  final String? name;
-  final VoidCallback? onTapEdit;
-  final VoidCallback? onTapDelete;
+  final PasswordModel passwordModel;
+  final int index;
 
   @override
   State<PasswordView> createState() => _PasswordViewState();
@@ -26,16 +26,19 @@ class PasswordView extends StatefulWidget {
 class _PasswordViewState extends State<PasswordView> {
   bool _isObscure = true;
   bool _isDelete = false;
+  late final passwordModel = widget.passwordModel;
+  late final passwordRead = context.read<PasswordCubit>();
 
   @override
   Widget build(BuildContext context) {
-    final title =
-        _isDelete ? '${"deleteData".tr()} ${widget.name}' : widget.name;
+    final title = _isDelete
+        ? '${"deleteData".tr()} ${passwordModel.name}'
+        : passwordModel.name;
     final subtitle = _isDelete
         ? "areYouSure".tr()
         : _isObscure
-            ? widget.password.toObscureText
-            : widget.password;
+            ? passwordModel.password.toObscureText
+            : passwordModel.password;
     return Card(
       color: _isDelete ? Colors.red : null,
       child: InkWell(
@@ -66,6 +69,27 @@ class _PasswordViewState extends State<PasswordView> {
     );
   }
 
+  void _handlerEdit() async {
+    ShowHelper.modalPassword(
+      name: passwordModel.name,
+      password: passwordModel.password,
+      context: context,
+      onPressedSave: (val) async {
+        context.pop();
+        ShowHelper.showLoading(context);
+        try {
+          passwordRead.updatePassword(
+            index: widget.index,
+            passwordModel: passwordModel,
+          );
+        } catch (e) {
+          ShowHelper.snackbar(context, e.toString());
+        }
+        context.pop();
+      },
+    );
+  }
+
   List<Widget> _deleteButton() {
     return [
       Expanded(
@@ -74,8 +98,7 @@ class _PasswordViewState extends State<PasswordView> {
           onPressed: () {
             _isDelete = false;
             setState(() {});
-            if (widget.onTapDelete == null) return;
-            widget.onTapDelete!();
+            passwordRead.deletePassword(passwordModel);
           },
         ),
       ),
@@ -109,7 +132,7 @@ class _PasswordViewState extends State<PasswordView> {
       Expanded(
         child: ElevatedButton(
           child: Icon(Icons.edit),
-          onPressed: widget.onTapEdit,
+          onPressed: _handlerEdit,
         ),
       ),
       KSize.hori8,
@@ -117,7 +140,7 @@ class _PasswordViewState extends State<PasswordView> {
         child: ElevatedButton(
           child: Icon(Icons.copy),
           onPressed: () {
-            FlutterClipboard.copy(widget.password ?? "").then(
+            FlutterClipboard.copy(passwordModel.password ?? "").then(
                 (value) => ShowHelper.snackbar(context, 'successCopy'.tr()));
           },
         ),

@@ -1,16 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_password_app/core/extensions/string_extension.dart';
 import 'package:my_password_app/core/konstans/key.dart';
-import 'package:my_password_app/core/models/password_application_model.dart';
 import 'package:my_password_app/cubits/auth/auth_cubit.dart';
 import 'package:my_password_app/cubits/password/password_cubit.dart';
 import 'package:my_password_app/cubits/theme/theme_cubit.dart';
+import 'package:my_password_app/ui/app_ui/konstans/k_locale.dart';
 import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/ui/app_ui/show_helper.dart';
-import 'package:my_password_app/ui/pages/home/view/drawer_view.dart';
 import 'package:my_password_app/ui/pages/home/view/password_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/core/extensions/context_extension.dart';
@@ -64,7 +62,6 @@ class _HomePageState extends State<HomePage> {
                 passwordState == PasswordStateEnum.loaded) {
               DialogUtil.dialogAuthentication(
                 context,
-                
               );
             }
             if (passwordState == PasswordStateEnum.createAppPassword) {
@@ -92,27 +89,9 @@ class _HomePageState extends State<HomePage> {
 
             print(items);
             return Scaffold(
-              // floatingActionButton: _floatingButton(googleSignInAccount),
-              appBar: AppBar(
-                actions: [
-                  BlocBuilder<ThemeCubit, ThemeState>(
-                    builder: (context, state) {
-                      return IconButton(
-                        onPressed: () {
-                          context.read<ThemeCubit>().toggleTheme();
-                        },
-                        icon: () {
-                          if (state is ThemeDarkMode) {
-                            return Icon(Icons.sunny);
-                          }
-                          return Icon(Icons.nightlight);
-                        }(),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              drawer: DrawerView(),
+              floatingActionButton: _floatingButton(),
+              appBar: _AppBarView(),
+              drawer: _DrawerView(),
               body: SingleChildScrollView(
                 padding: EdgeInsets.all(KSize.s16),
                 child: Column(
@@ -121,25 +100,9 @@ class _HomePageState extends State<HomePage> {
                       items.length,
                       (index) {
                         final e = items[index];
-                        final isDisable = false;
                         return PasswordView(
-                          password: e.password,
-                          name: e.name,
-                          onTapEdit: () {
-                            if (isDisable) return;
-                            // _handlerEdit( // TODO
-                            //   googleSignInAccount: googleSignInAccount,
-                            //   index: index,
-                            //   e: e,
-                            // );
-                          },
-                          onTapDelete: () {
-                            if (isDisable) return;
-                            // _handlerDelete( // TODO
-                            //   googleSignInAccount: googleSignInAccount,
-                            //   index: index,
-                            // );
-                          },
+                          passwordModel: e,
+                          index: index,
                         );
                       },
                     ),
@@ -153,62 +116,111 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _floatingButton(
-    GoogleSignInAccount? googleSignAccount,
-  ) {
+  Widget _floatingButton() {
     return FloatingActionButton(
       child: Icon(Icons.add),
       onPressed: () {
         ShowHelper.modalPassword(
           context: context,
           onPressedSave: (val) async {
-            Navigator.pop(context);
+            context.pop();
             ShowHelper.showLoading(context);
             try {
-              if (googleSignAccount == null) return;
-              // TODO
+              await _passwordRead.addPassword(passwordModel: val);
             } catch (e) {
               ShowHelper.snackbar(context, e.toString());
             }
-            Navigator.pop(context);
+            context.pop();
           },
         );
       },
     );
   }
+}
 
-  void _handlerEdit({
-    required GoogleSignInAccount googleSignInAccount,
-    required int index,
-    required PasswordModel e,
-  }) async {
-    ShowHelper.modalPassword(
-      name: e.name,
-      password: e.password,
-      context: context,
-      onPressedSave: (val) async {
-        Navigator.pop(context);
-        ShowHelper.showLoading(context);
-        try {
-          // TODO
-        } catch (e) {
-          ShowHelper.snackbar(context, e.toString());
-        }
-        Navigator.pop(context);
-      },
+class _DrawerView extends StatelessWidget {
+  const _DrawerView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Padding(
+        padding: EdgeInsets.all(KSize.s16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text("language".tr()),
+            DropdownButton<Locale>(
+              value: EasyLocalization.of(context)?.currentLocale,
+              isExpanded: true,
+              items: [
+                ...KLocale.values.map(
+                  (e) => DropdownMenuItem(
+                    value: e.value,
+                    onTap: () {
+                      EasyLocalization.of(context)?.setLocale(e.value);
+                    },
+                    child: Text(
+                      e.toString(),
+                    ),
+                  ),
+                ),
+              ],
+              onChanged: (val) {},
+            ),
+            KSize.verti16,
+            ElevatedButton(
+              child: Text('Backup to Google Drive'),
+              onPressed: () {},
+            ),
+            ElevatedButton(
+              child: Text('Restore from Google Drive'),
+              onPressed: () {},
+            ),
+            ElevatedButton(
+              child: Text(
+                "signOutGoogle".tr(),
+              ),
+              onPressed: () {
+                final authCubit = context.read<AuthCubit>();
+
+                ShowHelper.showLoading(context);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AppBarView extends StatelessWidget implements PreferredSizeWidget {
+  _AppBarView({Key? key}) : super(key: key);
+
+  Widget build(BuildContext context) {
+    return AppBar(
+      actions: [
+        BlocBuilder<ThemeCubit, ThemeState>(
+          builder: (context, state) {
+            return IconButton(
+              onPressed: () {
+                context.read<ThemeCubit>().toggleTheme();
+              },
+              icon: () {
+                if (state is ThemeDarkMode) {
+                  return Icon(Icons.sunny);
+                }
+                return Icon(Icons.nightlight);
+              }(),
+            );
+          },
+        ),
+      ],
     );
   }
 
-  void _handlerDelete({
-    required GoogleSignInAccount googleSignInAccount,
-    required int index,
-  }) async {
-    ShowHelper.showLoading(context);
-    try {
-      // TODO
-    } catch (e) {
-      ShowHelper.snackbar(context, e.toString());
-    }
-    Navigator.pop(context);
-  }
+  @override
+  Size get preferredSize => AppBar().preferredSize;
 }
