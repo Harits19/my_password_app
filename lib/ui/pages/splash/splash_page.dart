@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:my_password_app/core/services/shared_prefs_service.dart';
-import 'package:my_password_app/firebase_options.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_password_app/core/extensions/context_extension.dart';
+import 'package:my_password_app/cubits/password/password_cubit.dart';
 import 'package:my_password_app/ui/pages/password/password_create_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,10 +17,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    if (SharedPrefService.getPassword().isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        Navigator.pushNamed(context, PasswordCreatePage.routeName);
-      });
+    final passwordRead = context.read<PasswordCubit>();
+    passwordRead.getListPassword();
+    final isCreateAppPassword =
+        passwordRead.state.passwordState == PasswordStateEnum.createAppPassword;
+    if (isCreateAppPassword) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+          context.popAll(PasswordCreatePage.routeName);
+        },
+      );
     }
   }
 

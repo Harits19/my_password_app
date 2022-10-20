@@ -22,11 +22,11 @@ class DrawerView extends StatelessWidget {
               value: EasyLocalization.of(context)?.currentLocale,
               isExpanded: true,
               items: [
-                ...KLocale.supportedLocale.map(
+                ...KLocale.values.map(
                   (e) => DropdownMenuItem(
-                    value: e,
+                    value: e.value,
                     onTap: () {
-                      EasyLocalization.of(context)?.setLocale(e);
+                      EasyLocalization.of(context)?.setLocale(e.value);
                     },
                     child: Text(
                       e.toString(),
@@ -47,9 +47,6 @@ class DrawerView extends StatelessWidget {
                   final authCubit = context.read<AuthCubit>();
 
                   ShowHelper.showLoading(context);
-                  authCubit.signOutWithGoogle(onError: (error) {
-                    ShowHelper.snackbar(context, error);
-                  });
                   Navigator.pop(context);
                 },
               ),

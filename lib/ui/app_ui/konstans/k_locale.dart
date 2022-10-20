@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 
-class KLocale {
-  KLocale._();
+enum KLocale {
+  id(value: Locale('id', 'ID')),
+  en(value: Locale("en", "US"));
 
-  static const id = Locale('id', 'ID');
-  static const en = Locale("en", "US");
+  const KLocale({required this.value});
 
-  static Locale get idDebug {
-    print("called idDebug");
-    return id;
-  }
-
-  static const supportedLocale = [id, en];
+  final Locale value;
 }

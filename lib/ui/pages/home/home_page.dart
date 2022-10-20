@@ -12,7 +12,7 @@ import 'package:my_password_app/ui/app_ui/show_helper.dart';
 import 'package:my_password_app/ui/pages/home/view/drawer_view.dart';
 import 'package:my_password_app/ui/pages/home/view/password_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
-import 'package:my_password_app/ui/app_ui/navigator_helper.dart';
+import 'package:my_password_app/core/extensions/context_extension.dart';
 import 'package:my_password_app/ui/app_ui/state_helper.dart';
 import 'package:my_password_app/ui/utils/dialog_util.dart';
 
@@ -41,8 +41,7 @@ class _HomePageState extends State<HomePage> {
         if (!(_authRead.state is AuthSignIn)) {
           throw tr("userSignOut");
         }
-        await _passwordRead.receivePassword(
-            (_authRead.state as AuthSignIn).userModel.googleSignInAccount);
+       // TODO
       } catch (e) {
         ShowHelper.snackbar(context, e.toString());
       }
@@ -55,7 +54,7 @@ class _HomePageState extends State<HomePage> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, authState) {
         if (authState is AuthSignOut) {
-          NavigatorHelper.popAll(context, SignInPage.routeName);
+          context.popAll(SignInPage.routeName);
         }
       },
       builder: (context, authState) {
@@ -80,10 +79,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.pop(context);
                   ShowHelper.showLoading(context);
                   try {
-                    await _passwordRead.addPassword(
-                      googleSignInAccount: googleSignInAccount,
-                      password: val,
-                    );
+                   // TODO
                     print("called add password 3");
                   } catch (e) {
                     print("error " + e.toString());
@@ -173,10 +169,7 @@ class _HomePageState extends State<HomePage> {
             ShowHelper.showLoading(context);
             try {
               if (googleSignAccount == null) return;
-              await _passwordRead.addPassword(
-                googleSignInAccount: googleSignAccount,
-                password: val,
-              );
+              // TODO
             } catch (e) {
               ShowHelper.snackbar(context, e.toString());
             }
@@ -200,11 +193,7 @@ class _HomePageState extends State<HomePage> {
         Navigator.pop(context);
         ShowHelper.showLoading(context);
         try {
-          await _passwordRead.editPassword(
-            index: index,
-            googleSignInAccount: googleSignInAccount,
-            password: val,
-          );
+          // TODO
         } catch (e) {
           ShowHelper.snackbar(context, e.toString());
         }
@@ -219,10 +208,7 @@ class _HomePageState extends State<HomePage> {
   }) async {
     ShowHelper.showLoading(context);
     try {
-      await _passwordRead.deletePassword(
-        index: index,
-        googleSignInAccount: googleSignInAccount,
-      );
+      // TODO
     } catch (e) {
       ShowHelper.snackbar(context, e.toString());
     }

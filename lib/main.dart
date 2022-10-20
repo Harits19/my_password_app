@@ -1,11 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_localization_loader/easy_localization_loader.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/app.dart';
 import 'package:my_password_app/core/services/shared_prefs_service.dart';
-import 'package:my_password_app/firebase_options.dart';
 
 import 'package:my_password_app/ui/app_ui/konstans/k_assets.dart';
 import 'package:my_password_app/ui/app_ui/konstans/k_locale.dart';
@@ -24,11 +22,11 @@ void main() async {
     runApp(
       EasyLocalization(
         child: App(),
-        supportedLocales: KLocale.supportedLocale,
-        fallbackLocale: KLocale.id,
+        supportedLocales: KLocale.values.map((e) => e.value).toList(),
+        fallbackLocale: KLocale.id.value,
         path: KAssets.translations,
         saveLocale: true,
-        startLocale: KLocale.id,
+        startLocale: KLocale.id.value,
         assetLoader: YamlAssetLoader(),
       ),
     );
@@ -37,9 +35,6 @@ void main() async {
 
 Future<void> _loadAllService() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
   await EasyLocalization.ensureInitialized();
   await SharedPrefService.initPrefService();
 }

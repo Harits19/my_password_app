@@ -6,7 +6,7 @@ class PasswordState extends Equatable {
   final List<PasswordModel> listPassword;
   final PasswordModel? appPassword;
   final bool isAuthenticated;
-  final PasswordStateEnum passwordState;
+  final PasswordStateEnum? passwordState;
   final bool showAuthenticationDialog;
 
   PasswordState({

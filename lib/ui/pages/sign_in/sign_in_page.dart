@@ -6,7 +6,7 @@ import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:my_password_app/ui/app_ui/show_helper.dart';
 import 'package:my_password_app/ui/pages/home/home_page.dart';
-import 'package:my_password_app/ui/app_ui/navigator_helper.dart';
+import 'package:my_password_app/core/extensions/context_extension.dart';
 
 class SignInPage extends StatelessWidget {
   static const routeName = "/sign-in";
@@ -30,7 +30,7 @@ class SignInPage extends StatelessWidget {
               BlocListener<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthSignIn) {
-                    NavigatorHelper.popAll(context, HomePage.routeName);
+                    context.popAll(HomePage.routeName);
                   }
                 },
                 child: ElevatedButton(
@@ -40,7 +40,7 @@ class SignInPage extends StatelessWidget {
                   onPressed: () async {
                     ShowHelper.showLoading(context);
                     try {
-                      await authCubit.signInWithGoogle();
+                      // TODO
                     } catch (e) {
                       ShowHelper.snackbar(context, e);
                     }
