@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:my_password_app/core/extensions/string_extension.dart';
 import 'package:my_password_app/core/models/password_application_model.dart';
+import 'package:my_password_app/core/services/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum _Key {
@@ -11,26 +12,21 @@ enum _Key {
 }
 
 class SharedPrefService {
-  static SharedPreferences? prefs;
-
-  static Future<void> initPrefService() async {
-    prefs = await SharedPreferences.getInstance();
-  }
-
+  
   static bool isFirstInstall() {
-    return prefs.getBoolV2(_Key.isFirstLogin);
+    return Services.prefs.getBoolV2(_Key.isFirstLogin);
   }
 
   static Future<void> setFirsInstall() async {
-    await prefs.setBoolV2(_Key.isFirstLogin, true);
+    await Services.prefs.setBoolV2(_Key.isFirstLogin, true);
   }
 
   static bool useBiometric() {
-    return prefs.getBoolV2(_Key.useBiometric);
+    return Services.prefs.getBoolV2(_Key.useBiometric);
   }
 
   static Future<void> setUseBiometric() async {
-    await prefs.setBoolV2(_Key.useBiometric, true);
+    await Services.prefs.setBoolV2(_Key.useBiometric, true);
   }
 
   static Future<void> setListPassword(
@@ -41,14 +37,14 @@ class SharedPrefService {
 
     // return;
     final encoded = jsonEncode(toJson);
-    await prefs.setStringV2(
+    await Services.prefs.setStringV2(
       _Key.listPassword,
       encoded,
     );
   }
 
   static List<PasswordModel> getListPassword() {
-    final fromJson = prefs.getStringV2(_Key.listPassword);
+    final fromJson = Services.prefs.getStringV2(_Key.listPassword);
     if (fromJson.isNullEmpty) {
       return [];
     }

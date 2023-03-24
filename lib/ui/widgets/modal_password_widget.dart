@@ -6,6 +6,7 @@ import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:my_password_app/ui/app_ui/show_helper.dart';
+import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
 
 class ModalPasswordWidget extends StatefulWidget {
   ModalPasswordWidget({
@@ -144,7 +145,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                                 AppConfig.appPassword &&
                             !_isAppPassword) {
                           Navigator.pop(context);
-                          ShowHelper.snackbar(context,
+                          SnackBarWidget.show(context,
                               'Dont fill name with "${AppConfig.appPassword}"');
                           return;
                         }

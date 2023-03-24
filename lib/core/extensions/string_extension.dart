@@ -7,6 +7,8 @@ extension StringNullExtension on String? {
     return (this ?? "").trim().isEmpty;
   }
 
+  bool get isNotNullEmpty => !isNullEmpty;
+
   String get toObscureText {
     if (this == null) return "";
     String obscureText = '';

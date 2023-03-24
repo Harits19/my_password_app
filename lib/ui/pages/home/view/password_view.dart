@@ -8,6 +8,7 @@ import 'package:my_password_app/cubits/password/password_cubit.dart';
 import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/app_ui/show_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
 
 class PasswordView extends StatefulWidget {
   PasswordView({
@@ -83,7 +84,7 @@ class _PasswordViewState extends State<PasswordView> {
             passwordModel: passwordModel,
           );
         } catch (e) {
-          ShowHelper.snackbar(context, e.toString());
+          SnackBarWidget.show(context, e.toString());
         }
         context.pop();
       },
@@ -141,7 +142,7 @@ class _PasswordViewState extends State<PasswordView> {
           child: Icon(Icons.copy),
           onPressed: () {
             FlutterClipboard.copy(passwordModel.password ?? "").then(
-                (value) => ShowHelper.snackbar(context, 'successCopy'.tr()));
+                (value) => SnackBarWidget.show(context, 'successCopy'.tr()));
           },
         ),
       ),

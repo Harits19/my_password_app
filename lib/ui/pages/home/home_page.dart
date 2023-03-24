@@ -14,6 +14,7 @@ import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/core/extensions/context_extension.dart';
 import 'package:my_password_app/ui/app_ui/state_helper.dart';
 import 'package:my_password_app/ui/utils/dialog_util.dart';
+import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                     await _passwordRead.setAppPassword(val.password!);
                   } catch (e) {
                     print("error " + e.toString());
-                    ShowHelper.snackbar(context, e);
+                    SnackBarWidget.show(context, e);
                   }
                   context.pop();
                 },
@@ -128,7 +129,7 @@ class _HomePageState extends State<HomePage> {
             try {
               await _passwordRead.addPassword(passwordModel: val);
             } catch (e) {
-              ShowHelper.snackbar(context, e.toString());
+              SnackBarWidget.show(context, e.toString());
             }
             context.pop();
           },

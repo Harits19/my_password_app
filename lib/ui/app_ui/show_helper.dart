@@ -6,13 +6,7 @@ import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 class ShowHelper {
   ShowHelper._();
 
-  static void snackbar(BuildContext context, dynamic text) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(text.toString()),
-      ),
-    );
-  }
+  
 
   static void pop(BuildContext context) {
     Navigator.pop(context);
