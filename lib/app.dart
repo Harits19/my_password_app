@@ -43,17 +43,7 @@ class App extends StatelessWidget {
               routes: {
                 ...kRoute.map((key, value) => MapEntry(key, (_) => value))
               },
-              builder: (context, child) {
-                return Overlay(
-                  initialEntries: [
-                    OverlayEntry(
-                      builder: (context) => BlurInactiveWidget(
-                        child: child,
-                      ),
-                    ),
-                  ],
-                );
-              },
+              
             ),
           );
         },

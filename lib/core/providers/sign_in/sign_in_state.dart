@@ -1,23 +1,35 @@
 import 'package:my_password_app/core/extensions/string_extension.dart';
-import 'package:my_password_app/core/models/master_password_model.dart';
 
 class SignInState {
-  final MasterPasswordModel? masterPasswordModel;
   final bool isLoggedIn;
-
-  bool get haveMasterPassword => (masterPasswordModel?.password).isNotNullEmpty;
+  final String? password;
+  final bool useFingerprint;
 
   SignInState({
-    this.masterPasswordModel,
+    this.password,
     this.isLoggedIn = false,
+    this.useFingerprint = false,
   });
 
   SignInState copyWith({
     bool? isLoggedIn,
+    bool? useFingerprint,
   }) {
     return SignInState(
-      masterPasswordModel: masterPasswordModel,
+      password: password,
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
+      useFingerprint: useFingerprint ?? this.useFingerprint,
     );
   }
+
+  SignInState.fromJson(Map<String, dynamic> json)
+      : this.password = json['password'],
+        this.useFingerprint = json['useFingerprint'],
+        this.isLoggedIn = false;
+
+  Map<String, dynamic> toJson() => {
+        'password': this.password,
+        'useFingerprint': this.useFingerprint,
+      };
+  bool get haveMasterPassword => (password).isNotNullEmpty;
 }
