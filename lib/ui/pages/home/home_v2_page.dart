@@ -17,8 +17,15 @@ class _HomeV2PageState extends ConsumerState<HomeV2Page> {
     final signInRead = ref.read(signInProvider.notifier);
     print(signInWatch.useFingerprint);
     return Scaffold(
-      appBar: AppBar(),
-      drawer: Drawer(
+      floatingActionButton: Builder(builder: (context) {
+        return FloatingActionButton(
+          onPressed: () {
+            Scaffold.of(context).openEndDrawer();
+          },
+          child: Icon(Icons.menu),
+        );
+      }),
+      endDrawer: Drawer(
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(KSize.s16),
