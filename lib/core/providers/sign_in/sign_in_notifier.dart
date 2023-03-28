@@ -49,7 +49,9 @@ class SigInNotifier extends StateNotifier<SignInState> {
   Future<bool> authWithBiometric(BuildContext context) async {
     try {
       final isAuthenticated = await LocalAuthService.authenticate();
-      state = state.copyWith(isLoggedIn: true);
+      if (isAuthenticated) {
+        state = state.copyWith(isLoggedIn: true);
+      }
       return isAuthenticated;
     } on PlatformException catch (e) {
       SnackBarWidget.show(context, e.message);
