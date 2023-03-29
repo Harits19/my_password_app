@@ -19,19 +19,17 @@ import 'package:my_password_app/utils/app_bloc_observer.dart';
 
 void main() async {
   await _loadAllService();
-  BlocOverrides.runZoned(() {
-    runApp(
-      EasyLocalization(
-        child: ProviderScope(child: App()),
-        supportedLocales: KLocale.values.map((e) => e.value).toList(),
-        fallbackLocale: KLocale.id.value,
-        path: KAssets.translations,
-        saveLocale: true,
-        startLocale: KLocale.id.value,
-        assetLoader: YamlAssetLoader(),
-      ),
-    );
-  }, blocObserver: AppBlocObserver());
+  runApp(
+    EasyLocalization(
+      child: ProviderScope(child: App()),
+      supportedLocales: KLocale.values.map((e) => e.value).toList(),
+      fallbackLocale: KLocale.id.value,
+      path: KAssets.translations,
+      saveLocale: true,
+      startLocale: KLocale.id.value,
+      assetLoader: YamlAssetLoader(),
+    ),
+  );
 }
 
 Future<void> _loadAllService() async {
