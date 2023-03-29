@@ -1,16 +1,16 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/extensions/context_extension.dart';
 import 'package:my_password_app/core/extensions/string_extension.dart';
-import 'package:my_password_app/core/models/password_application_model.dart';
-import 'package:my_password_app/cubits/password/password_cubit.dart';
+import 'package:my_password_app/core/models/password_model.dart';
+import 'package:my_password_app/core/providers/password/password_notifier.dart';
 import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
-import 'package:my_password_app/ui/app_ui/show_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
 
-class PasswordView extends StatefulWidget {
+class PasswordView extends ConsumerStatefulWidget {
   PasswordView({
     Key? key,
     required this.passwordModel,
@@ -21,14 +21,14 @@ class PasswordView extends StatefulWidget {
   final int index;
 
   @override
-  State<PasswordView> createState() => _PasswordViewState();
+  ConsumerState<PasswordView> createState() => _PasswordViewState();
 }
 
-class _PasswordViewState extends State<PasswordView> {
+class _PasswordViewState extends ConsumerState<PasswordView> {
   bool _isObscure = true;
   bool _isDelete = false;
   late final passwordModel = widget.passwordModel;
-  late final passwordRead = context.read<PasswordCubit>();
+  late final passwordRead = ref.read(passwordProvider.notifier);
 
   @override
   Widget build(BuildContext context) {
@@ -43,24 +43,26 @@ class _PasswordViewState extends State<PasswordView> {
     return Card(
       color: _isDelete ? Colors.red : null,
       child: InkWell(
-        child: Column(
-          children: [
-            ListTile(
-              title: Text(
-                title ?? "",
+        child: Padding(
+          padding: const EdgeInsets.all(KSize.s8),
+          child: Column(
+            children: [
+              ListTile(
+                title: Text(
+                  title ?? "",
+                ),
+                subtitle: Text(
+                  subtitle ?? "",
+                ),
               ),
-              subtitle: Text(
-                subtitle ?? "",
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: KSize.s8),
+                child: Row(
+                  children: _isDelete ? _deleteButton() : _toolWidget(),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: KSize.s8),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: _isDelete ? _deleteButton() : _toolWidget(),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
         onLongPress: () {
           _isDelete = true;
@@ -71,21 +73,15 @@ class _PasswordViewState extends State<PasswordView> {
   }
 
   void _handlerEdit() async {
-    ShowHelper.modalPassword(
-      name: passwordModel.name,
-      password: passwordModel.password,
+    ModalPasswordWidget.show(
+      value: passwordModel,
       context: context,
       onPressedSave: (val) async {
-        context.pop();
-        ShowHelper.showLoading(context);
-        try {
-          passwordRead.updatePassword(
-            index: widget.index,
-            passwordModel: passwordModel,
-          );
-        } catch (e) {
-          SnackBarWidget.show(context, e.toString());
-        }
+        print(val.name);
+        print(val.password);
+        print(passwordModel.id);
+        print(val.id);
+        ref.read(passwordProvider.notifier).update(val);
         context.pop();
       },
     );
@@ -99,7 +95,7 @@ class _PasswordViewState extends State<PasswordView> {
           onPressed: () {
             _isDelete = false;
             setState(() {});
-            passwordRead.deletePassword(passwordModel);
+            passwordRead.remove(passwordModel.id);
           },
         ),
       ),
@@ -129,14 +125,14 @@ class _PasswordViewState extends State<PasswordView> {
           },
         ),
       ),
-      KSize.hori8,
+      KSize.hori16,
       Expanded(
         child: ElevatedButton(
           child: Icon(Icons.edit),
           onPressed: _handlerEdit,
         ),
       ),
-      KSize.hori8,
+      KSize.hori16,
       Expanded(
         child: ElevatedButton(
           child: Icon(Icons.copy),

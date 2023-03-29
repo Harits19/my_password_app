@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:my_password_app/core/extensions/string_extension.dart';
-import 'package:my_password_app/core/models/password_application_model.dart';
+import 'package:my_password_app/core/models/password_model.dart';
 import 'package:my_password_app/core/services/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

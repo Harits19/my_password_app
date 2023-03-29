@@ -4,15 +4,15 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:my_password_app/core/extensions/string_extension.dart';
 import 'package:my_password_app/core/konstans/key.dart';
-import 'package:my_password_app/core/models/password_application_model.dart';
+import 'package:my_password_app/core/models/password_model.dart';
 import 'package:my_password_app/core/services/shared_prefs_service.dart';
 
 part 'password_state.dart';
 
-class PasswordCubit extends Cubit<PasswordState> {
+class PasswordCubit extends Cubit<PasswordOldState> {
   PasswordCubit()
       : super(
-          PasswordState(
+          PasswordOldState(
             listPassword: [],
             isAuthenticated: false,
             appPassword: null,
@@ -29,7 +29,7 @@ class PasswordCubit extends Cubit<PasswordState> {
         .toList();
     if (appPassword.isEmpty) {
       emit(
-        PasswordState(
+        PasswordOldState(
           listPassword: listPassword,
           isAuthenticated: false,
           appPassword: null,
@@ -40,7 +40,7 @@ class PasswordCubit extends Cubit<PasswordState> {
     }
 
     emit(
-      PasswordState(
+      PasswordOldState(
         listPassword: listPassword,
         appPassword: appPassword.first,
         isAuthenticated: state.isAuthenticated,

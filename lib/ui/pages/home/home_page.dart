@@ -9,11 +9,12 @@ import 'package:my_password_app/ui/app_ui/konstans/k_locale.dart';
 import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_password_app/ui/app_ui/show_helper.dart';
-import 'package:my_password_app/ui/pages/home/view/password_view.dart';
+import 'package:my_password_app/ui/pages/home/views/password_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/core/extensions/context_extension.dart';
 import 'package:my_password_app/ui/app_ui/state_helper.dart';
 import 'package:my_password_app/ui/utils/dialog_util.dart';
+import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -56,7 +57,7 @@ class _HomePageState extends State<HomePage> {
       builder: (context, authState) {
         print("authState : " + authState.toString());
 
-        return BlocConsumer<PasswordCubit, PasswordState>(
+        return BlocConsumer<PasswordCubit, PasswordOldState>(
           listener: (context, state) {
             final passwordState = state.passwordState;
             if (state.isAuthenticated == false &&
@@ -66,9 +67,8 @@ class _HomePageState extends State<HomePage> {
               );
             }
             if (passwordState == PasswordStateEnum.createAppPassword) {
-              ShowHelper.modalPassword(
+              ModalPasswordWidget.show(
                 context: context,
-                name: AppConfig.appPassword,
                 onPressedSave: (val) async {
                   final password = val.password;
                   if (password.isNullEmpty) return;
@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> {
     return FloatingActionButton(
       child: Icon(Icons.add),
       onPressed: () {
-        ShowHelper.modalPassword(
+        ModalPasswordWidget.show(
           context: context,
           onPressedSave: (val) async {
             context.pop();

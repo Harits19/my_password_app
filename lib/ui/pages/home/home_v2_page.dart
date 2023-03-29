@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/core/providers/sign_in/sign_in_notifier.dart';
+import 'package:my_password_app/core/providers/password/password_notifier.dart';
 import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
+import 'package:my_password_app/ui/pages/home/views/drawer_view.dart';
+import 'package:my_password_app/ui/pages/home/views/floating_button_view.dart';
+import 'package:my_password_app/ui/pages/home/views/password_view.dart';
 
 class HomeV2Page extends ConsumerStatefulWidget {
   const HomeV2Page({super.key});
@@ -13,49 +16,29 @@ class HomeV2Page extends ConsumerStatefulWidget {
 class _HomeV2PageState extends ConsumerState<HomeV2Page> {
   @override
   Widget build(BuildContext context) {
-    final signInWatch = ref.watch(signInProvider);
-    final signInRead = ref.read(signInProvider.notifier);
-    print(signInWatch.useFingerprint);
+    final passwordWatch = ref.watch(passwordProvider);
     return Scaffold(
-      floatingActionButton: Builder(builder: (context) {
-        return FloatingActionButton(
-          onPressed: () {
-            Scaffold.of(context).openEndDrawer();
-          },
-          child: Icon(Icons.menu),
-        );
-      }),
-      endDrawer: Drawer(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(KSize.s16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text('Unlock with Fingerprint'),
-                    ),
-                    Switch(
-                      value: signInWatch.useFingerprint,
-                      onChanged: (val) async {
-                        final isAuthenticated =
-                            await signInRead.authWithBiometric(context);
-                        if (isAuthenticated) {
-                          signInRead.toggleUseFingerprint();
-                        }
-                      },
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
+      floatingActionButton: FloatingButtonView(),
+      endDrawer: DrawerView(),
       body: SafeArea(
-        child: Column(),
+        child: ListView(
+          padding: EdgeInsets.all(KSize.s16),
+          children: [
+            ...List.generate(
+              passwordWatch.length,
+              (index) {
+                return Padding(
+                  key: ObjectKey(passwordWatch[index]),
+                  padding: const EdgeInsets.symmetric(vertical: KSize.s4),
+                  child: PasswordView(
+                    passwordModel: passwordWatch[index],
+                    index: index,
+                  ),
+                );
+              },
+            )
+          ],
+        ),
       ),
     );
   }
