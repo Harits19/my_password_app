@@ -82,7 +82,7 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
         print(passwordModel.id);
         print(val.id);
         ref.read(passwordProvider.notifier).update(val);
-        context.pop();
+        Navigator.pop(context);
       },
     );
   }

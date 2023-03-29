@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_password_app/cubits/password/password_cubit.dart';
 
 class HandleTimeOutWidget extends StatelessWidget {
   const HandleTimeOutWidget({
@@ -27,7 +25,8 @@ class HandleTimeOutWidget extends StatelessWidget {
   }
 
   void _onInteraction(BuildContext context) {
-    final passwordRead = context.read<PasswordCubit>();
-    passwordRead.restartTimer();
+    // final passwordRead = context.read<PasswordCubit>();
+    // passwordRead.restartTimer();
+    // TODO
   }
 }

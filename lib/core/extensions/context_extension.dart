@@ -6,9 +6,6 @@ extension BuildContextExtension on BuildContext {
         this, MaterialPageRoute(builder: ((context) => page)));
   }
 
-  pop() {
-    Navigator.pop(this);
-  }
 
   popAll(String routeName) {
     Navigator.of(this)

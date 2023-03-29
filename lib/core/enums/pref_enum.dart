@@ -1,3 +1,4 @@
 enum PrefEnum {
   listPassword,
+  keyMasterPassword,
 }

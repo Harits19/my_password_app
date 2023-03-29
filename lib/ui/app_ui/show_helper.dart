@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_password_app/core/konstans/key.dart';
-import 'package:my_password_app/core/models/password_model.dart';
-import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 
 class ShowHelper {
   ShowHelper._();
-
-  
 
   static void pop(BuildContext context) {
     Navigator.pop(context);
@@ -30,6 +25,4 @@ class ShowHelper {
       },
     );
   }
-
-  
 }

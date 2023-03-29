@@ -1,5 +1,3 @@
-import 'package:characters/characters.dart';
-
 class StringExtensionHelper {}
 
 extension StringNullExtension on String? {
@@ -10,11 +8,6 @@ extension StringNullExtension on String? {
   bool get isNotNullEmpty => !isNullEmpty;
 
   String get toObscureText {
-    if (this == null) return "";
-    String obscureText = '';
-    for (final _ in this!.characters) {
-      obscureText += '*';
-    }
-    return obscureText;
+    return (this ?? '').split('').map((e) => '*').join();
   }
 }

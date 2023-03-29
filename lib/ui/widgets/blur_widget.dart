@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_password_app/cubits/password/password_cubit.dart';
 
 class BlurInactiveWidget extends StatefulWidget {
   const BlurInactiveWidget({
@@ -46,8 +45,7 @@ class _BlurInactiveWidgetState extends State<BlurInactiveWidget>
     });
 
     if (!_shouldBlur) {
-      final passwordRead = context.read<PasswordCubit>();
-      passwordRead.resetAuthentication();
+      // TODO
     }
   }
 
