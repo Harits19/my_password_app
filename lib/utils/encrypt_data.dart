@@ -3,7 +3,7 @@ import 'package:encrypt/encrypt.dart';
 class EncryptData {
   static final iv = IV.fromLength(16);
 
-  static encode(String plainText) {
+  static String encode(String plainText) {
     final encrypted = encrypter.encrypt(plainText, iv: iv);
     return encrypted.base64;
   }

@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/models/password_model.dart';
+import 'package:my_password_app/core/services/password_service.dart';
 
 final passwordProvider =
     StateNotifierProvider<PasswordNotifier, List<PasswordModel>>(
-        (ref) => PasswordNotifier());
+        (ref) => PasswordNotifier()..get());
 
 class PasswordNotifier extends StateNotifier<List<PasswordModel>> {
   PasswordNotifier() : super([]);
@@ -11,11 +12,13 @@ class PasswordNotifier extends StateNotifier<List<PasswordModel>> {
   void add(PasswordModel passwordModel) {
     state.add(passwordModel);
     state = [...state];
+    sync();
   }
 
   void remove(String id) {
     state.removeWhere((element) => element.id == id);
     state = [...state];
+    sync();
   }
 
   void update(PasswordModel passwordModel) {
@@ -24,11 +27,16 @@ class PasswordNotifier extends StateNotifier<List<PasswordModel>> {
           (e) => e.id == passwordModel.id ? passwordModel : e,
         )
         .toList();
-
-    print(state.first.name);
+    sync();
   }
 
-  void _sync(){
-    
+  void sync() async {
+    await PasswordService.save(state);
+    get();
+  }
+
+  void get() {
+    final result = PasswordService.get();
+    state = result;
   }
 }

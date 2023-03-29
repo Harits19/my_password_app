@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:my_password_app/core/extensions/string_extension.dart';
 import 'package:my_password_app/core/konstans/key.dart';
 import 'package:my_password_app/core/models/password_model.dart';
@@ -23,6 +22,7 @@ class PasswordCubit extends Cubit<PasswordOldState> {
   }
 
   void getListPassword() {
+    return;
     final listPassword = SharedPrefService.getListPassword();
     final appPassword = listPassword
         .where((element) => element.name == AppConfig.appPassword)

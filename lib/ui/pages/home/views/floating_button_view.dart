@@ -16,17 +16,19 @@ class FloatingButtonView extends ConsumerStatefulWidget {
 class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
   @override
   Widget build(BuildContext context) {
+    // return SizedBox();
     final passwordRead = ref.read(passwordProvider.notifier);
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         FloatingActionButton(
+          heroTag: 'floatingButton1',
           onPressed: () {
             ModalPasswordWidget.show(
               context: context,
               onPressedSave: (val) {
-                Navigator.pop(context);
                 passwordRead.add(val);
+                Navigator.pop(context);
               },
             );
           },
@@ -34,7 +36,10 @@ class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
         ),
         KSize.hori8,
         FloatingActionButton(
+          heroTag: 'floatingButton2',
           onPressed: () {
+            // passwordRead.sync();
+            // return;
             Scaffold.of(context).openEndDrawer();
           },
           child: Icon(Icons.menu),
