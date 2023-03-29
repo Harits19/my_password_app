@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/providers/password/password_notifier.dart';
-import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
+import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 
 class FloatingButtonView extends ConsumerStatefulWidget {

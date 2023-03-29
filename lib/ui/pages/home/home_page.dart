@@ -1,8 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:my_password_app/ui/app_ui/konstans/k_locale.dart';
-import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
-import 'package:my_password_app/ui/app_ui/show_helper.dart';
+import 'package:my_password_app/ui/konstans/k_size.dart';
+import 'package:my_password_app/ui/widgets/loading_widget.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -56,19 +55,7 @@ class _DrawerView extends StatelessWidget {
             DropdownButton<Locale>(
               value: EasyLocalization.of(context)?.currentLocale,
               isExpanded: true,
-              items: [
-                ...KLocale.values.map(
-                  (e) => DropdownMenuItem(
-                    value: e.value,
-                    onTap: () {
-                      EasyLocalization.of(context)?.setLocale(e.value);
-                    },
-                    child: Text(
-                      e.toString(),
-                    ),
-                  ),
-                ),
-              ],
+              items: [],
               onChanged: (val) {},
             ),
             KSize.verti16,
@@ -85,7 +72,7 @@ class _DrawerView extends StatelessWidget {
                 "signOutGoogle".tr(),
               ),
               onPressed: () {
-                ShowHelper.showLoading(context);
+                LoadingWidget.show(context);
                 Navigator.pop(context);
               },
             ),

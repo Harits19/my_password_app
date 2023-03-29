@@ -1,11 +1,11 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/core/extensions/context_extension.dart';
-import 'package:my_password_app/core/extensions/string_extension.dart';
-import 'package:my_password_app/core/models/password_model.dart';
+import 'package:my_password_app/extensions/context_extension.dart';
+import 'package:my_password_app/extensions/string_extension.dart';
+import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/core/providers/password/password_notifier.dart';
-import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
+import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';

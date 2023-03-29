@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_password_app/core/extensions/string_extension.dart';
-import 'package:my_password_app/core/models/password_model.dart';
+import 'package:my_password_app/extensions/string_extension.dart';
+import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
-import 'package:my_password_app/ui/app_ui/konstans/k_size.dart';
+import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class ModalPasswordWidget extends StatefulWidget {
