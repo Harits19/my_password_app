@@ -3,7 +3,6 @@ import 'package:my_password_app/extensions/string_extension.dart';
 import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class ModalPasswordWidget extends StatefulWidget {
   ModalPasswordWidget({
@@ -80,7 +79,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
-                hintText: 'applicationName'.tr(),
+                hintText: "Name",
               ),
               onChanged: (val) {
                 setState(() {});
@@ -90,7 +89,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
-                hintText: tr("password"),
+                hintText: "Password",
               ),
               onChanged: (val) {
                 setState(() {});
@@ -113,7 +112,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                           },
                         ),
                         Text(
-                          tr(e.key),
+                          e.key,
                         )
                       ],
                     ),
@@ -141,7 +140,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                 ),
                 Expanded(
                   child: ElevatedButton(
-                    child: Text(tr("generateRandomPassword")),
+                    child: Text("Generate random password"),
                     onPressed: _disableGeneratePassword
                         ? null
                         : () {
@@ -160,7 +159,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
             ),
             KSize.verti24,
             ElevatedButton(
-              child: Text(tr("save")),
+              child: Text("Save"),
               onPressed: _disableSavePassword
                   ? null
                   : () {

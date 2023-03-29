@@ -6,7 +6,6 @@ import 'package:my_password_app/extensions/string_extension.dart';
 import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/core/providers/password/password_notifier.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
 
@@ -32,11 +31,10 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
 
   @override
   Widget build(BuildContext context) {
-    final title = _isDelete
-        ? '${"deleteData".tr()} ${passwordModel.name}'
-        : passwordModel.name;
+    final title =
+        _isDelete ? 'Delete  ${passwordModel.name}' : passwordModel.name;
     final subtitle = _isDelete
-        ? "areYouSure".tr()
+        ? "Are you sure?"
         : _isObscure
             ? passwordModel.password.toObscureText
             : passwordModel.password;
@@ -91,7 +89,7 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
     return [
       Expanded(
         child: ElevatedButton(
-          child: Text('yes'.tr()),
+          child: Text('Yes'),
           onPressed: () {
             _isDelete = false;
             setState(() {});
@@ -102,7 +100,7 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
       KSize.hori8,
       Expanded(
         child: ElevatedButton(
-          child: Text('no'.tr()),
+          child: Text('No'),
           onPressed: () {
             _isDelete = false;
             setState(() {});
@@ -138,7 +136,11 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
           child: Icon(Icons.copy),
           onPressed: () {
             FlutterClipboard.copy(passwordModel.password ?? "").then(
-                (value) => SnackBarWidget.show(context, 'successCopy'.tr()));
+              (value) => SnackBarWidget.show(
+                context,
+                'Success Copy',
+              ),
+            );
           },
         ),
       ),

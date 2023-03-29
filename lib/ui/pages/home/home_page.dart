@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/widgets/loading_widget.dart';
@@ -51,13 +50,8 @@ class _DrawerView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text("language".tr()),
-            DropdownButton<Locale>(
-              value: EasyLocalization.of(context)?.currentLocale,
-              isExpanded: true,
-              items: [],
-              onChanged: (val) {},
-            ),
+            Text("Language"),
+            
             KSize.verti16,
             ElevatedButton(
               child: Text('Backup to Google Drive'),
@@ -67,15 +61,7 @@ class _DrawerView extends StatelessWidget {
               child: Text('Restore from Google Drive'),
               onPressed: () {},
             ),
-            ElevatedButton(
-              child: Text(
-                "signOutGoogle".tr(),
-              ),
-              onPressed: () {
-                LoadingWidget.show(context);
-                Navigator.pop(context);
-              },
-            ),
+            
           ],
         ),
       ),

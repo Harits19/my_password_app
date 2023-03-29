@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/providers/theme/theme_notifier.dart';
@@ -24,9 +23,6 @@ class _AppState extends ConsumerState<App> {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: SignInPage.routeName,
-        localizationsDelegates: context.localizationDelegates,
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
         darkTheme: ThemeData.dark(),
         themeMode: ref.watch(themeProvider),
         routes: {...kRoute.map((key, value) => MapEntry(key, (_) => value))},
