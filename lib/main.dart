@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/app.dart';
 import 'package:my_password_app/core/services/services.dart';
-import 'package:my_password_app/core/services/shared_prefs_service.dart';
 
 import 'package:my_password_app/ui/app_ui/konstans/k_assets.dart';
 import 'package:my_password_app/ui/app_ui/konstans/k_locale.dart';

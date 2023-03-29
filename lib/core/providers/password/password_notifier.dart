@@ -27,4 +27,8 @@ class PasswordNotifier extends StateNotifier<List<PasswordModel>> {
 
     print(state.first.name);
   }
+
+  void _sync(){
+    
+  }
 }

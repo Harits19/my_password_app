@@ -50,6 +50,8 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
     text: widget.value?.password,
   );
 
+  int passwordLength = 10;
+
   @override
   void dispose() {
     super.dispose();
@@ -96,11 +98,11 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
             ),
             KSize.verti24,
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ..._passwordConfig.entries.map(
                   (e) => Expanded(
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Checkbox(
                           value: e.value,
@@ -119,20 +121,43 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                 ),
               ],
             ),
-            ElevatedButton(
-                child: Text(tr("generateRandomPassword")),
-                onPressed: _disableGeneratePassword
-                    ? null
-                    : () {
-                        final temp = GeneratePassword.getRandomString(
-                          letter: _passwordConfig["letter"]!,
-                          number: _passwordConfig["number"]!,
-                          symbol: _passwordConfig["symbol"]!,
-                        );
-                        _passwordController.text = temp;
-
-                        setState(() {});
-                      }),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    passwordLength--;
+                    setState(() {});
+                  },
+                  icon: Icon(Icons.remove),
+                ),
+                Text('$passwordLength'),
+                IconButton(
+                  onPressed: () {
+                    passwordLength++;
+                    setState(() {});
+                  },
+                  icon: Icon(Icons.add),
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                    child: Text(tr("generateRandomPassword")),
+                    onPressed: _disableGeneratePassword
+                        ? null
+                        : () {
+                            final temp = GeneratePassword.getRandomString(
+                              length: passwordLength,
+                              letter: _passwordConfig["letter"]!,
+                              number: _passwordConfig["number"]!,
+                              symbol: _passwordConfig["symbol"]!,
+                            );
+                            _passwordController.text = temp;
+                            setState(() {});
+                          },
+                  ),
+                ),
+              ],
+            ),
             KSize.verti24,
             ElevatedButton(
               child: Text(tr("save")),
