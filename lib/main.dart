@@ -4,8 +4,6 @@ import 'package:my_password_app/app.dart';
 import 'package:my_password_app/core/services/services.dart';
 
 /// TODO : Release apk
-/// TODO : add forget password
-/// TODO : implement export and import file
 
 void main() async {
   await _loadAllService();

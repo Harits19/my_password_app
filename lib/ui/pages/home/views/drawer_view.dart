@@ -10,6 +10,7 @@ import 'package:my_password_app/ui/pages/home/views/confirm_import_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
 import 'package:my_password_app/ui/widgets/space_widget.dart';
+import 'package:my_password_app/ui/widgets/text_field_password_widget.dart';
 
 class DrawerView extends ConsumerStatefulWidget {
   const DrawerView({
@@ -21,6 +22,8 @@ class DrawerView extends ConsumerStatefulWidget {
 }
 
 class _DrawerViewState extends ConsumerState<DrawerView> {
+  String oldPassword = '', newPassword = '', confirmNewPassword = '';
+
   @override
   Widget build(BuildContext context) {
     final signInWatch = ref.watch(signInProvider);
@@ -41,10 +44,14 @@ class _DrawerViewState extends ConsumerState<DrawerView> {
     return Drawer(
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(KSize.s16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          padding: MediaQuery.of(context).viewInsets,
+          child: ListView(
+            padding: const EdgeInsets.all(KSize.s16),
             children: [
+              SpaceWidget.verti24,
+              SpaceWidget.verti24,
+              Divider(),
+              SpaceWidget.verti24,
               Row(
                 children: [
                   Expanded(
@@ -103,6 +110,52 @@ class _DrawerViewState extends ConsumerState<DrawerView> {
                 },
                 child: Text('Import'),
               ),
+              SpaceWidget.verti24,
+              SpaceWidget.verti24,
+              Divider(),
+              SpaceWidget.verti24,
+              TextFieldPasswordWidget(
+                decoration: InputDecoration(
+                  labelText: 'Current Master Password',
+                ),
+                onChanged: (val) {
+                  oldPassword = val;
+                  setState(() {});
+                },
+              ),
+              TextFieldPasswordWidget(
+                decoration: InputDecoration(
+                  labelText: 'New Master Password',
+                ),
+                onChanged: (val) {
+                  newPassword = val;
+                  setState(() {});
+                },
+              ),
+              TextFieldPasswordWidget(
+                decoration: InputDecoration(
+                  labelText: 'Confirm Master Password',
+                ),
+                onChanged: (val) {
+                  confirmNewPassword = val;
+                  setState(() {});
+                },
+              ),
+              SpaceWidget.hori16,
+              TextButton(
+                child: Text('Change Password'),
+                onPressed: () async {
+                  try {
+                    await signInRead.updateMasterPassword(
+                      oldPassword,
+                      newPassword,
+                      confirmNewPassword,
+                    );
+                  } catch (e) {
+                    SnackBarWidget.show(context, e.toString());
+                  }
+                },
+              )
             ],
           ),
         ),

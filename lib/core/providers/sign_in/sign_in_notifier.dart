@@ -67,4 +67,15 @@ class SigInNotifier extends StateNotifier<SignInState> {
   void signOut() {
     state = state.copyWith(isLoggedIn: false);
   }
+
+  Future<void> updateMasterPassword(
+    String currentPassword,
+    String newPassword,
+    String confirmNewPassword,
+  ) async {
+    if (currentPassword != state.password) {
+      throw 'Old password not correct';
+    }
+    await createMasterPassword(newPassword, confirmNewPassword);
+  }
 }
