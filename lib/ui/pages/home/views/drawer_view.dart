@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_password_app/core/providers/password/password_notifier.dart';
 import 'package:my_password_app/core/providers/sign_in/sign_in_notifier.dart';
 import 'package:my_password_app/core/providers/theme/theme_notifier.dart';
+import 'package:my_password_app/extensions/context_extension.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
+import 'package:my_password_app/ui/pages/home/views/confirm_import_view.dart';
+import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/widgets/space_widget.dart';
 
 class DrawerView extends ConsumerStatefulWidget {
@@ -19,8 +23,19 @@ class _DrawerViewState extends ConsumerState<DrawerView> {
   Widget build(BuildContext context) {
     final signInWatch = ref.watch(signInProvider);
     final signInRead = ref.read(signInProvider.notifier);
+    final passwordRead = ref.read(passwordProvider.notifier);
     final themeRead = ref.read(themeProvider.notifier);
     final themeWatch = ref.watch(themeProvider);
+
+    ref.listen(
+      signInProvider,
+      (prev, next) {
+        if (!next.isLoggedIn) {
+          print('log out');
+          context.popAll(SignInPage());
+        }
+      },
+    );
     return Drawer(
       child: SafeArea(
         child: Padding(
@@ -61,7 +76,22 @@ class _DrawerViewState extends ConsumerState<DrawerView> {
                   if (val == null) return;
                   themeRead.setTheme(val);
                 },
-              )
+              ),
+              TextButton(
+                onPressed: () {
+                  passwordRead.export();
+                },
+                child: Text('Export'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final isConfirmed = await ConfirmImportView.show(context);
+                  if (!isConfirmed) return;
+                  await passwordRead.import();
+                  signInRead.signOut();
+                },
+                child: Text('Import'),
+              ),
             ],
           ),
         ),

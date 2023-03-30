@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/providers/sign_in/sign_in_notifier.dart';
+import 'package:my_password_app/extensions/context_extension.dart';
 import 'package:my_password_app/ui/konstans/k_assets.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/pages/sign_in/views/sign_in_finger_print_page.dart';
@@ -19,6 +20,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
   @override
   Widget build(BuildContext context) {
     final useFingerprint = ref.watch(signInProvider).useFingerprint;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(

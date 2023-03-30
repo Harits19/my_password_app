@@ -1,13 +1,23 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_password_app/core/providers/sign_in/sign_in_notifier.dart';
+import 'package:my_password_app/core/services/share_service.dart';
 import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/core/services/password_service.dart';
+import 'package:my_password_app/models/share_model.dart';
 
 final passwordProvider =
     StateNotifierProvider<PasswordNotifier, List<PasswordModel>>(
-        (ref) => PasswordNotifier()..get());
+  (ref) {
+    return PasswordNotifier(
+      ref,
+    )..get();
+  },
+);
 
 class PasswordNotifier extends StateNotifier<List<PasswordModel>> {
-  PasswordNotifier() : super([]);
+  PasswordNotifier(this.ref) : super([]);
+
+  final Ref ref;
 
   void add(PasswordModel passwordModel) {
     state.add(passwordModel);
@@ -30,7 +40,7 @@ class PasswordNotifier extends StateNotifier<List<PasswordModel>> {
     sync();
   }
 
-  void sync() async {
+  Future<void> sync() async {
     await PasswordService.save(state);
     get();
   }
@@ -38,5 +48,31 @@ class PasswordNotifier extends StateNotifier<List<PasswordModel>> {
   void get() {
     final result = PasswordService.get();
     state = result;
+  }
+
+  void export() {
+    ShareService().export(ShareModel(
+      signInState: ref.watch(signInProvider).copyWith(
+            useFingerprint: false,
+            isLoggedIn: false,
+          ),
+      passwords: state,
+    ));
+  }
+
+  Future<void> import() async {
+    final shareModel = await ShareService().import();
+
+    print(shareModel?.toJson());
+    final passwords = shareModel?.passwords;
+    final signInState = shareModel?.signInState;
+    if (passwords != null) {
+      state = passwords;
+      await sync();
+    }
+    if (signInState != null) {
+      final signRead = ref.read(signInProvider.notifier);
+      await signRead.import(signInState);
+    }
   }
 }

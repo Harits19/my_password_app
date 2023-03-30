@@ -58,4 +58,13 @@ class SigInNotifier extends StateNotifier<SignInState> {
       return false;
     }
   }
+
+  Future<void> import(SignInState signInState) async {
+    state = signInState;
+    await SignInService.saveState(state);
+  }
+
+  void signOut() {
+    state = state.copyWith(isLoggedIn: false);
+  }
 }
