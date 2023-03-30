@@ -8,6 +8,7 @@ import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
 import 'package:my_password_app/ui/widgets/space_widget.dart';
+import 'package:my_password_app/utils/my_print.dart';
 
 class PasswordView extends ConsumerStatefulWidget {
   PasswordView({
@@ -75,10 +76,10 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
       value: passwordModel,
       context: context,
       onPressedSave: (val) async {
-        print(val.name);
-        print(val.password);
-        print(passwordModel.id);
-        print(val.id);
+        myPrint(val.name);
+        myPrint(val.password);
+        myPrint(passwordModel.id);
+        myPrint(val.id);
         ref.read(passwordProvider.notifier).update(val);
         Navigator.pop(context);
       },

@@ -5,6 +5,7 @@ import 'package:my_password_app/core/providers/sign_in/sign_in_notifier.dart';
 import 'package:my_password_app/ui/pages/home/home_page.dart';
 import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
 import 'package:my_password_app/ui/widgets/text_field_password_widget.dart';
+import 'package:my_password_app/utils/my_print.dart';
 
 class SignInPasswordView extends ConsumerStatefulWidget {
   const SignInPasswordView({super.key});
@@ -21,7 +22,7 @@ class _SignInPasswordViewState extends ConsumerState<SignInPasswordView> {
     final signInWatch = ref.watch(signInProvider);
     final haveMasterPassword = signInWatch.haveMasterPassword;
     final signInRead = ref.read(signInProvider.notifier);
-    print(signInWatch.password);
+    myPrint(signInWatch.password);
     ref.listen(signInProvider, (prev, next) {
       context.pushAndReplace(HomePage());
     });

@@ -4,6 +4,7 @@ import 'package:my_password_app/core/services/share_service.dart';
 import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/core/services/password_service.dart';
 import 'package:my_password_app/models/share_model.dart';
+import 'package:my_password_app/utils/my_print.dart';
 
 final passwordProvider =
     StateNotifierProvider<PasswordNotifier, List<PasswordModel>>(
@@ -60,19 +61,17 @@ class PasswordNotifier extends StateNotifier<List<PasswordModel>> {
     ));
   }
 
-  Future<void> import() async {
+  Future<bool> import() async {
     final shareModel = await ShareService().import();
 
-    print(shareModel?.toJson());
-    final passwords = shareModel?.passwords;
-    final signInState = shareModel?.signInState;
-    if (passwords != null) {
-      state = passwords;
-      await sync();
-    }
-    if (signInState != null) {
-      final signRead = ref.read(signInProvider.notifier);
-      await signRead.import(signInState);
-    }
+    myPrint(shareModel?.toJson());
+    if (shareModel == null) return false;
+    final passwords = shareModel.passwords;
+    final signInState = shareModel.signInState;
+    state = passwords;
+    await sync();
+    final signRead = ref.read(signInProvider.notifier);
+    await signRead.import(signInState);
+    return true;
   }
 }

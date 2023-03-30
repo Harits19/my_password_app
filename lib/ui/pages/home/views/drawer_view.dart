@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/providers/password/password_notifier.dart';
@@ -7,6 +8,7 @@ import 'package:my_password_app/extensions/context_extension.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/pages/home/views/confirm_import_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
+import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
 import 'package:my_password_app/ui/widgets/space_widget.dart';
 
 class DrawerView extends ConsumerStatefulWidget {
@@ -85,10 +87,19 @@ class _DrawerViewState extends ConsumerState<DrawerView> {
               ),
               TextButton(
                 onPressed: () async {
-                  final isConfirmed = await ConfirmImportView.show(context);
-                  if (!isConfirmed) return;
-                  await passwordRead.import();
-                  signInRead.signOut();
+                  try {
+                    final isConfirmed = await ConfirmImportView.show(context);
+                    if (!isConfirmed) return;
+                    final imported = await passwordRead.import();
+                    if (!imported) return;
+                    signInRead.signOut();
+                  } catch (e) {
+                    var message = 'Unexpected error';
+                    if (kDebugMode) {
+                      message = e.toString();
+                    }
+                    SnackBarWidget.show(context, message);
+                  }
                 },
                 child: Text('Import'),
               ),
