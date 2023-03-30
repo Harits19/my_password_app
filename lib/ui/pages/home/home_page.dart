@@ -1,88 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_password_app/core/providers/password/password_notifier.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
-import 'package:my_password_app/ui/widgets/loading_widget.dart';
+import 'package:my_password_app/ui/pages/home/views/drawer_view.dart';
+import 'package:my_password_app/ui/pages/home/views/floating_button_view.dart';
+import 'package:my_password_app/ui/pages/home/views/password_view.dart';
 
-class HomePage extends StatefulWidget {
-  static const routeName = "/home";
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends ConsumerStatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomeV2PageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _HomeV2PageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
+    final passwordWatch = ref.watch(passwordProvider);
     return Scaffold(
-      appBar: _AppBarView(),
-      drawer: _DrawerView(),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(KSize.s16),
-        child: Column(
+      floatingActionButton: FloatingButtonView(),
+      endDrawer: DrawerView(),
+      body: SafeArea(
+        child: ListView(
+          padding: EdgeInsets.all(KSize.s16),
           children: [
             ...List.generate(
-              [].length,
+              passwordWatch.length,
               (index) {
-                return SizedBox();
+                return Padding(
+                  key: ObjectKey(passwordWatch[index]),
+                  padding: const EdgeInsets.symmetric(vertical: KSize.s4),
+                  child: PasswordView(
+                    passwordModel: passwordWatch[index],
+                    index: index,
+                  ),
+                );
               },
-            ),
+            )
           ],
         ),
       ),
     );
   }
-}
-
-class _DrawerView extends StatelessWidget {
-  const _DrawerView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: Padding(
-        padding: EdgeInsets.all(KSize.s16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text("Language"),
-            
-            KSize.verti16,
-            ElevatedButton(
-              child: Text('Backup to Google Drive'),
-              onPressed: () {},
-            ),
-            ElevatedButton(
-              child: Text('Restore from Google Drive'),
-              onPressed: () {},
-            ),
-            
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _AppBarView extends StatelessWidget implements PreferredSizeWidget {
-  _AppBarView({Key? key}) : super(key: key);
-
-  Widget build(BuildContext context) {
-    return AppBar(
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.nightlight),
-        )
-      ],
-    );
-  }
-
-  @override
-  Size get preferredSize => AppBar().preferredSize;
 }

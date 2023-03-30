@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/providers/password/password_notifier.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
+import 'package:my_password_app/ui/widgets/space_widget.dart';
 
 class FloatingButtonView extends ConsumerStatefulWidget {
   const FloatingButtonView({
@@ -34,7 +35,7 @@ class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
           },
           child: Icon(Icons.add),
         ),
-        KSize.hori8,
+        SpaceWidget.hori8,
         FloatingActionButton(
           heroTag: 'floatingButton2',
           onPressed: () {

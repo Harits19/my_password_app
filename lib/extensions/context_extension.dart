@@ -6,9 +6,4 @@ extension BuildContextExtension on BuildContext {
         this, MaterialPageRoute(builder: ((context) => page)));
   }
 
-
-  popAll(String routeName) {
-    Navigator.of(this)
-        .pushNamedAndRemoveUntil(routeName, (Route<dynamic> route) => false);
-  }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/extensions/context_extension.dart';
 import 'package:my_password_app/core/providers/sign_in/sign_in_notifier.dart';
-import 'package:my_password_app/ui/pages/home/home_v2_page.dart';
+import 'package:my_password_app/ui/pages/home/home_page.dart';
 import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
 import 'package:my_password_app/ui/widgets/text_field_password_widget.dart';
 
@@ -23,7 +23,7 @@ class _SignInPasswordViewState extends ConsumerState<SignInPasswordView> {
     final signInRead = ref.read(signInProvider.notifier);
     print(signInWatch.password);
     ref.listen(signInProvider, (prev, next) {
-      context.pushAndReplace(HomeV2Page());
+      context.pushAndReplace(HomePage());
     });
     return Column(
       children: [

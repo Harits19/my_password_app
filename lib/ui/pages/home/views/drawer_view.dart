@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/providers/sign_in/sign_in_notifier.dart';
 import 'package:my_password_app/core/providers/theme/theme_notifier.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
+import 'package:my_password_app/ui/widgets/space_widget.dart';
 
 class DrawerView extends ConsumerStatefulWidget {
   const DrawerView({
@@ -44,7 +45,7 @@ class _DrawerViewState extends ConsumerState<DrawerView> {
                   )
                 ],
               ),
-              KSize.verti16,
+              SpaceWidget.verti16,
               DropdownButton(
                 isExpanded: true,
                 value: themeWatch,

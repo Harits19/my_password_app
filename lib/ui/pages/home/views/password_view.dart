@@ -1,13 +1,13 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/extensions/context_extension.dart';
 import 'package:my_password_app/extensions/string_extension.dart';
 import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/core/providers/password/password_notifier.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
+import 'package:my_password_app/ui/widgets/space_widget.dart';
 
 class PasswordView extends ConsumerStatefulWidget {
   PasswordView({
@@ -97,7 +97,7 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
           },
         ),
       ),
-      KSize.hori8,
+      SpaceWidget.hori8,
       Expanded(
         child: ElevatedButton(
           child: Text('No'),
@@ -123,14 +123,14 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
           },
         ),
       ),
-      KSize.hori16,
+      SpaceWidget.hori16,
       Expanded(
         child: ElevatedButton(
           child: Icon(Icons.edit),
           onPressed: _handlerEdit,
         ),
       ),
-      KSize.hori16,
+      SpaceWidget.hori16,
       Expanded(
         child: ElevatedButton(
           child: Icon(Icons.copy),
