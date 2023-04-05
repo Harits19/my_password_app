@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/app.dart';
 import 'package:my_password_app/core/services/services.dart';
 
-/// TODO : Release apk on dell laptop
-/// TODO create privacy policy
+// TODO fix bug when snackbar show
+// TODO create field for name system or website
+// TODO add dummy floating button for list
 
 void main() async {
   await _loadAllService();
