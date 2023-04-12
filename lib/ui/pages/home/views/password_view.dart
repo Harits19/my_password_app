@@ -26,7 +26,9 @@ class PasswordView extends ConsumerStatefulWidget {
 }
 
 class _PasswordViewState extends ConsumerState<PasswordView> {
-  bool _isObscure = true;
+  bool isObscure = true;
+
+  bool isExpanded = false;
 
   late final passwordModel = widget.passwordModel;
   late final passwordRead = ref.read(passwordProvider.notifier);
@@ -35,42 +37,65 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onLongPress: () {},
+        onLongPress: () {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Are you sure to delete ${passwordModel.name}?'),
+              actions: [
+                ElevatedButton(
+                  child: Text('Yes'),
+                  onPressed: () {
+                    passwordRead.remove(passwordModel.id);
+                    Navigator.pop(context);
+                  },
+                ),
+                ElevatedButton(
+                  child: Text('No'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+        onTap: () {
+          isExpanded = !isExpanded;
+          setState(() {});
+        },
         child: Padding(
           padding: const EdgeInsets.all(KSize.s8),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Theme(
-                data: Theme.of(context).copyWith(
-                  dividerColor: Colors.transparent,
-                  expansionTileTheme: ExpansionTileThemeData(
-                    textColor: Theme.of(context).textTheme.titleMedium!.color,
-                    iconColor: Theme.of(context).unselectedWidgetColor,
-                  ),
+              ListTile(
+                trailing: Icon(isExpanded
+                    ? Icons.arrow_drop_down_circle
+                    : Icons.arrow_drop_down),
+                title: Text(
+                  passwordModel.name ?? "",
                 ),
-                child: ExpansionTile(
-                  title: Text(
-                    passwordModel.name ?? "",
-                  ),
-                  subtitle: Text(
-                    _isObscure
-                        ? passwordModel.password.toObscureText
-                        : passwordModel.password ?? "",
-                  ),
-                  expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-                  childrenPadding: const EdgeInsets.all(KSize.s16),
-                  children: [Text(passwordModel.note ?? '-')],
+                subtitle: Text(
+                  isObscure
+                      ? passwordModel.password.toObscureText
+                      : passwordModel.password ?? "",
                 ),
               ),
+              if (isExpanded)
+                Padding(
+                  padding: const EdgeInsets.all(KSize.s16),
+                  child: Text(passwordModel.note ?? '-'),
+                ),
               PasswordFooterView(
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      child: Icon(_isObscure
+                      child: Icon(isObscure
                           ? Icons.remove_red_eye_outlined
                           : Icons.remove_red_eye),
                       onPressed: () {
-                        _isObscure = !_isObscure;
+                        isObscure = !isObscure;
                         setState(() {});
                       },
                     ),

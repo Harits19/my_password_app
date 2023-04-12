@@ -37,8 +37,8 @@ class _HomeV2PageState extends ConsumerState<HomePage> {
                 );
               },
             ),
-            Visibility(
-              visible: false,
+            Opacity(
+              opacity: 0,
               child: FloatingActionButton(
                 onPressed: () {},
               ),

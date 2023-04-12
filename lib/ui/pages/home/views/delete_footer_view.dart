@@ -13,19 +13,7 @@ class DeleteFooterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return PasswordFooterView(
       children: [
-        Expanded(
-          child: ElevatedButton(
-            child: Text('Yes'),
-            onPressed: onPressYes,
-          ),
-        ),
-        SpaceWidget.hori8,
-        Expanded(
-          child: ElevatedButton(
-            child: Text('No'),
-            onPressed: onPressNo,
-          ),
-        ),
+        
       ],
     );
   }
