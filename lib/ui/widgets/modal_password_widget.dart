@@ -38,36 +38,39 @@ class ModalPasswordWidget extends StatefulWidget {
 }
 
 class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
-  final _passwordConfig = {
+  final passwordConfig = {
     ("letter"): true,
     ("symbol"): true,
     ("number"): true,
   };
-  late final _nameController = TextEditingController(
-    text: widget.value?.name,
+  late final passwordModel = widget.value;
+  late final nameController = TextEditingController(
+    text: passwordModel?.name,
   );
-  late final _passwordController = TextEditingController(
-    text: widget.value?.password,
+  late final passwordController = TextEditingController(
+    text: passwordModel?.password,
   );
+
+  late final noteController = TextEditingController(text: passwordModel?.note);
 
   int passwordLength = 10;
 
   @override
   void dispose() {
     super.dispose();
-    _nameController.dispose();
-    _passwordController.dispose();
+    nameController.dispose();
+    passwordController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final disableGeneratePassword = _passwordConfig.entries.every(
+    final disableGeneratePassword = passwordConfig.entries.every(
       (element) => element.value == false,
     );
 
     final disableSavePassword = [
-      _nameController,
-      _passwordController,
+      nameController,
+      passwordController,
     ].any(
       (element) => element.text.isNullEmpty,
     );
@@ -79,7 +82,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           TextField(
-            controller: _nameController,
+            controller: nameController,
             decoration: InputDecoration(
               hintText: "Name",
             ),
@@ -89,7 +92,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
           ),
           SpaceWidget.verti16,
           TextField(
-            controller: _passwordController,
+            controller: passwordController,
             decoration: InputDecoration(
               hintText: "Password",
             ),
@@ -97,10 +100,16 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
               setState(() {});
             },
           ),
+          SpaceWidget.verti16,
+          TextField(
+            maxLines: 8,
+            controller: noteController,
+            decoration: InputDecoration(hintText: 'Note...'),
+          ),
           SpaceWidget.verti24,
           Row(
             children: [
-              ..._passwordConfig.entries.map(
+              ...passwordConfig.entries.map(
                 (e) => Expanded(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -109,7 +118,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                         value: e.value,
                         onChanged: (newValue) {
                           if (newValue == null) return;
-                          _passwordConfig[e.key] = newValue;
+                          passwordConfig[e.key] = newValue;
                           setState(() {});
                         },
                       ),
@@ -148,11 +157,11 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                       : () {
                           final temp = GeneratePassword.getRandomString(
                             length: passwordLength,
-                            letter: _passwordConfig["letter"]!,
-                            number: _passwordConfig["number"]!,
-                            symbol: _passwordConfig["symbol"]!,
+                            letter: passwordConfig["letter"]!,
+                            number: passwordConfig["number"]!,
+                            symbol: passwordConfig["symbol"]!,
                           );
-                          _passwordController.text = temp;
+                          passwordController.text = temp;
                           setState(() {});
                         },
                 ),
@@ -168,9 +177,10 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                     if (widget.onPressSave == null) return;
                     widget.onPressSave!(
                       PasswordModel(
-                        id: widget.value?.id,
-                        name: _nameController.text,
-                        password: _passwordController.text,
+                        id: passwordModel?.id,
+                        name: nameController.text,
+                        password: passwordController.text,
+                        note: noteController.text,
                       ),
                     );
                   },
