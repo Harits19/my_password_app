@@ -50,6 +50,9 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
   late final passwordController = TextEditingController(
     text: passwordModel?.password,
   );
+  late final emailController = TextEditingController(
+    text: passwordModel?.email,
+  );
 
   late final noteController = TextEditingController(text: passwordModel?.note);
 
@@ -74,6 +77,9 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
     ].any(
       (element) => element.text.isNullEmpty,
     );
+    final onChanged = (String val) {
+      setState(() {});
+    };
 
     return SingleChildScrollView(
       padding: MediaQuery.of(context).viewInsets + EdgeInsets.all(KSize.s16),
@@ -86,19 +92,22 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
             decoration: InputDecoration(
               hintText: "Name",
             ),
-            onChanged: (val) {
-              setState(() {});
-            },
+            onChanged: onChanged,
+          ),
+          SpaceWidget.verti16,
+          TextField(
+            controller: emailController,
+            decoration: InputDecoration(
+              hintText: "Email or Username",
+            ),
           ),
           SpaceWidget.verti16,
           TextField(
             controller: passwordController,
+            onChanged: onChanged,
             decoration: InputDecoration(
               hintText: "Password",
             ),
-            onChanged: (val) {
-              setState(() {});
-            },
           ),
           SpaceWidget.verti16,
           TextField(
@@ -181,6 +190,7 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
                         name: nameController.text,
                         password: passwordController.text,
                         note: noteController.text,
+                        email: emailController.text,
                       ),
                     );
                   },

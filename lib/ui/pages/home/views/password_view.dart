@@ -73,8 +73,23 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
                 trailing: Icon(isExpanded
                     ? Icons.arrow_drop_down_circle
                     : Icons.arrow_drop_down),
-                title: Text(
-                  passwordModel.name ?? "",
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      passwordModel.name ?? "",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    if (passwordModel.email.isNotNullEmpty) ...[
+                      SpaceWidget.verti8,
+                      Text(
+                        passwordModel.email ?? "",
+                      ),
+                    ],
+                    SpaceWidget.verti8,
+                  ],
                 ),
                 subtitle: Text(
                   isObscure
@@ -89,18 +104,6 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
                 ),
               PasswordFooterView(
                 children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      child: Icon(isObscure
-                          ? Icons.remove_red_eye_outlined
-                          : Icons.remove_red_eye),
-                      onPressed: () {
-                        isObscure = !isObscure;
-                        setState(() {});
-                      },
-                    ),
-                  ),
-                  SpaceWidget.hori16,
                   Expanded(
                     child: ElevatedButton(
                       child: Icon(Icons.edit),
@@ -123,18 +126,40 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
                   SpaceWidget.hori16,
                   Expanded(
                     child: ElevatedButton(
-                      child: Icon(Icons.copy),
+                      child: Text(
+                        'Copy Password',
+                        textAlign: TextAlign.center,
+                      ),
                       onPressed: () {
                         FlutterClipboard.copy(passwordModel.password ?? "")
                             .then(
                           (value) => SnackBarWidget.show(
                             context,
-                            'Success Copy',
+                            'Success Copy Password',
                           ),
                         );
                       },
                     ),
-                  )
+                  ),
+                  if (passwordModel.email.isNotNullEmpty) ...[
+                    SpaceWidget.hori16,
+                    Expanded(
+                      child: ElevatedButton(
+                        child: Text(
+                          'Copy Email',
+                          textAlign: TextAlign.center,
+                        ),
+                        onPressed: () {
+                          FlutterClipboard.copy(passwordModel.email ?? "").then(
+                            (value) => SnackBarWidget.show(
+                              context,
+                              'Success Copy Email',
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ],

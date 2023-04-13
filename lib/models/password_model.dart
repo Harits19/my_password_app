@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PasswordModel {
+  final String? email;
   final String? name;
   final String? password;
   final String? note;
@@ -11,13 +12,15 @@ class PasswordModel {
     required this.name,
     required this.password,
     this.note,
+    this.email,
   }) : this.id = id ?? UniqueKey().toString();
 
   PasswordModel.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         password = json['password'],
         id = json['id'],
-        note = json['note'];
+        note = json['note'],
+        email = json['email'];
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -25,6 +28,7 @@ class PasswordModel {
     data['password'] = this.password;
     data['id'] = this.id;
     data['note'] = this.note;
+    data['email'] = this.email;
     return data;
   }
 
