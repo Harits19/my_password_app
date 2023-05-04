@@ -14,9 +14,21 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomeV2PageState extends ConsumerState<HomePage> {
+  String search = '';
+
   @override
   Widget build(BuildContext context) {
     final passwordWatch = ref.watch(passwordProvider);
+
+    final resultSearch = passwordWatch.where((element) {
+      final combineString =
+          '${element.email ?? ''} ${element.name ?? ''} ${element.note}';
+      return combineString.toLowerCase().contains(search.toLowerCase());
+    });
+
+    final showedList =
+        (search.isNotEmpty ? resultSearch : passwordWatch).toList();
+
     return Scaffold(
       floatingActionButton: FloatingButtonView(),
       endDrawer: DrawerView(),
@@ -24,14 +36,26 @@ class _HomeV2PageState extends ConsumerState<HomePage> {
         child: ListView(
           padding: EdgeInsets.all(KSize.s16),
           children: [
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Search',
+              ),
+              onChanged: (value) {
+                search = value;
+                setState(() {});
+              },
+            ),
+            SizedBox(
+              height: KSize.s16,
+            ),
             ...List.generate(
-              passwordWatch.length,
+              showedList.length,
               (index) {
                 return Padding(
-                  key: ObjectKey(passwordWatch[index]),
+                  key: ObjectKey(showedList[index]),
                   padding: const EdgeInsets.symmetric(vertical: KSize.s4),
                   child: PasswordView(
-                    passwordModel: passwordWatch[index],
+                    passwordModel: showedList[index],
                     index: index,
                   ),
                 );
