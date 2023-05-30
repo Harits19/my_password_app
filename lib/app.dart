@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/core/providers/sign_in/sign_in_notifier.dart';
-import 'package:my_password_app/core/providers/theme/theme_notifier.dart';
-import 'package:my_password_app/extensions/context_extension.dart';
+import 'package:my_password_app/ui/pages/theme_notifier.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 
 // TODO mengubah menjadi aplikasi full offiline
@@ -22,7 +20,7 @@ class _AppState extends ConsumerState<App> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData.dark(),
-      themeMode: ref.watch(themeProvider),
+      themeMode: ref.watch(themeProvider.select((value) => value.themeMode)),
       home: SignInPage(),
     );
   }

@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/providers/password/password_notifier.dart';
-import 'package:my_password_app/core/providers/sign_in/sign_in_notifier.dart';
-import 'package:my_password_app/core/providers/theme/theme_notifier.dart';
+import 'package:my_password_app/ui/pages/sign_in/sign_in_notifier.dart';
+import 'package:my_password_app/ui/pages/theme_notifier.dart';
 import 'package:my_password_app/extensions/context_extension.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/pages/home/views/confirm_import_view.dart';
@@ -72,7 +72,7 @@ class _DrawerViewState extends ConsumerState<DrawerView> {
               SpaceWidget.verti16,
               DropdownButton(
                 isExpanded: true,
-                value: themeWatch,
+                value: themeWatch.themeMode,
                 items: [
                   ...ThemeMode.values.map(
                     (e) => DropdownMenuItem(

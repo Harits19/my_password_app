@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/core/providers/sign_in/sign_in_notifier.dart';
+import 'package:my_password_app/ui/pages/sign_in/sign_in_notifier.dart';
 import 'package:my_password_app/core/services/share_service.dart';
 import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/core/services/password_service.dart';
