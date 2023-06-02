@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:my_password_app/extensions/shared_pref_extension.dart';
 import 'package:my_password_app/extensions/string_extension.dart';

@@ -1,11 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/services/google_api_service.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_state.dart';
-import 'package:my_password_app/core/services/local_auth_service.dart';
-import 'package:my_password_app/core/services/sign_in_service.dart';
-import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
 
 final signInProvider =
     StateNotifierProvider<SignInNotifier, SignInState>((ref) {

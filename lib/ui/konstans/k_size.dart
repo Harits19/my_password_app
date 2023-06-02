@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class KSize {
   KSize._();
 
@@ -10,6 +8,4 @@ class KSize {
   static const double s4 = 4.0;
   static const double s8 = 8.0;
   static const double s16 = 16.0;
-
-  
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/pages/views/floating_button_drawer.dart';
 import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
 import 'package:my_password_app/ui/widgets/space_widget.dart';
