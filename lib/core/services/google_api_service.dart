@@ -18,6 +18,6 @@ class GoogleApiService {
 
   Future<GoogleSignInAccount?> signOut() async {
     print('signOut');
-    return googleSignIn.disconnect();
+    return googleSignIn.signOut();
   }
 }
