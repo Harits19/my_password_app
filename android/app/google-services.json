@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "746846482403-49gfk9fq0sis8mj0kbg5ieqkjknqm6al.apps.googleusercontent.com",
+          "client_id": "746846482403-tfrg7put6of83p6nc0titesjovrcfseg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.my_password_app",
-            "certificate_hash": "f75aa6c41cdcee1fcd3e29172e8d55222a2c499e"
+            "certificate_hash": "4a500ae1d6a8fd611afbc067e9617e7d85041b5f"
           }
         },
         {
@@ -35,7 +35,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "746846482403-8fgt88dfjt5jegjnjijsjoi56h37215q.apps.googleusercontent.com",
+              "client_id": "746846482403-8f9dpma90n26jpas7o8q0bakd35sb0k4.apps.googleusercontent.com",
               "client_type": 3
             },
             {

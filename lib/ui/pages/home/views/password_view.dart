@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/extensions/string_extension.dart';
 import 'package:my_password_app/models/password_model.dart';
-import 'package:my_password_app/core/providers/password/password_notifier.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/pages/home/views/password_footer_view.dart';
 import 'package:my_password_app/ui/widgets/modal_password_widget.dart';
@@ -31,7 +30,6 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
   bool isExpanded = false;
 
   late final passwordModel = widget.passwordModel;
-  late final passwordRead = ref.read(passwordProvider.notifier);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +44,6 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
                 ElevatedButton(
                   child: Text('Yes'),
                   onPressed: () {
-                    passwordRead.remove(passwordModel.id);
                     Navigator.pop(context);
                   },
                 ),
@@ -116,7 +113,6 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
                             myPrint(val.password);
                             myPrint(passwordModel.id);
                             myPrint(val.id);
-                            ref.read(passwordProvider.notifier).update(val);
                             Navigator.pop(context);
                           },
                         );

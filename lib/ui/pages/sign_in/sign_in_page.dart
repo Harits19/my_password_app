@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_password_app/extensions/context_extension.dart';
 import 'package:my_password_app/ui/konstans/k_assets.dart';
+import 'package:my_password_app/ui/pages/home/home_page.dart';
 import 'package:my_password_app/ui/pages/home/views/drawer_view.dart';
+import 'package:my_password_app/ui/pages/sign_in/sign_in_notifier.dart';
 import 'package:my_password_app/ui/pages/views/floating_button_drawer.dart';
+import 'package:my_password_app/ui/widgets/widget_util.dart';
 
 class SignInPage extends ConsumerStatefulWidget {
   static const routeName = "/sign-in";
@@ -14,6 +18,31 @@ class SignInPage extends ConsumerStatefulWidget {
 
 class _SignInPageState extends ConsumerState<SignInPage> {
   bool forceUsePassword = false;
+
+  @override
+  void initState() {
+    super.initState();
+    ref.listenManual(
+        signInProvider.select((value) => value.googleSignInAccount),
+        (previous, next) {
+      next.when(
+        loading: () => WidgetUtil.showLoading(context),
+        error: (error, stack) {
+          WidgetUtil.dimissLoading(context);
+          print(error);
+          WidgetUtil.showError(context, error, stack);
+        },
+        data: (data) {
+          if (data != null) {
+            context.popAll(HomePage());
+          } else {
+            WidgetUtil.dimissLoading(context);
+          }
+        },
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +62,9 @@ class _SignInPageState extends ConsumerState<SignInPage> {
               Spacer(),
               ElevatedButton(
                 child: Text('Login/Register with Google'),
-                onPressed: () {},
+                onPressed: () async {
+                  ref.read(signInProvider.notifier).signIn();
+                },
               ),
               Spacer(),
             ],

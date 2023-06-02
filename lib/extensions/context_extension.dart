@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 
 extension BuildContextExtension on BuildContext {
   void pushAndReplace(Widget page) {
+    print('pushAndReplace to $page');
     Navigator.pushReplacement(
         this, MaterialPageRoute(builder: ((context) => page)));
   }

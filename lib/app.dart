@@ -21,7 +21,10 @@ class _AppState extends ConsumerState<App> {
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData.dark(),
       themeMode: ref.watch(themeProvider.select((value) => value.themeMode)),
+      navigatorKey: navigatorKey,
       home: SignInPage(),
     );
   }
 }
+
+final navigatorKey = GlobalKey<NavigatorState>();
