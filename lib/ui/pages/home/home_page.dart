@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
+import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/views/drawer_view.dart';
 import 'package:my_password_app/ui/pages/home/views/floating_button_view.dart';
 import 'package:my_password_app/ui/pages/home/views/password_view.dart';
@@ -29,6 +30,12 @@ class _HomeV2PageState extends ConsumerState<HomePage> {
             ),
             SizedBox(
               height: KSize.s16,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                ref.read(homeProvider.notifier).check();
+              },
+              child: Text('Test'),
             ),
             ...List.generate(
               [].length,

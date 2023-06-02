@@ -20,4 +20,5 @@ class GoogleApiService {
     print('signOut');
     return googleSignIn.signOut();
   }
+
 }
