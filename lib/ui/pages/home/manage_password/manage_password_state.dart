@@ -7,6 +7,7 @@ class ManagePasswordState {
   final AsyncValue<List<PasswordModel>> passwords;
   final TextEditingController name, password, email, note;
   final PasswordModel? selectedPasswordModel;
+  final bool editable;
 
   ManagePasswordState({
     required this.result,
@@ -16,11 +17,13 @@ class ManagePasswordState {
     required this.note,
     required this.password,
     required this.selectedPasswordModel,
+    required this.editable,
   });
 
   ManagePasswordState copyWith({
     AsyncValue<String>? result,
     PasswordModel? selectedPasswordModel,
+    bool? editable,
   }) =>
       ManagePasswordState(
         result: result ?? this.result,
@@ -29,7 +32,9 @@ class ManagePasswordState {
         name: name,
         note: note,
         password: password,
-        selectedPasswordModel: selectedPasswordModel ?? this.selectedPasswordModel,
+        selectedPasswordModel:
+            selectedPasswordModel ?? this.selectedPasswordModel,
+        editable: editable ?? this.editable,
       );
 
   PasswordModel get passwordModel => PasswordModel(

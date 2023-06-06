@@ -16,6 +16,7 @@ final managePasswordNotifier = StateNotifierProvider.autoDispose<
       note: TextEditingController(),
       password: TextEditingController(),
       selectedPasswordModel: null,
+      editable: false,
     ),
     ref.watch(sharedPrefService),
   );
