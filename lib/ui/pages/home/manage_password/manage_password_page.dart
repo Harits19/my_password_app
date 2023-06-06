@@ -4,6 +4,7 @@ import 'package:my_password_app/extensions/string_extension.dart';
 import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
+import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_notifier.dart';
 import 'package:my_password_app/ui/widgets/space_widget.dart';
 import 'package:my_password_app/ui/widgets/widget_util.dart';
@@ -73,6 +74,7 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
             WidgetUtil.safePop();
             WidgetUtil.safePop();
             WidgetUtil.showSuccess(data);
+            ref.read(homeNotifier.notifier).getListPassword();
           },
         );
       },
@@ -214,6 +216,39 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
                         );
                   },
           ),
+          if (widget.value != null)
+            TextButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Are you sure to delete?'),
+                      actions: [
+                        ElevatedButton(
+                          child: Text('Yes'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            ref
+                                .read(managePasswordNotifier.notifier)
+                                .deletePassword(widget.value!);
+                          },
+                        ),
+                        ElevatedButton(
+                          child: Text('No'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                child: Text(
+                  'Delete',
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ))
         ],
       ),
     );

@@ -39,4 +39,15 @@ class ManagePasswordNotifier extends StateNotifier<ManagePasswordState> {
       state = state.copyWith(result: AsyncData('Success add data'));
     });
   }
+
+  void deletePassword(PasswordModel passwordModel) async {
+    state.passwords.whenData((value) async {
+      print('called');
+      state = state.copyWith(result: AsyncLoading());
+      await Future.delayed(Duration(seconds: 1));
+      value.remove(passwordModel);
+      await _sharedPrefService.save([...value]);
+      state = state.copyWith(result: AsyncData('Success delete data'));
+    });
+  }
 }

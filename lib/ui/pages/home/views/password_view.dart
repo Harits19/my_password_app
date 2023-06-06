@@ -35,28 +35,7 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onLongPress: () {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Are you sure to delete ${passwordModel.name}?'),
-              actions: [
-                ElevatedButton(
-                  child: Text('Yes'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                ElevatedButton(
-                  child: Text('No'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            ),
-          );
-        },
+
         onTap: () {
           isExpanded = !isExpanded;
           setState(() {});

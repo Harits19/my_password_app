@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_page.dart';
 import 'package:my_password_app/ui/pages/views/floating_button_drawer.dart';
 import 'package:my_password_app/ui/widgets/space_widget.dart';
@@ -26,7 +25,6 @@ class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
             await ManagePasswordPage.show(
               context: context,
             );
-            ref.read(homeNotifier.notifier).getListPassword();
           },
           child: Icon(Icons.add),
         ),
