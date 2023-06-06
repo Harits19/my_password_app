@@ -50,6 +50,19 @@ class WidgetUtil {
   }
 
   static void mySnackBar(String message, {Color? color}) {
+    scaffoldMessengerKey.currentState?.showSnackBar(
+      SnackBar(
+        backgroundColor: color,
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          message.toString(),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+    return;
     showModalBottomSheet(
       context: context,
       barrierColor: Colors.transparent,

@@ -8,6 +8,11 @@ extension BuildContextExtension on BuildContext {
         this, MaterialPageRoute(builder: ((context) => page)));
   }
 
+  void push(Widget page) {
+    print('push to $page');
+    Navigator.push(this, MaterialPageRoute(builder: ((context) => page)));
+  }
+
   void popAll(Widget page) {
     Navigator.of(this).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => page),

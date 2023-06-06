@@ -22,9 +22,11 @@ class _AppState extends ConsumerState<App> {
       darkTheme: ThemeData.dark(),
       themeMode: ref.watch(themeProvider.select((value) => value.themeMode)),
       navigatorKey: navigatorKey,
+      scaffoldMessengerKey: scaffoldMessengerKey,
       home: SplashPage(),
     );
   }
 }
 
 final navigatorKey = GlobalKey<NavigatorState>();
+final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();

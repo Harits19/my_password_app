@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/extensions/string_extension.dart';
 import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
@@ -42,30 +41,22 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
     ("symbol"): true,
     ("number"): true,
   };
-  late final passwordModel = widget.value;
-  late final nameController = TextEditingController(
-    text: passwordModel?.name,
-  );
-  late final passwordController = TextEditingController(
-    text: passwordModel?.password,
-  );
-  late final emailController = TextEditingController(
-    text: passwordModel?.email,
-  );
-
-  late final noteController = TextEditingController(text: passwordModel?.note);
 
   int passwordLength = 10;
 
   @override
   void initState() {
     super.initState();
+    WidgetUtil.checkWidget(() {
+      ref.read(managePasswordNotifier.notifier).init(widget.value);
+    });
     ref.listenManual(
       managePasswordNotifier.select((value) => value.result),
       (previous, next) {
         next.when(
           loading: () => WidgetUtil.showLoading(),
           error: (error, stackTrace) {
+            WidgetUtil.safePop();
             WidgetUtil.safePop();
             WidgetUtil.showError(error, stackTrace);
           },
@@ -82,175 +73,160 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    nameController.dispose();
-    passwordController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final disableGeneratePassword = passwordConfig.entries.every(
       (element) => element.value == false,
     );
 
-    final disableSavePassword = [
-      nameController,
-      passwordController,
-    ].any(
+    final disableSavePassword = [].any(
       (element) => element.text.isNullEmpty,
     );
     final onChanged = (String val) {
       setState(() {});
     };
 
-    return SingleChildScrollView(
+    final mpWatch = ref.watch(managePasswordNotifier);
+    return ListView(
+      shrinkWrap: true,
       padding: MediaQuery.of(context).viewInsets + EdgeInsets.all(KSize.s16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          TextField(
-            controller: nameController,
-            decoration: InputDecoration(
-              hintText: "Name",
+      children: <Widget>[
+        TextField(
+          controller: mpWatch.name,
+          decoration: InputDecoration(
+            hintText: "Name",
+          ),
+          onChanged: onChanged,
+        ),
+        SpaceWidget.verti16,
+        TextField(
+          controller: mpWatch.email,
+          decoration: InputDecoration(
+            hintText: "Email or Username",
+          ),
+        ),
+        SpaceWidget.verti16,
+        TextField(
+          controller: mpWatch.password,
+          onChanged: onChanged,
+          decoration: InputDecoration(
+            hintText: "Password",
+          ),
+        ),
+        SpaceWidget.verti16,
+        TextField(
+          maxLines: 8,
+          controller: mpWatch.note,
+          decoration: InputDecoration(hintText: 'Note...'),
+        ),
+        SpaceWidget.verti24,
+        Row(
+          children: [
+            ...passwordConfig.entries.map(
+              (e) => Expanded(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Checkbox(
+                      value: e.value,
+                      onChanged: (newValue) {
+                        if (newValue == null) return;
+                        passwordConfig[e.key] = newValue;
+                        setState(() {});
+                      },
+                    ),
+                    Text(
+                      e.key,
+                    )
+                  ],
+                ),
+              ),
             ),
-            onChanged: onChanged,
-          ),
-          SpaceWidget.verti16,
-          TextField(
-            controller: emailController,
-            decoration: InputDecoration(
-              hintText: "Email or Username",
+          ],
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              onPressed: () {
+                passwordLength--;
+                setState(() {});
+              },
+              icon: Icon(Icons.remove),
             ),
-          ),
-          SpaceWidget.verti16,
-          TextField(
-            controller: passwordController,
-            onChanged: onChanged,
-            decoration: InputDecoration(
-              hintText: "Password",
+            Text('$passwordLength'),
+            IconButton(
+              onPressed: () {
+                passwordLength++;
+                setState(() {});
+              },
+              icon: Icon(Icons.add),
             ),
-          ),
-          SpaceWidget.verti16,
-          TextField(
-            maxLines: 8,
-            controller: noteController,
-            decoration: InputDecoration(hintText: 'Note...'),
-          ),
-          SpaceWidget.verti24,
-          Row(
-            children: [
-              ...passwordConfig.entries.map(
-                (e) => Expanded(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Checkbox(
-                        value: e.value,
-                        onChanged: (newValue) {
-                          if (newValue == null) return;
-                          passwordConfig[e.key] = newValue;
-                          setState(() {});
+            Expanded(
+              child: ElevatedButton(
+                child: Text("Generate random password"),
+                onPressed: disableGeneratePassword
+                    ? null
+                    : () {
+                        final temp = GeneratePassword.getRandomString(
+                          length: passwordLength,
+                          letter: passwordConfig["letter"]!,
+                          number: passwordConfig["number"]!,
+                          symbol: passwordConfig["symbol"]!,
+                        );
+                        mpWatch.password.text = temp;
+                        setState(() {});
+                      },
+              ),
+            ),
+          ],
+        ),
+        SpaceWidget.verti24,
+        ElevatedButton(
+          child: Text("Save"),
+          onPressed: disableSavePassword
+              ? null
+              : () {
+                  if (mpWatch.selectedPasswordModel == null) {
+                    ref.read(managePasswordNotifier.notifier).addPassword();
+                  } else {
+                    ref.read(managePasswordNotifier.notifier).updatePassword();
+                  }
+                },
+        ),
+        if (widget.value != null)
+          TextButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Are you sure to delete?'),
+                    actions: [
+                      ElevatedButton(
+                        child: Text('Yes'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          ref
+                              .read(managePasswordNotifier.notifier)
+                              .deletePassword();
                         },
                       ),
-                      Text(
-                        e.key,
-                      )
+                      ElevatedButton(
+                        child: Text('No'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
                     ],
                   ),
+                );
+              },
+              child: Text(
+                'Delete',
+                style: TextStyle(
+                  color: Colors.red,
                 ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                onPressed: () {
-                  passwordLength--;
-                  setState(() {});
-                },
-                icon: Icon(Icons.remove),
-              ),
-              Text('$passwordLength'),
-              IconButton(
-                onPressed: () {
-                  passwordLength++;
-                  setState(() {});
-                },
-                icon: Icon(Icons.add),
-              ),
-              Expanded(
-                child: ElevatedButton(
-                  child: Text("Generate random password"),
-                  onPressed: disableGeneratePassword
-                      ? null
-                      : () {
-                          final temp = GeneratePassword.getRandomString(
-                            length: passwordLength,
-                            letter: passwordConfig["letter"]!,
-                            number: passwordConfig["number"]!,
-                            symbol: passwordConfig["symbol"]!,
-                          );
-                          passwordController.text = temp;
-                          setState(() {});
-                        },
-                ),
-              ),
-            ],
-          ),
-          SpaceWidget.verti24,
-          ElevatedButton(
-            child: Text("Save"),
-            onPressed: disableSavePassword
-                ? null
-                : () {
-                    ref.read(managePasswordNotifier.notifier).addPassword(
-                          PasswordModel(
-                            name: nameController.text,
-                            password: passwordController.text,
-                            email: emailController.text,
-                            note: noteController.text,
-                          ),
-                        );
-                  },
-          ),
-          if (widget.value != null)
-            TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('Are you sure to delete?'),
-                      actions: [
-                        ElevatedButton(
-                          child: Text('Yes'),
-                          onPressed: () {
-                            Navigator.pop(context);
-                            ref
-                                .read(managePasswordNotifier.notifier)
-                                .deletePassword(widget.value!);
-                          },
-                        ),
-                        ElevatedButton(
-                          child: Text('No'),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                child: Text(
-                  'Delete',
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
-                ))
-        ],
-      ),
+              ))
+      ],
     );
   }
 }

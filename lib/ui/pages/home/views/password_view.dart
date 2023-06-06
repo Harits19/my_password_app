@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/extensions/string_extension.dart';
 import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
-import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/views/password_footer_view.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_page.dart';
 import 'package:my_password_app/ui/widgets/snack_bar_widget.dart';
@@ -35,7 +34,6 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-
         onTap: () {
           isExpanded = !isExpanded;
           setState(() {});
