@@ -1,82 +1,87 @@
 import 'package:flutter/material.dart';
+import 'package:my_password_app/app.dart';
 
 class WidgetUtil {
-  static showLoading(BuildContext context) {
-    checkWidget(context, () {
+  static BuildContext get context => navigatorKey.currentContext!;
+  static showLoading() {
+    debugPrint('showLoading');
+    checkWidget(() {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => Center(
-          child: CircularProgressIndicator(),
+        builder: (context) => WillPopScope(
+          onWillPop: () async => false,
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
         ),
       );
     });
   }
 
-  static dimissLoading(BuildContext context) {
-    checkWidget(context, () {
+  static safePop() {
+    checkWidget(() {
       Navigator.pop(context);
     });
   }
 
-  static checkWidget(BuildContext context, VoidCallback voidCallback) {
+  static checkWidget(VoidCallback voidCallback) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (context.mounted) {
-        voidCallback();
-      }
+      voidCallback();
     });
   }
 
-  static void showError(
-      BuildContext context, Object error, StackTrace stackTrace) async {
-    checkWidget(context, () {
+  static void showError(Object error, StackTrace stackTrace) async {
+    checkWidget(() {
       mySnackBar(
-        context,
         error.toString(),
         color: Colors.red,
       );
     });
   }
 
-   static void showSuccess(
-      BuildContext context, String message) async {
-    checkWidget(context, () {
+  static void showSuccess(String message) async {
+    checkWidget(() {
       mySnackBar(
-        context,
         message,
         color: Colors.green,
       );
     });
   }
 
-  static void mySnackBar(BuildContext context, String message, {Color? color}) {
+  static void mySnackBar(String message, {Color? color}) {
     showModalBottomSheet(
       context: context,
       barrierColor: Colors.transparent,
       isDismissible: false,
+      isScrollControlled: false,
+      enableDrag: false,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(8.0),
-        margin: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: color ?? Colors.white,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              message.toString(),
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            )
-          ],
+      builder: (context) => WillPopScope(
+        onWillPop: () async => false,
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          margin: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: color ?? Colors.white,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                message.toString(),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
-    checkWidget(context, () async {
+    checkWidget(() async {
       await Future.delayed(Duration(seconds: 3));
       Navigator.pop(context);
     });

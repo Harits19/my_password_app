@@ -26,17 +26,17 @@ class _SignInPageState extends ConsumerState<SignInPage> {
         signInProvider.select((value) => value.googleSignInAccount),
         (previous, next) {
       next.when(
-        loading: () => WidgetUtil.showLoading(context),
+        loading: () => WidgetUtil.showLoading(),
         error: (error, stack) {
-          WidgetUtil.dimissLoading(context);
+          WidgetUtil.safePop();
           print(error);
-          WidgetUtil.showError(context, error, stack);
+          WidgetUtil.showError(error, stack);
         },
         data: (data) {
           if (data != null) {
             context.popAll(HomePage());
           } else {
-            WidgetUtil.dimissLoading(context);
+            WidgetUtil.safePop();
           }
         },
       );

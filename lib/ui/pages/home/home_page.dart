@@ -16,6 +16,8 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomeV2PageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
+    final listPassword = ref.watch(
+        homeNotifier.select((value) => value.passwords.valueOrNull ?? []));
     return Scaffold(
       floatingActionButton: FloatingButtonView(),
       endDrawer: DrawerView(),
@@ -31,20 +33,14 @@ class _HomeV2PageState extends ConsumerState<HomePage> {
             SizedBox(
               height: KSize.s16,
             ),
-            ElevatedButton(
-              onPressed: () {
-                ref.read(homeProvider.notifier).check();
-              },
-              child: Text('Test'),
-            ),
             ...List.generate(
-              [].length,
+              listPassword.length,
               (index) {
                 return Padding(
-                  key: ObjectKey([][index]),
+                  key: ObjectKey(listPassword[index]),
                   padding: const EdgeInsets.symmetric(vertical: KSize.s4),
                   child: PasswordView(
-                    passwordModel: [][index],
+                    passwordModel: listPassword[index],
                     index: index,
                   ),
                 );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/ui/pages/theme_notifier.dart';
-import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 
 // TODO mengubah menjadi aplikasi full offiline
 // TODO app can send file backup via bluetooth
@@ -22,7 +22,7 @@ class _AppState extends ConsumerState<App> {
       darkTheme: ThemeData.dark(),
       themeMode: ref.watch(themeProvider.select((value) => value.themeMode)),
       navigatorKey: navigatorKey,
-      home: SignInPage(),
+      home: SplashPage(),
     );
   }
 }

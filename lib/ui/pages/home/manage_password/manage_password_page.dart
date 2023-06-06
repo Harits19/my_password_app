@@ -1,43 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/extensions/string_extension.dart';
 import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
+import 'package:my_password_app/ui/pages/home/manage_password/manage_password_notifier.dart';
 import 'package:my_password_app/ui/widgets/space_widget.dart';
+import 'package:my_password_app/ui/widgets/widget_util.dart';
 
-class ModalPasswordWidget extends StatefulWidget {
-  ModalPasswordWidget({
+class ManagePasswordPage extends ConsumerStatefulWidget {
+  ManagePasswordPage({
     Key? key,
     this.value,
-    this.onPressSave,
   }) : super(key: key) {}
 
   final PasswordModel? value;
-  final ValueChanged<PasswordModel>? onPressSave;
 
   @override
-  State<ModalPasswordWidget> createState() => _ModalPasswordWidgetState();
+  ConsumerState<ManagePasswordPage> createState() => _ManagePasswordPageState();
 
   static Future<void> show({
     required BuildContext context,
     PasswordModel? value,
-    required ValueChanged<PasswordModel>? onPressedSave,
   }) {
     return showModalBottomSheet<void>(
       context: context,
-      enableDrag: false,
       isScrollControlled: true,
       builder: (BuildContext context) {
-        return ModalPasswordWidget(
+        return ManagePasswordPage(
           value: value,
-          onPressSave: onPressedSave,
         );
       },
     );
   }
 }
 
-class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
+class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
   final passwordConfig = {
     ("letter"): true,
     ("symbol"): true,
@@ -57,6 +55,29 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
   late final noteController = TextEditingController(text: passwordModel?.note);
 
   int passwordLength = 10;
+
+  @override
+  void initState() {
+    super.initState();
+    ref.listenManual(
+      managePasswordNotifier.select((value) => value.result),
+      (previous, next) {
+        next.when(
+          loading: () => WidgetUtil.showLoading(),
+          error: (error, stackTrace) {
+            WidgetUtil.safePop();
+            WidgetUtil.showError(error, stackTrace);
+          },
+          data: (data) {
+            if (data.isEmpty) return;
+            WidgetUtil.safePop();
+            WidgetUtil.safePop();
+            WidgetUtil.showSuccess(data);
+          },
+        );
+      },
+    );
+  }
 
   @override
   void dispose() {
@@ -183,16 +204,14 @@ class _ModalPasswordWidgetState extends State<ModalPasswordWidget> {
             onPressed: disableSavePassword
                 ? null
                 : () {
-                    if (widget.onPressSave == null) return;
-                    widget.onPressSave!(
-                      PasswordModel(
-                        id: passwordModel?.id,
-                        name: nameController.text,
-                        password: passwordController.text,
-                        note: noteController.text,
-                        email: emailController.text,
-                      ),
-                    );
+                    ref.read(managePasswordNotifier.notifier).addPassword(
+                          PasswordModel(
+                            name: nameController.text,
+                            password: passwordController.text,
+                            email: emailController.text,
+                            note: noteController.text,
+                          ),
+                        );
                   },
           ),
         ],
