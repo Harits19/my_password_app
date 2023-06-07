@@ -8,6 +8,7 @@ import 'package:my_password_app/ui/pages/sign_in/sign_in_notifier.dart';
 final homeNotifier = StateNotifierProvider<HomeNotifier, HomeState>((ref) {
   return HomeNotifier(
     HomeState(
+      search: '',
       passwords: AsyncData([]),
       googleSignInAccount: ref.watch(
         signInProvider.select(
@@ -49,5 +50,9 @@ class HomeNotifier extends StateNotifier<HomeState> {
     state = state.copyWith(
       passwords: AsyncData(result),
     );
+  }
+
+  void setSearch(String? val) {
+    state = state.copyWith(search: val);
   }
 }

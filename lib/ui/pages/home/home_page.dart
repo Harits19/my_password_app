@@ -17,8 +17,9 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomeV2PageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final listPassword = ref.watch(
-        homeNotifier.select((value) => value.passwords.valueOrNull ?? []));
+    final listPassword = ref.watch(homeNotifier).showedList;
+    final hRead = ref.read(homeNotifier.notifier);
+
     return Scaffold(
       floatingActionButton: FloatingButtonView(),
       endDrawer: DrawerView(),
@@ -27,6 +28,7 @@ class _HomeV2PageState extends ConsumerState<HomePage> {
           padding: EdgeInsets.all(KSize.s16),
           children: [
             TextFieldWidget(
+              onChanged: hRead.setSearch,
               decoration: InputDecoration(
                 hintText: 'Search',
               ),

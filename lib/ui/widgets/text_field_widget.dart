@@ -10,6 +10,7 @@ class TextFieldWidget extends StatefulWidget {
     this.controller,
     this.maxLines = 1,
     this.validator,
+    this.onChanged,
   });
 
   final InputDecoration decoration;
@@ -18,6 +19,7 @@ class TextFieldWidget extends StatefulWidget {
   final TextEditingController? controller;
   final int? maxLines;
   final FormFieldValidator<String?>? validator;
+  final ValueChanged<String>? onChanged;
 
   @override
   State<TextFieldWidget> createState() => _TextFieldWidgetState();
@@ -46,6 +48,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
               child: TextFormField(
                 onChanged: (val) {
                   field.didChange(val);
+                  widget.onChanged?.call(val);
                 },
                 decoration: widget.decoration,
                 readOnly: widget.readOnly,
