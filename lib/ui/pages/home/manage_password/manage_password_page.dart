@@ -60,7 +60,6 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
           loading: () => WidgetUtil.showLoading(),
           error: (error, stackTrace) {
             WidgetUtil.safePop();
-            WidgetUtil.safePop();
             WidgetUtil.showError(error, stackTrace);
           },
           data: (data) {
@@ -88,9 +87,12 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
       return IconButton(
         icon: Icon(Icons.copy),
         onPressed: () {
-          if (val.isEmpty) return;
-          FlutterClipboard.copy(val);
-          // WidgetUtil.showSuccess('Success copy');
+          if (val.isNotEmpty) {
+            FlutterClipboard.copy(val);
+            WidgetUtil.showSuccess('Success copy');
+          } else {
+            WidgetUtil.showError('Empty value', StackTrace.current);
+          }
         },
       );
     }

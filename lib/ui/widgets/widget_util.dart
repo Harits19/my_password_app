@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:my_password_app/app.dart';
+import 'package:my_password_app/utils/my_print.dart';
 
 class WidgetUtil {
   static BuildContext get context => navigatorKey.currentContext!;
@@ -50,29 +53,21 @@ class WidgetUtil {
   }
 
   static void mySnackBar(String message, {Color? color}) {
-    scaffoldMessengerKey.currentState?.showSnackBar(
-      SnackBar(
-        backgroundColor: color,
-        behavior: SnackBarBehavior.floating,
-        content: Text(
-          message.toString(),
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
-    );
-    return;
+    Timer? timer;
+    myPrint('showSnacbar');
     showModalBottomSheet(
       context: context,
       barrierColor: Colors.transparent,
-      isDismissible: false,
       isScrollControlled: false,
       enableDrag: false,
       backgroundColor: Colors.transparent,
-      builder: (context) => WillPopScope(
-        onWillPop: () async => false,
-        child: Container(
+      builder: (builderContext) {
+        myPrint('setTimer');
+        timer = Timer(Duration(seconds: 3), () {
+          Navigator.of(context).pop();
+          myPrint('popSnackbar');
+        });
+        return Container(
           padding: const EdgeInsets.all(8.0),
           margin: EdgeInsets.all(16),
           decoration: BoxDecoration(
@@ -91,12 +86,13 @@ class WidgetUtil {
               )
             ],
           ),
-        ),
-      ),
+        );
+      },
+    ).then(
+      (value) {
+        myPrint('cancelTimer');
+        timer?.cancel();
+      },
     );
-    checkWidget(() async {
-      await Future.delayed(Duration(seconds: 3));
-      Navigator.pop(context);
-    });
   }
 }
