@@ -1,11 +1,16 @@
 import 'dart:math';
 
-import 'package:my_password_app/enums/generate_enum.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_password_app/core/enums/generate_enum.dart';
 
-class GeneratePassword {
-  static Random _rnd = Random();
+final generatePasswordService = Provider<GeneratePasswordService>((ref) {
+  return GeneratePasswordService();
+});
 
-  static String getRandomString({
+class GeneratePasswordService {
+  Random _rnd = Random();
+
+  String getRandomString({
     int length = 9,
     required Map<GenerateEnum, bool> passwordConfig,
   }) {
@@ -28,7 +33,7 @@ class GeneratePassword {
     return first + _randomString(lastLength, _chartDefault) + second;
   }
 
-  static String _randomString(int length, String combination) {
+  String _randomString(int length, String combination) {
     return String.fromCharCodes(
       Iterable.generate(
         length,

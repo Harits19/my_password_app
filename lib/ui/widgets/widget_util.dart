@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:my_password_app/app.dart';
-import 'package:my_password_app/utils/my_print.dart';
+import 'package:my_password_app/core/utils/my_print.dart';
 
 class WidgetUtil {
   static BuildContext get context => navigatorKey.currentContext!;

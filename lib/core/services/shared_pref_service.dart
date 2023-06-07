@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/extensions/shared_pref_extension.dart';
-import 'package:my_password_app/extensions/string_extension.dart';
-import 'package:my_password_app/models/password_model.dart';
-import 'package:my_password_app/utils/encrypt_data.dart';
-import 'package:my_password_app/enums/pref_enum.dart';
-import 'package:my_password_app/utils/my_print.dart';
+import 'package:my_password_app/core/extensions/shared_pref_extension.dart';
+import 'package:my_password_app/core/extensions/string_extension.dart';
+import 'package:my_password_app/core/models/password_model.dart';
+import 'package:my_password_app/core/utils/encrypt_data.dart';
+import 'package:my_password_app/core/enums/pref_enum.dart';
+import 'package:my_password_app/core/utils/my_print.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sharedPrefService = Provider<SharedPrefService>((ref) {

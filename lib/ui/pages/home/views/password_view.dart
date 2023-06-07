@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/models/password_model.dart';
+import 'package:my_password_app/core/models/password_model.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_page.dart';
 
 class PasswordView extends ConsumerStatefulWidget {

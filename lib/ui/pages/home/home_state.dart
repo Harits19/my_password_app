@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:my_password_app/models/password_model.dart';
+import 'package:my_password_app/core/models/password_model.dart';
 
 class HomeState {
   final AsyncValue<GoogleSignInAccount?> googleSignInAccount;

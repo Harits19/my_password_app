@@ -1,4 +1,4 @@
-import 'package:my_password_app/enums/pref_enum.dart';
+import 'package:my_password_app/core/enums/pref_enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 extension SharedPrefExtension on SharedPreferences? {

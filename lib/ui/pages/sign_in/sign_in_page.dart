@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/extensions/context_extension.dart';
+import 'package:my_password_app/core/extensions/context_extension.dart';
 import 'package:my_password_app/ui/konstans/k_assets.dart';
 import 'package:my_password_app/ui/pages/home/home_page.dart';
 import 'package:my_password_app/ui/pages/home/views/drawer_view.dart';

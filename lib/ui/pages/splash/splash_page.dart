@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/services/shared_pref_service.dart';
-import 'package:my_password_app/extensions/context_extension.dart';
+import 'package:my_password_app/core/extensions/context_extension.dart';
 import 'package:my_password_app/ui/konstans/k_assets.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 

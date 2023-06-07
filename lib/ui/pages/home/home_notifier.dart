@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/services/google_drive_service.dart';
 import 'package:my_password_app/core/services/shared_pref_service.dart';
-import 'package:my_password_app/models/password_model.dart';
+import 'package:my_password_app/core/models/password_model.dart';
 import 'package:my_password_app/ui/pages/home/home_state.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_notifier.dart';
 

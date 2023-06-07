@@ -2,7 +2,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
-import 'package:my_password_app/models/password_model.dart';
+import 'package:my_password_app/core/models/password_model.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_notifier.dart';
@@ -184,7 +184,7 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
                     child: Text("Generate random password"),
                     onPressed: () {
                       try {
-                        final temp = GeneratePassword.getRandomString(
+                        final temp = ref.read(generatePasswordService).getRandomString(
                           length: passwordLength,
                           passwordConfig: mpWatch.passwordConfig,
                         );

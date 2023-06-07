@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:http/http.dart' as http;
-import 'package:my_password_app/models/password_model.dart';
+import 'package:my_password_app/core/models/password_model.dart';
 import 'package:path_provider/path_provider.dart' as path;
 
 final googleDriveService = Provider<GoogleDriveService>((ref) {
