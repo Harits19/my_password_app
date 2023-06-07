@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_page.dart';
-import 'package:my_password_app/ui/pages/views/floating_button_drawer.dart';
 import 'package:my_password_app/ui/widgets/space_widget.dart';
 
 class FloatingButtonView extends ConsumerStatefulWidget {
@@ -16,9 +15,14 @@ class FloatingButtonView extends ConsumerStatefulWidget {
 class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        FloatingActionButton(
+          child: Icon(Icons.sync),
+          onPressed: () {},
+        ),
+        SpaceWidget.verti16,
         FloatingActionButton(
           heroTag: 'floatingButton1',
           onPressed: () async {
@@ -29,8 +33,8 @@ class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
           },
           child: Icon(Icons.add),
         ),
-        SpaceWidget.hori8,
-        FloatingButtonDrawer(),
+        // SpaceWidget.hori8,
+        // FloatingButtonDrawer(),
       ],
     );
   }

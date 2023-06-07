@@ -30,7 +30,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
         error: (error, stack) {
           WidgetUtil.safePop();
           print(error);
-          WidgetUtil.showError(error, stack);
+          WidgetUtil.showError(error, stackTrace: stack);
         },
         data: (data) {
           if (data != null) {

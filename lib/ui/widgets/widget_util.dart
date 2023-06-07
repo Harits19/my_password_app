@@ -34,7 +34,7 @@ class WidgetUtil {
     });
   }
 
-  static void showError(Object error, StackTrace stackTrace) async {
+  static void showError(Object error,{ StackTrace? stackTrace}) async {
     checkWidget(() {
       mySnackBar(
         error.toString(),

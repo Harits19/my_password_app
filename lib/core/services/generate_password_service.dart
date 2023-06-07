@@ -1,30 +1,26 @@
 import 'dart:math';
 
-class GeneratePassword {
-  static const _number = '1234567890';
-  static const _letter = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
-  static const _symbol = '`~!@#%^&*()_-+[]}|;' ",./<>?";
-  static var _chartDefault = '$_number$_letter$_symbol';
+import 'package:my_password_app/enums/generate_enum.dart';
 
+class GeneratePassword {
   static Random _rnd = Random();
 
   static String getRandomString({
     int length = 9,
-    bool number = true,
-    bool letter = false,
-    bool symbol = false,
+    required Map<GenerateEnum, bool> passwordConfig,
   }) {
-    if (number || letter || symbol) {
-      _chartDefault = '';
-      if (number) _chartDefault += _number;
-      if (letter) _chartDefault += _letter;
-      if (symbol) _chartDefault += _symbol;
-    } else {
-      _chartDefault = '$_number$_letter$_symbol';
+    var _chartDefault = '';
+    var checkVal = false;
+    for (final item in passwordConfig.entries) {
+      if (item.value) {
+        _chartDefault += item.key.char;
+        checkVal = true;
+      }
     }
+    if (!checkVal) throw 'Choose minimum one type character';
 
-    final first = _randomString(1, _letter);
-    final second = _randomString(1, _letter);
+    final first = _randomString(1, GenerateEnum.letter.char);
+    final second = _randomString(1, GenerateEnum.letter.char);
     final lastLength = length - 2;
     if (lastLength <= 1) {
       assert(lastLength <= 1);

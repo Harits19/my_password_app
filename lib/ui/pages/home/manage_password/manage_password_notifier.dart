@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/services/shared_pref_service.dart';
+import 'package:my_password_app/enums/generate_enum.dart';
 import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_state.dart';
@@ -9,14 +10,19 @@ final managePasswordNotifier = StateNotifierProvider.autoDispose<
     ManagePasswordNotifier, ManagePasswordState>((ref) {
   return ManagePasswordNotifier(
     ManagePasswordState(
-      result: AsyncData(''),
-      passwords: ref.watch(homeNotifier.select((value) => value.passwords)),
-      email: TextEditingController(),
-      name: TextEditingController(),
-      note: TextEditingController(),
-      password: TextEditingController(),
-      selectedPasswordModel: null,
-    ),
+        result: AsyncData(''),
+        passwords: ref.watch(homeNotifier.select((value) => value.passwords)),
+        email: TextEditingController(),
+        name: TextEditingController(),
+        note: TextEditingController(),
+        password: TextEditingController(),
+        selectedPasswordModel: null,
+        passwordLength: 10,
+        passwordConfig: Map.fromIterable(
+          GenerateEnum.values,
+          key: (element) => element,
+          value: (element) => true,
+        )),
     ref.watch(sharedPrefService),
   );
 });
@@ -79,6 +85,16 @@ class ManagePasswordNotifier extends StateNotifier<ManagePasswordState> {
   void setEditable(bool? editable) {
     state = state.copyWith(
       editable: editable,
+    );
+  }
+
+  void setPasswordLength(int? val) {
+    state = state.copyWith(passwordLength: val);
+  }
+
+  void setPasswordConfig(Map<GenerateEnum, bool>? val) {
+    state = state.copyWith(
+      passwordConfig: val,
     );
   }
 }

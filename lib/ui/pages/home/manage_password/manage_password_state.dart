@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_password_app/enums/generate_enum.dart';
 import 'package:my_password_app/models/password_model.dart';
 
 class ManagePasswordState {
@@ -7,6 +8,8 @@ class ManagePasswordState {
   final AsyncValue<List<PasswordModel>> passwords;
   final TextEditingController name, password, email, note;
   final PasswordModel? selectedPasswordModel;
+  final int passwordLength;
+  final Map<GenerateEnum, bool> passwordConfig;
 
   ManagePasswordState({
     required this.result,
@@ -16,12 +19,16 @@ class ManagePasswordState {
     required this.note,
     required this.password,
     required this.selectedPasswordModel,
+    required this.passwordLength,
+    required this.passwordConfig,
   });
 
   ManagePasswordState copyWith({
     AsyncValue<String>? result,
     PasswordModel? selectedPasswordModel,
     bool? editable,
+    int? passwordLength,
+    Map<GenerateEnum, bool>? passwordConfig,
   }) =>
       ManagePasswordState(
         result: result ?? this.result,
@@ -32,6 +39,8 @@ class ManagePasswordState {
         password: password,
         selectedPasswordModel:
             selectedPasswordModel ?? this.selectedPasswordModel,
+        passwordLength: passwordLength ?? this.passwordLength,
+        passwordConfig: passwordConfig ?? this.passwordConfig,
       );
 
   PasswordModel get passwordModel => PasswordModel(

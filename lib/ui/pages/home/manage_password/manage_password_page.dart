@@ -1,8 +1,8 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
+import 'package:my_password_app/models/password_model.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_notifier.dart';
@@ -38,13 +38,6 @@ class ManagePasswordPage extends ConsumerStatefulWidget {
 }
 
 class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
-  final passwordConfig = {
-    ("letter"): true,
-    ("symbol"): true,
-    ("number"): true,
-  };
-
-  int passwordLength = 10;
   late final isReadOnly = widget.isReadOnly;
 
   @override
@@ -60,7 +53,10 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
           loading: () => WidgetUtil.showLoading(),
           error: (error, stackTrace) {
             WidgetUtil.safePop();
-            WidgetUtil.showError(error, stackTrace);
+            WidgetUtil.showError(
+              error,
+              stackTrace: stackTrace,
+            );
           },
           data: (data) {
             if (data.isEmpty) return;
@@ -78,10 +74,9 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    final disableGeneratePassword = passwordConfig.entries.every(
-      (element) => element.value == false,
-    );
     final mpWatch = ref.watch(managePasswordNotifier);
+    final mpRead = ref.read(managePasswordNotifier.notifier);
+    final passwordLength = mpWatch.passwordLength;
 
     Widget copy(String val) {
       return IconButton(
@@ -91,7 +86,7 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
             FlutterClipboard.copy(val);
             WidgetUtil.showSuccess('Success copy');
           } else {
-            WidgetUtil.showError('Empty value', StackTrace.current);
+            WidgetUtil.showError('Empty value');
           }
         },
       );
@@ -145,7 +140,7 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
             SpaceWidget.verti24,
             Row(
               children: [
-                ...passwordConfig.entries.map(
+                ...mpWatch.passwordConfig.entries.map(
                   (e) => Expanded(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -154,12 +149,13 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
                           value: e.value,
                           onChanged: (newValue) {
                             if (newValue == null) return;
-                            passwordConfig[e.key] = newValue;
-                            setState(() {});
+                            final temp = mpWatch.passwordConfig;
+                            temp[e.key] = newValue;
+                            mpRead.setPasswordConfig(temp);
                           },
                         ),
                         Text(
-                          e.key,
+                          e.key.name,
                         )
                       ],
                     ),
@@ -172,34 +168,31 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
               children: [
                 IconButton(
                   onPressed: () {
-                    passwordLength--;
-                    setState(() {});
+                    mpRead.setPasswordLength(passwordLength - 1);
                   },
                   icon: Icon(Icons.remove),
                 ),
                 Text('$passwordLength'),
                 IconButton(
                   onPressed: () {
-                    passwordLength++;
-                    setState(() {});
+                    mpRead.setPasswordLength(passwordLength + 1);
                   },
                   icon: Icon(Icons.add),
                 ),
                 Expanded(
                   child: ElevatedButton(
                     child: Text("Generate random password"),
-                    onPressed: disableGeneratePassword
-                        ? null
-                        : () {
-                            final temp = GeneratePassword.getRandomString(
-                              length: passwordLength,
-                              letter: passwordConfig["letter"]!,
-                              number: passwordConfig["number"]!,
-                              symbol: passwordConfig["symbol"]!,
-                            );
-                            mpWatch.password.text = temp;
-                            setState(() {});
-                          },
+                    onPressed: () {
+                      try {
+                        final temp = GeneratePassword.getRandomString(
+                          length: passwordLength,
+                          passwordConfig: mpWatch.passwordConfig,
+                        );
+                        mpWatch.password.text = temp;
+                      } catch (e) {
+                        WidgetUtil.showError(e);
+                      }
+                    },
                   ),
                 ),
               ],
