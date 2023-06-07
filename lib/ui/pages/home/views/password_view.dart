@@ -22,15 +22,10 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
 
   @override
   Widget build(BuildContext context) {
-    final shape = RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16),
-    );
     return Column(
       children: [
         Card(
-          shape: shape,
           child: ListTile(
-            shape: shape,
             onTap: () {
               ManagePasswordPage.show(
                 context: context,

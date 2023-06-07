@@ -5,6 +5,7 @@ import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/views/drawer_view.dart';
 import 'package:my_password_app/ui/pages/home/views/floating_button_view.dart';
 import 'package:my_password_app/ui/pages/home/views/password_view.dart';
+import 'package:my_password_app/ui/widgets/text_field_widget.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -25,7 +26,7 @@ class _HomeV2PageState extends ConsumerState<HomePage> {
         child: ListView(
           padding: EdgeInsets.all(KSize.s16),
           children: [
-            TextField(
+            TextFieldWidget(
               decoration: InputDecoration(
                 hintText: 'Search',
               ),

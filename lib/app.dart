@@ -16,12 +16,31 @@ class App extends ConsumerStatefulWidget {
 class _AppState extends ConsumerState<App> {
   @override
   Widget build(BuildContext context) {
+    final shape = RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+    );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
       navigatorKey: navigatorKey,
       scaffoldMessengerKey: scaffoldMessengerKey,
+      theme: Theme.of(context).copyWith(
+        cardTheme: CardTheme(
+          shape: shape,
+        ),
+        listTileTheme: ListTileThemeData(
+          shape: shape,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: Theme.of(context).cardColor,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
       home: SplashPage(),
     );
   }
