@@ -16,7 +16,6 @@ final managePasswordNotifier = StateNotifierProvider.autoDispose<
       note: TextEditingController(),
       password: TextEditingController(),
       selectedPasswordModel: null,
-      editable: false,
     ),
     ref.watch(sharedPrefService),
   );
@@ -75,5 +74,11 @@ class ManagePasswordNotifier extends StateNotifier<ManagePasswordState> {
       await _sharedPrefService.save([...value, state.passwordModel]);
       state = state.copyWith(result: AsyncData('Success update data'));
     });
+  }
+
+  void setEditable(bool? editable) {
+    state = state.copyWith(
+      editable: editable,
+    );
   }
 }

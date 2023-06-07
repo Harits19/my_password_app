@@ -24,6 +24,7 @@ class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
           onPressed: () async {
             await ManagePasswordPage.show(
               context: context,
+              managePasswordPage: ManagePasswordPage(),
             );
           },
           child: Icon(Icons.add),

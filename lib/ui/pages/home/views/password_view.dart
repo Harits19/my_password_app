@@ -34,7 +34,10 @@ class _PasswordViewState extends ConsumerState<PasswordView> {
             onTap: () {
               ManagePasswordPage.show(
                 context: context,
-                value: widget.passwordModel,
+                managePasswordPage: ManagePasswordPage(
+                  value: passwordModel,
+                  isReadOnly: true,
+                ),
               );
             },
             title: Text(
