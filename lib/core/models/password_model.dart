@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class PasswordModel {
   final String? email;
   final String name;
