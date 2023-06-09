@@ -26,7 +26,9 @@ class AlertDialogWidget extends StatelessWidget {
       actions: [
         ElevatedButton(
           child: Text('Yes'),
-          onPressed: onPressYes,
+          onPressed: () {
+            onPressYes.call();
+          },
         ),
         ElevatedButton(
           child: Text('No'),

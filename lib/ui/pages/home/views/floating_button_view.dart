@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/enums/sync_enum.dart';
 import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_page.dart';
+import 'package:my_password_app/ui/widgets/alert_dialog_widget.dart';
 
 class FloatingButtonView extends ConsumerStatefulWidget {
   const FloatingButtonView({
@@ -23,25 +24,54 @@ class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
         FloatingActionButton(
           child: Icon(Icons.merge),
           onPressed: () {
-            ref.read(homeNotifier.notifier).sycnData(
-                  sync: SyncEnum.merge,
-                );
+            AlertDialogWidget.show(
+              context,
+              child: AlertDialogWidget(
+                title:
+                    'Aksi ini akan menimpa data yang sama dan akan menggambungkan data yang berbeda dari penyimpanan lokal dan google drive',
+                onPressYes: () {
+                  Navigator.pop(context);
+                  ref.read(homeNotifier.notifier).sycnData(
+                        sync: SyncEnum.merge,
+                      );
+                },
+              ),
+            );
           },
         ),
         FloatingActionButton(
           child: Icon(Icons.upload),
           onPressed: () {
-            ref.read(homeNotifier.notifier).sycnData(
-                  sync: SyncEnum.push,
-                );
+            AlertDialogWidget.show(
+              context,
+              child: AlertDialogWidget(
+                title: 'Aksi ini akan menimpa semua data ada di google drive',
+                onPressYes: () {
+                  Navigator.pop(context);
+                  ref.read(homeNotifier.notifier).sycnData(
+                        sync: SyncEnum.push,
+                      );
+                },
+              ),
+            );
           },
         ),
         FloatingActionButton(
           child: Icon(Icons.download),
           onPressed: () {
-            ref.read(homeNotifier.notifier).sycnData(
-                  sync: SyncEnum.pull,
-                );
+            AlertDialogWidget.show(
+              context,
+              child: AlertDialogWidget(
+                title:
+                    'Aksi ini akan menimpa semua data ada di penyimpanan lokal',
+                onPressYes: () {
+                  Navigator.pop(context);
+                  ref.read(homeNotifier.notifier).sycnData(
+                        sync: SyncEnum.pull,
+                      );
+                },
+              ),
+            );
           },
         ),
         FloatingActionButton(
