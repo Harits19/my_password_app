@@ -10,7 +10,6 @@ final signInProvider =
   return SignInNotifier(
     SignInState(
       googleSignInAccount: AsyncData(null),
-      timer: null,
     ),
     googleApiService: ref.watch(googleApiService),
   );
@@ -23,6 +22,8 @@ class SignInNotifier extends StateNotifier<SignInState> {
   }) : this._googleApiService = googleApiService;
 
   final GoogleApiService _googleApiService;
+
+  Timer? timer;
 
   void signIn() async {
     try {
@@ -41,31 +42,17 @@ class SignInNotifier extends StateNotifier<SignInState> {
     }
   }
 
-  void signOut() async {
-    try {
-      state = state.copyWith(
-        googleSignInAccount: AsyncLoading(),
-      );
-      await _googleApiService.signOut();
-      state = state.copyWith(
-        googleSignInAccount: AsyncData(null),
-      );
-    } catch (e) {
-      state = state.copyWith(
-        googleSignInAccount: AsyncError(e, StackTrace.current),
-      );
-    }
-  }
-
   void restartTimer() async {
     myPrint('restartTimer');
-    state = state.copyWith(
-      timer: Timer(
-        Duration(minutes: 5),
-        () {
-          signOut();
-        },
-      ),
+    timer?.cancel();
+    timer = Timer(
+      Duration(seconds: 3),
+      () async {
+        _googleApiService.signOut();
+        state = state.copyWith(
+          googleSignInAccount: AsyncData(null),
+        );
+      },
     );
   }
 }

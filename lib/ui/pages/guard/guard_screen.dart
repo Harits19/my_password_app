@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/app.dart';
 import 'package:my_password_app/core/extensions/context_extension.dart';
-import 'package:my_password_app/core/utils/my_print.dart';
 import 'package:my_password_app/ui/pages/home/home_page.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_notifier.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
+import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/ui/widgets/loading_widget.dart';
 import 'package:my_password_app/ui/widgets/snackbar_widget.dart';
 import 'package:my_password_app/ui/widgets/widget_util.dart';
 
-class HandleTimeOutWidget extends ConsumerStatefulWidget {
-  const HandleTimeOutWidget({
+class GuardScreen extends ConsumerStatefulWidget {
+  const GuardScreen({
     Key? key,
     this.child,
   }) : super(key: key);
@@ -19,11 +19,10 @@ class HandleTimeOutWidget extends ConsumerStatefulWidget {
   final Widget? child;
 
   @override
-  ConsumerState<HandleTimeOutWidget> createState() =>
-      _HandleTimeOutWidgetState();
+  ConsumerState<GuardScreen> createState() => _HandleTimeOutWidgetState();
 }
 
-class _HandleTimeOutWidgetState extends ConsumerState<HandleTimeOutWidget> {
+class _HandleTimeOutWidgetState extends ConsumerState<GuardScreen> {
   @override
   void initState() {
     super.initState();
@@ -46,7 +45,7 @@ class _HandleTimeOutWidgetState extends ConsumerState<HandleTimeOutWidget> {
           if (data != null) {
             context.popAll(HomePage());
           } else {
-            context.popAll(SignInPage());
+            context.push(SplashPage());
           }
         },
       );
@@ -56,7 +55,7 @@ class _HandleTimeOutWidgetState extends ConsumerState<HandleTimeOutWidget> {
   @override
   Widget build(BuildContext context) {
     void _onInteraction() {
-      myPrint('_onInteraction');
+      ref.read(signInProvider.notifier).restartTimer();
     }
 
     return Listener(

@@ -24,7 +24,7 @@ class _AppState extends ConsumerState<App> {
       ),
     );
 
-    return HandleTimeOutWidget(
+    return GuardScreen(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         darkTheme: ThemeData.dark().copyWith(
