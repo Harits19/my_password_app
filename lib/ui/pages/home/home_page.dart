@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/pages/home/home_notifier.dart';
-import 'package:my_password_app/ui/pages/home/views/drawer_view.dart';
 import 'package:my_password_app/ui/pages/home/views/floating_button_view.dart';
 import 'package:my_password_app/ui/pages/home/views/password_view.dart';
+import 'package:my_password_app/ui/widgets/loading_widget.dart';
+import 'package:my_password_app/ui/widgets/snackbar_widget.dart';
 import 'package:my_password_app/ui/widgets/text_field_widget.dart';
 import 'package:my_password_app/ui/widgets/widget_util.dart';
 
@@ -22,10 +23,10 @@ class _HomeV2PageState extends ConsumerState<HomePage> {
     ref.listenManual(homeNotifier.select((value) => value.passwords),
         (previous, next) {
       next.when(
-        loading: () => WidgetUtil.showLoading(context),
+        loading: () => LoadingWidget.dialog(context),
         error: (error, stackTrace) {
           WidgetUtil.safePop(context);
-          WidgetUtil.showError(
+          SnackbarWidget.showError(
             context,
             error,
           );
@@ -45,7 +46,6 @@ class _HomeV2PageState extends ConsumerState<HomePage> {
 
     return Scaffold(
       floatingActionButton: FloatingButtonView(),
-      endDrawer: DrawerView(),
       body: SafeArea(
         child: ListView(
           padding: EdgeInsets.all(KSize.s16),

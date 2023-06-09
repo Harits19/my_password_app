@@ -8,6 +8,8 @@ import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_notifier.dart';
 import 'package:my_password_app/ui/widgets/alert_dialog_widget.dart';
+import 'package:my_password_app/ui/widgets/loading_widget.dart';
+import 'package:my_password_app/ui/widgets/snackbar_widget.dart';
 import 'package:my_password_app/ui/widgets/space_widget.dart';
 import 'package:my_password_app/ui/widgets/text_field_widget.dart';
 import 'package:my_password_app/ui/widgets/widget_util.dart';
@@ -52,10 +54,10 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
       managePasswordNotifier.select((value) => value.result),
       (previous, next) {
         next.when(
-          loading: () => WidgetUtil.showLoading(context),
+          loading: () => LoadingWidget.dialog(context),
           error: (error, stackTrace) {
             WidgetUtil.safePop(context);
-            WidgetUtil.showError(
+            SnackbarWidget.showError(
               context,
               error,
             );
@@ -64,7 +66,7 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
             if (data.isEmpty) return;
             WidgetUtil.safePop(context);
             WidgetUtil.safePop(context);
-            WidgetUtil.showSuccess(context, data);
+            SnackbarWidget.showSuccess(context, data);
             ref.read(homeNotifier.notifier).getListPassword();
           },
         );
@@ -88,9 +90,9 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
         onTap: () {
           if (val.isNotEmpty) {
             FlutterClipboard.copy(val);
-            WidgetUtil.showSuccess(context, 'Success copy');
+            SnackbarWidget.showSuccess(context, 'Success copy');
           } else {
-            WidgetUtil.showError(context, 'Empty value');
+            SnackbarWidget.showError(context, 'Empty value');
           }
         },
       );
@@ -195,7 +197,7 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
                                 );
                         mpWatch.password.text = temp;
                       } catch (e) {
-                        WidgetUtil.showError(context, e);
+                        SnackbarWidget.showError(context, e);
                       }
                     },
                   ),

@@ -3,9 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/extensions/context_extension.dart';
 import 'package:my_password_app/ui/konstans/k_assets.dart';
 import 'package:my_password_app/ui/pages/home/home_page.dart';
-import 'package:my_password_app/ui/pages/home/views/drawer_view.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_notifier.dart';
 import 'package:my_password_app/ui/pages/views/floating_button_drawer.dart';
+import 'package:my_password_app/ui/widgets/loading_widget.dart';
+import 'package:my_password_app/ui/widgets/snackbar_widget.dart';
 import 'package:my_password_app/ui/widgets/widget_util.dart';
 
 class SignInPage extends ConsumerStatefulWidget {
@@ -26,11 +27,11 @@ class _SignInPageState extends ConsumerState<SignInPage> {
         signInProvider.select((value) => value.googleSignInAccount),
         (previous, next) {
       next.when(
-        loading: () => WidgetUtil.showLoading(context),
+        loading: () => LoadingWidget.dialog(context),
         error: (error, stack) {
           WidgetUtil.safePop(context);
           print(error);
-          WidgetUtil.showError(
+          SnackbarWidget.showError(
             context,
             error,
           );
@@ -49,7 +50,6 @@ class _SignInPageState extends ConsumerState<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: DrawerView(),
       floatingActionButton: FloatingButtonDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SafeArea(
