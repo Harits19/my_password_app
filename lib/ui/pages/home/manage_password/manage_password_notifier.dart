@@ -11,7 +11,7 @@ final managePasswordNotifier = StateNotifierProvider.autoDispose<
   return ManagePasswordNotifier(
     ManagePasswordState(
         result: AsyncData(''),
-        passwords: ref.watch(homeNotifier.select((value) => value.passwords)),
+        passwords: ref.read(homeNotifier.select((value) => value.passwords)),
         email: TextEditingController(),
         name: TextEditingController(),
         note: TextEditingController(),
@@ -23,7 +23,7 @@ final managePasswordNotifier = StateNotifierProvider.autoDispose<
           key: (element) => element,
           value: (element) => true,
         )),
-    ref.watch(sharedPrefService),
+    ref.watch(sharedPrefService)
   );
 });
 

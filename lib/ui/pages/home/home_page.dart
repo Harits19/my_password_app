@@ -22,16 +22,16 @@ class _HomeV2PageState extends ConsumerState<HomePage> {
     ref.listenManual(homeNotifier.select((value) => value.passwords),
         (previous, next) {
       next.when(
-        loading: WidgetUtil.showLoading,
+        loading: () => WidgetUtil.showLoading(context),
         error: (error, stackTrace) {
-          WidgetUtil.safePop();
+          WidgetUtil.safePop(context);
           WidgetUtil.showError(
+            context,
             error,
-            stackTrace: stackTrace,
           );
         },
         data: (data) {
-          WidgetUtil.safePop();
+          WidgetUtil.safePop(context);
         },
       );
     });

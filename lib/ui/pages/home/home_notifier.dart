@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_password_app/core/enums/sync_enum.dart';
 import 'package:my_password_app/core/services/google_drive_service.dart';
 import 'package:my_password_app/core/services/shared_pref_service.dart';
 import 'package:my_password_app/ui/pages/home/home_state.dart';
@@ -31,7 +32,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
   final GoogleDriveService _googleDriveService;
   final SharedPrefService _sharedPrefService;
   void sycnData({
-    required bool isPush,
+    required SyncEnum sync,
   }) async {
     final passwordTemp = state.passwords;
     state = state.copyWith(
@@ -44,20 +45,14 @@ class HomeNotifier extends StateNotifier<HomeState> {
         final lastData = await _googleDriveService.syncPasswordList(
           account: account,
           list: passwordTemp.valueOrNull ?? [],
-          isPush: isPush,
+          sync: sync,
         );
         return lastData;
       }),
     );
   }
 
-  void push() {
-    sycnData(isPush: true);
-  }
 
-  void pull() {
-    sycnData(isPush: false);
-  }
 
   void getListPassword() {
     final result = _sharedPrefService.getListPassword();

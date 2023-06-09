@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:http/http.dart' as http;
+import 'package:my_password_app/core/enums/sync_enum.dart';
 import 'package:my_password_app/core/models/password_model.dart';
 import 'package:my_password_app/core/utils/my_print.dart';
 import 'package:path_provider/path_provider.dart' as path;
@@ -17,7 +18,7 @@ class GoogleDriveService {
   Future<List<PasswordModel>> syncPasswordList({
     required GoogleSignInAccount account,
     required List<PasswordModel> list,
-    required bool isPush,
+    required SyncEnum sync,
   }) async {
     final driveApi = await _driveApi(account);
 
@@ -43,10 +44,14 @@ class GoogleDriveService {
       final driveId = result.files!.first.id!;
       myPrint('driveId $driveId');
       var finalData = <PasswordModel>[];
-      if (isPush) {
+      if (sync == SyncEnum.push) {
         finalData = list;
-      } else {
-        finalData = await getLastData(driveId, account, driveApi);
+      } else if (sync == SyncEnum.pull || sync == SyncEnum.merge) {
+        final lastData = await getLastData(driveId, account, driveApi);
+        finalData = lastData;
+        if (sync == SyncEnum.merge) {
+          finalData = [...list, ...lastData].toSet().toList();
+        }
       }
       final jsonString = jsonEncode(finalData.map((e) => e.toJson()).toList());
       final media = _toMedia(jsonString);

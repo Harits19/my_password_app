@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_password_app/core/enums/sync_enum.dart';
 import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_page.dart';
 
@@ -20,15 +21,27 @@ class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
       spacing: 8,
       children: [
         FloatingActionButton(
+          child: Icon(Icons.merge),
+          onPressed: () {
+            ref.read(homeNotifier.notifier).sycnData(
+                  sync: SyncEnum.merge,
+                );
+          },
+        ),
+        FloatingActionButton(
           child: Icon(Icons.upload),
           onPressed: () {
-            ref.read(homeNotifier.notifier).push();
+            ref.read(homeNotifier.notifier).sycnData(
+                  sync: SyncEnum.push,
+                );
           },
         ),
         FloatingActionButton(
           child: Icon(Icons.download),
           onPressed: () {
-            ref.read(homeNotifier.notifier).pull();
+            ref.read(homeNotifier.notifier).sycnData(
+                  sync: SyncEnum.pull,
+                );
           },
         ),
         FloatingActionButton(

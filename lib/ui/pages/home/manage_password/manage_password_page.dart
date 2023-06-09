@@ -7,6 +7,7 @@ import 'package:my_password_app/core/models/password_model.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_notifier.dart';
+import 'package:my_password_app/ui/widgets/alert_dialog_widget.dart';
 import 'package:my_password_app/ui/widgets/space_widget.dart';
 import 'package:my_password_app/ui/widgets/text_field_widget.dart';
 import 'package:my_password_app/ui/widgets/widget_util.dart';
@@ -51,19 +52,19 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
       managePasswordNotifier.select((value) => value.result),
       (previous, next) {
         next.when(
-          loading: () => WidgetUtil.showLoading(),
+          loading: () => WidgetUtil.showLoading(context),
           error: (error, stackTrace) {
-            WidgetUtil.safePop();
+            WidgetUtil.safePop(context);
             WidgetUtil.showError(
+              context,
               error,
-              stackTrace: stackTrace,
             );
           },
           data: (data) {
             if (data.isEmpty) return;
-            WidgetUtil.safePop();
-            WidgetUtil.safePop();
-            WidgetUtil.showSuccess(data);
+            WidgetUtil.safePop(context);
+            WidgetUtil.safePop(context);
+            WidgetUtil.showSuccess(context, data);
             ref.read(homeNotifier.notifier).getListPassword();
           },
         );
@@ -87,9 +88,9 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
         onTap: () {
           if (val.isNotEmpty) {
             FlutterClipboard.copy(val);
-            WidgetUtil.showSuccess('Success copy');
+            WidgetUtil.showSuccess(context, 'Success copy');
           } else {
-            WidgetUtil.showError('Empty value');
+            WidgetUtil.showError(context, 'Empty value');
           }
         },
       );
@@ -194,7 +195,7 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
                                 );
                         mpWatch.password.text = temp;
                       } catch (e) {
-                        WidgetUtil.showError(e);
+                        WidgetUtil.showError(context, e);
                       }
                     },
                   ),
@@ -230,27 +231,16 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
                       ),
                     ),
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: Text('Are you sure to delete?'),
-                          actions: [
-                            ElevatedButton(
-                              child: Text('Yes'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                                ref
-                                    .read(managePasswordNotifier.notifier)
-                                    .deletePassword();
-                              },
-                            ),
-                            ElevatedButton(
-                              child: Text('No'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
+                      AlertDialogWidget.show(
+                        context,
+                        child: AlertDialogWidget(
+                          title: 'Are you sure to delete?',
+                          onPressYes: () {
+                            Navigator.pop(context);
+                            ref
+                                .read(managePasswordNotifier.notifier)
+                                .deletePassword();
+                          },
                         ),
                       );
                     },

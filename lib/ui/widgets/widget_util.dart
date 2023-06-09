@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:my_password_app/app.dart';
 import 'package:my_password_app/core/utils/my_print.dart';
 import 'package:my_password_app/ui/widgets/loading_widget.dart';
 
 class WidgetUtil {
-  static BuildContext get context => navigatorKey.currentContext!;
-  static showLoading() {
+  static showLoading(BuildContext context) {
     debugPrint('showLoading');
     checkWidget(() {
       showDialog(
@@ -21,7 +19,7 @@ class WidgetUtil {
     });
   }
 
-  static safePop() {
+  static safePop(BuildContext context) {
     checkWidget(() {
       Navigator.pop(context);
     });
@@ -33,25 +31,30 @@ class WidgetUtil {
     });
   }
 
-  static void showError(Object error,{ StackTrace? stackTrace}) async {
+  static void showError(
+    BuildContext context,
+    Object error,
+  ) async {
     checkWidget(() {
       mySnackBar(
+        context,
         error.toString(),
         color: Colors.red,
       );
     });
   }
 
-  static void showSuccess(String message) async {
+  static void showSuccess(BuildContext context, String message) async {
     checkWidget(() {
       mySnackBar(
+        context,
         message,
         color: Colors.green,
       );
     });
   }
 
-  static void mySnackBar(String message, {Color? color}) {
+  static void mySnackBar(BuildContext context, String message, {Color? color}) {
     Timer? timer;
     myPrint('showSnacbar');
     showModalBottomSheet(
