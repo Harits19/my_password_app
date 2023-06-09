@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io' as io;
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
@@ -39,7 +38,8 @@ class GoogleDriveService {
     if ((result.files?.isEmpty ?? true) || result.files!.first.id == null) {
       myPrint('file on drive not found');
       final jsonString = jsonEncode(list.map((e) => e.toJson()).toList());
-      final media = _toMedia(jsonString);
+      final encoded = _encryptDataService.encode(jsonString);
+      final media = _toMedia(encoded);
 
       await driveApi.files.create(
         file,

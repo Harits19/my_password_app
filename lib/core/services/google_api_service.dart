@@ -7,7 +7,9 @@ final googleApiService = Provider<GoogleApiService>((ref) {
 });
 
 class GoogleApiService {
-  final googleSignIn = GoogleSignIn.standard(scopes: [DriveApi.driveFileScope]);
+  final googleSignIn = GoogleSignIn.standard(scopes: [
+    DriveApi.driveScope,
+  ]);
 
   Future<GoogleSignInAccount> signIn() async {
     final account = await googleSignIn.signIn();
@@ -20,5 +22,4 @@ class GoogleApiService {
     print('signOut');
     return googleSignIn.signOut();
   }
-
 }
