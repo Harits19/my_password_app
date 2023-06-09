@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/ui/pages/theme_state.dart';
+import 'package:my_password_app/ui/pages/theme/theme_state.dart';
 
 final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeState>(
   (ref) => ThemeNotifier(

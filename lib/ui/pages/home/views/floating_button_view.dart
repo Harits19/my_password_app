@@ -15,78 +15,91 @@ class FloatingButtonView extends ConsumerStatefulWidget {
 }
 
 class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
+  bool isExpanded = false;
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
       direction: Axis.vertical,
       spacing: 8,
       children: [
+        if (isExpanded) ...[
+          FloatingActionButton(
+            heroTag: 'FloatingActionButtonMerge',
+            child: Icon(Icons.merge),
+            onPressed: () {
+              AlertDialogWidget.show(
+                context,
+                child: AlertDialogWidget(
+                  title:
+                      'Aksi ini akan menimpa data yang sama dan akan menggambungkan data yang berbeda dari penyimpanan lokal dan google drive',
+                  onPressYes: () {
+                    Navigator.pop(context);
+                    ref.read(homeNotifier.notifier).sycnData(
+                          sync: SyncEnum.merge,
+                        );
+                  },
+                ),
+              );
+            },
+          ),
+          FloatingActionButton(
+            heroTag: 'FloatingActionButtonPush',
+            child: Icon(Icons.upload),
+            onPressed: () {
+              AlertDialogWidget.show(
+                context,
+                child: AlertDialogWidget(
+                  title: 'Aksi ini akan menimpa semua data ada di google drive',
+                  onPressYes: () {
+                    Navigator.pop(context);
+                    ref.read(homeNotifier.notifier).sycnData(
+                          sync: SyncEnum.push,
+                        );
+                  },
+                ),
+              );
+            },
+          ),
+          FloatingActionButton(
+            heroTag: 'FloatingActionButtonPull',
+            child: Icon(Icons.download),
+            onPressed: () {
+              AlertDialogWidget.show(
+                context,
+                child: AlertDialogWidget(
+                  title:
+                      'Aksi ini akan menimpa semua data ada di penyimpanan lokal',
+                  onPressYes: () {
+                    Navigator.pop(context);
+                    ref.read(homeNotifier.notifier).sycnData(
+                          sync: SyncEnum.pull,
+                        );
+                  },
+                ),
+              );
+            },
+          ),
+          FloatingActionButton(
+            heroTag: 'FloatingActionButtonManagePasswordPage',
+            onPressed: () async {
+              await ManagePasswordPage.show(
+                context: context,
+                managePasswordPage: ManagePasswordPage(),
+              );
+            },
+            child: Icon(Icons.add),
+          ),
+        ],
         FloatingActionButton(
-          heroTag: 'FloatingActionButtonMerge',
-          child: Icon(Icons.merge),
+          backgroundColor: Colors.lightBlueAccent,
+          child: Icon(
+              isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
           onPressed: () {
-            AlertDialogWidget.show(
-              context,
-              child: AlertDialogWidget(
-                title:
-                    'Aksi ini akan menimpa data yang sama dan akan menggambungkan data yang berbeda dari penyimpanan lokal dan google drive',
-                onPressYes: () {
-                  Navigator.pop(context);
-                  ref.read(homeNotifier.notifier).sycnData(
-                        sync: SyncEnum.merge,
-                      );
-                },
-              ),
-            );
+            isExpanded = !isExpanded;
+            setState(() {});
           },
-        ),
-        FloatingActionButton(
-          heroTag: 'FloatingActionButtonPush',
-          child: Icon(Icons.upload),
-          onPressed: () {
-            AlertDialogWidget.show(
-              context,
-              child: AlertDialogWidget(
-                title: 'Aksi ini akan menimpa semua data ada di google drive',
-                onPressYes: () {
-                  Navigator.pop(context);
-                  ref.read(homeNotifier.notifier).sycnData(
-                        sync: SyncEnum.push,
-                      );
-                },
-              ),
-            );
-          },
-        ),
-        FloatingActionButton(
-          heroTag: 'FloatingActionButtonPull',
-          child: Icon(Icons.download),
-          onPressed: () {
-            AlertDialogWidget.show(
-              context,
-              child: AlertDialogWidget(
-                title:
-                    'Aksi ini akan menimpa semua data ada di penyimpanan lokal',
-                onPressYes: () {
-                  Navigator.pop(context);
-                  ref.read(homeNotifier.notifier).sycnData(
-                        sync: SyncEnum.pull,
-                      );
-                },
-              ),
-            );
-          },
-        ),
-        FloatingActionButton(
-          heroTag: 'FloatingActionButtonManagePasswordPage',
-          onPressed: () async {
-            await ManagePasswordPage.show(
-              context: context,
-              managePasswordPage: ManagePasswordPage(),
-            );
-          },
-          child: Icon(Icons.add),
-        ),
+        )
       ],
     );
   }

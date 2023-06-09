@@ -16,26 +16,39 @@ class _AppState extends ConsumerState<App> {
     final shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(16),
     );
+    final inputDecorationTheme = InputDecorationTheme(
+      filled: true,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide.none,
+      ),
+    );
+
     return HandleTimeOutWidget(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        darkTheme: ThemeData.dark(),
-        themeMode: ThemeMode.system,
-        navigatorKey: navigatorKey,
-        theme: Theme.of(context).copyWith(
+        darkTheme: ThemeData.dark().copyWith(
           cardTheme: CardTheme(
             shape: shape,
           ),
           listTileTheme: ListTileThemeData(
             shape: shape,
           ),
-          inputDecorationTheme: InputDecorationTheme(
-            filled: true,
-            fillColor: Theme.of(context).cardColor,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide.none,
-            ),
+          inputDecorationTheme: inputDecorationTheme.copyWith(
+            fillColor: ThemeData.dark().cardColor,
+          ),
+        ),
+        themeMode: ThemeMode.system,
+        navigatorKey: navigatorKey,
+        theme: ThemeData.light().copyWith(
+          cardTheme: CardTheme(
+            shape: shape,
+          ),
+          listTileTheme: ListTileThemeData(
+            shape: shape,
+          ),
+          inputDecorationTheme: inputDecorationTheme.copyWith(
+            fillColor: ThemeData.light().cardColor,
           ),
         ),
         home: SplashPage(),

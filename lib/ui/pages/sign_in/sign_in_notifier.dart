@@ -61,7 +61,7 @@ class SignInNotifier extends StateNotifier<SignInState> {
     myPrint('restartTimer');
     state = state.copyWith(
       timer: Timer(
-        Duration(seconds: 5),
+        Duration(minutes: 5),
         () {
           signOut();
         },
