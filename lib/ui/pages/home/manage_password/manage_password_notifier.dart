@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/services/shared_pref_service.dart';
 import 'package:my_password_app/core/enums/generate_enum.dart';
 import 'package:my_password_app/core/models/password_model.dart';
+import 'package:my_password_app/core/utils/my_print.dart';
 import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_state.dart';
 
@@ -23,7 +24,7 @@ final managePasswordNotifier = StateNotifierProvider.autoDispose<
           key: (element) => element,
           value: (element) => true,
         )),
-    ref.watch(sharedPrefService)
+    ref.watch(sharedPrefService),
   );
 });
 
@@ -44,42 +45,39 @@ class ManagePasswordNotifier extends StateNotifier<ManagePasswordState> {
   }
 
   void addPassword() async {
-    state.passwords.whenData((value) async {
-      print('called');
-      state = state.copyWith(result: AsyncLoading());
-      await Future.delayed(Duration(seconds: 1));
-      if (value.contains(state.passwordModel)) {
-        state = state.copyWith(
-          result: AsyncError('Duplicate data', StackTrace.current),
-        );
-        return;
-      }
-      final newValue = [...value, state.passwordModel];
-      await _sharedPrefService.save(newValue);
-      state = state.copyWith(result: AsyncData('Success add data'));
-    });
+    myPrint('addPassword');
+    final value = state.passwords.valueOrNull ?? [];
+    state = state.copyWith(result: AsyncLoading());
+    await Future.delayed(Duration(seconds: 1));
+    if (value.contains(state.passwordModel)) {
+      state = state.copyWith(
+        result: AsyncError('Duplicate data', StackTrace.current),
+      );
+      return;
+    }
+    final newValue = [...value, state.passwordModel];
+    await _sharedPrefService.save(newValue);
+    state = state.copyWith(result: AsyncData('Success add data'));
   }
 
   void deletePassword() async {
-    state.passwords.whenData((value) async {
-      print('called');
-      state = state.copyWith(result: AsyncLoading());
-      await Future.delayed(Duration(seconds: 1));
-      value.remove(state.passwordModel);
-      await _sharedPrefService.save([...value]);
-      state = state.copyWith(result: AsyncData('Success delete data'));
-    });
+    final value = state.passwords.valueOrNull ?? [];
+    print('called');
+    state = state.copyWith(result: AsyncLoading());
+    await Future.delayed(Duration(seconds: 1));
+    value.remove(state.passwordModel);
+    await _sharedPrefService.save([...value]);
+    state = state.copyWith(result: AsyncData('Success delete data'));
   }
 
   void updatePassword() async {
-    state.passwords.whenData((value) async {
-      print('called');
-      state = state.copyWith(result: AsyncLoading());
-      await Future.delayed(Duration(seconds: 1));
-      value.remove(state.selectedPasswordModel);
-      await _sharedPrefService.save([...value, state.passwordModel]);
-      state = state.copyWith(result: AsyncData('Success update data'));
-    });
+    final value = state.passwords.valueOrNull ?? [];
+    print('called');
+    state = state.copyWith(result: AsyncLoading());
+    await Future.delayed(Duration(seconds: 1));
+    value.remove(state.selectedPasswordModel);
+    await _sharedPrefService.save([...value, state.passwordModel]);
+    state = state.copyWith(result: AsyncData('Success update data'));
   }
 
   void setEditable(bool? editable) {

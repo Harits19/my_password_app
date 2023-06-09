@@ -7,14 +7,21 @@ import 'package:googleapis/drive/v3.dart';
 import 'package:http/http.dart' as http;
 import 'package:my_password_app/core/enums/sync_enum.dart';
 import 'package:my_password_app/core/models/password_model.dart';
+import 'package:my_password_app/core/services/encrypt_data_service.dart';
 import 'package:my_password_app/core/utils/my_print.dart';
 import 'package:path_provider/path_provider.dart' as path;
 
 final googleDriveService = Provider<GoogleDriveService>((ref) {
-  return GoogleDriveService();
+  return GoogleDriveService(
+    ref.watch(encryptDataService),
+  );
 });
 
 class GoogleDriveService {
+  GoogleDriveService(this._encryptDataService);
+
+  final EncryptDataService _encryptDataService;
+
   Future<List<PasswordModel>> syncPasswordList({
     required GoogleSignInAccount account,
     required List<PasswordModel> list,
@@ -54,7 +61,9 @@ class GoogleDriveService {
         }
       }
       final jsonString = jsonEncode(finalData.map((e) => e.toJson()).toList());
-      final media = _toMedia(jsonString);
+      final encoded = _encryptDataService.encode(jsonString);
+      myPrint(encoded);
+      final media = _toMedia(encoded);
 
       await driveApi.files.update(
         file,
@@ -89,7 +98,7 @@ class GoogleDriveService {
         .first); //Write to that file from the datastore you created from the Media stream
     String jsonString = file.readAsStringSync(); // Read String from the file
     print("jsonString => $jsonString"); //Finally you have your text
-    final jsonMap = json.decode(jsonString);
+    final jsonMap = json.decode(_encryptDataService.decode(jsonString));
     print("jsonMap => $jsonMap");
     if (!(jsonMap is List)) {
       throw "Result Not List";
@@ -100,7 +109,7 @@ class GoogleDriveService {
   String _fileName(
     GoogleSignInAccount account,
   ) {
-    return "protect_${account.email}.json";
+    return "protect_${account.email}.txt";
   }
 
   Media _toMedia(String jsonString) {

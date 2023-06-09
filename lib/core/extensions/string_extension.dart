@@ -7,7 +7,4 @@ extension StringNullExtension on String? {
 
   bool get isNotNullEmpty => !isNullEmpty;
 
-  String get toObscureText {
-    return (this ?? '').split('').map((e) => '*').join();
-  }
 }

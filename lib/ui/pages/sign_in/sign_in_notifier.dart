@@ -32,20 +32,15 @@ class SignInNotifier extends StateNotifier<SignInState> {
   }
 
   void signIn() async {
-    try {
-      state = state.copyWith(
-        googleSignInAccount: AsyncLoading(),
-      );
+    state = state.copyWith(
+      googleSignInAccount: AsyncLoading(),
+    );
+    state = state.copyWith(
+        googleSignInAccount: await AsyncValue.guard(() async {
       final result = await _googleApiService.signIn();
-      state = state.copyWith(
-        googleSignInAccount: AsyncData(result),
-      );
       restartTimer();
-    } catch (e) {
-      state = state.copyWith(
-        googleSignInAccount: AsyncError(e, StackTrace.current),
-      );
-    }
+      return result;
+    }));
   }
 
   void restartTimer() async {
