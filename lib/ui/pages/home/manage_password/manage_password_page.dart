@@ -1,13 +1,13 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_password_app/core/extensions/context_extension.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/core/models/password_model.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
 import 'package:my_password_app/ui/pages/home/home_notifier.dart';
 import 'package:my_password_app/ui/pages/home/manage_password/manage_password_notifier.dart';
 import 'package:my_password_app/ui/widgets/alert_dialog_widget.dart';
+import 'package:my_password_app/ui/widgets/icon_button_widget.dart';
 import 'package:my_password_app/ui/widgets/loading_widget.dart';
 import 'package:my_password_app/ui/widgets/snackbar_widget.dart';
 import 'package:my_password_app/ui/widgets/space_widget.dart';
@@ -84,9 +84,8 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
 
     Widget copy(String val) {
       if (!widget.isReadOnly) return SizedBox();
-      return InkWell(
+      return IconButtonWidget(
         child: Icon(Icons.copy),
-        borderRadius: BorderRadius.circular(context.mSize.width),
         onTap: () {
           if (val.isNotEmpty) {
             FlutterClipboard.copy(val);
@@ -127,6 +126,7 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
             readOnly: isReadOnly,
             mandatory: true,
             controller: mpWatch.password,
+            isPassword: true,
             decoration: InputDecoration(
               hintText: "Password",
               suffixIcon: copy(mpWatch.password.text),

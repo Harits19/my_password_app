@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_password_app/core/extensions/string_extension.dart';
+import 'package:my_password_app/ui/widgets/icon_button_widget.dart';
 
 class TextFieldWidget extends StatefulWidget {
   const TextFieldWidget({
@@ -11,6 +12,7 @@ class TextFieldWidget extends StatefulWidget {
     this.maxLines = 1,
     this.validator,
     this.onChanged,
+    this.isPassword = false,
   });
 
   final InputDecoration decoration;
@@ -20,12 +22,15 @@ class TextFieldWidget extends StatefulWidget {
   final int? maxLines;
   final FormFieldValidator<String?>? validator;
   final ValueChanged<String>? onChanged;
+  final bool isPassword;
 
   @override
   State<TextFieldWidget> createState() => _TextFieldWidgetState();
 }
 
 class _TextFieldWidgetState extends State<TextFieldWidget> {
+  bool obscure = true;
+
   @override
   Widget build(BuildContext context) {
     return FormField<String>(
@@ -51,19 +56,32 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
           children: [
             Card(
               child: TextFormField(
+                obscureText: widget.isPassword ? obscure : false,
                 onChanged: (val) {
                   field.didChange(val);
                   widget.onChanged?.call(val);
                 },
                 decoration: decoration.copyWith(
-                  suffixIcon: Material(
-                    color: Colors.transparent,
-                    child: decoration.suffixIcon,
+                  suffixIcon: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (widget.isPassword)
+                        IconButtonWidget(
+                          child: Icon(obscure
+                              ? Icons.remove_red_eye
+                              : Icons.remove_red_eye_outlined),
+                          onTap: () {
+                            obscure = !obscure;
+                            setState(() {});
+                          },
+                        ),
+                      decoration.suffixIcon ?? SizedBox(),
+                    ],
                   ),
                 ),
                 readOnly: widget.readOnly,
                 controller: widget.controller,
-                maxLines: widget.maxLines,
+                maxLines: widget.isPassword ? 1 : widget.maxLines,
               ),
             ),
             if (!errorText.isNullEmpty)

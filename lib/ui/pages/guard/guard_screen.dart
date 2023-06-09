@@ -4,7 +4,6 @@ import 'package:my_password_app/app.dart';
 import 'package:my_password_app/core/extensions/context_extension.dart';
 import 'package:my_password_app/ui/pages/home/home_page.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_notifier.dart';
-import 'package:my_password_app/ui/pages/sign_in/sign_in_page.dart';
 import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/ui/widgets/loading_widget.dart';
 import 'package:my_password_app/ui/widgets/snackbar_widget.dart';
