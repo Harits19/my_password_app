@@ -7,7 +7,7 @@ class BlurInactiveWidget extends StatefulWidget {
     Key? key,
     required this.child,
   }) : super(key: key);
-  final Widget? child;
+  final Widget child;
 
   @override
   State<BlurInactiveWidget> createState() => _BlurInactiveWidgetState();
@@ -52,7 +52,7 @@ class _BlurInactiveWidgetState extends State<BlurInactiveWidget>
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        widget.child ?? SizedBox(),
+        widget.child,
         if (_shouldBlur)
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),

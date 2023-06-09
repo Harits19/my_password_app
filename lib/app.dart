@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/ui/pages/splash/splash_page.dart';
 import 'package:my_password_app/ui/pages/guard/guard_screen.dart';
+import 'package:my_password_app/ui/widgets/blur_widget.dart';
 
 class App extends ConsumerStatefulWidget {
   App({Key? key}) : super(key: key);
@@ -24,35 +25,44 @@ class _AppState extends ConsumerState<App> {
       ),
     );
 
-    return GuardScreen(
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        darkTheme: ThemeData.dark().copyWith(
-          cardTheme: CardTheme(
-            shape: shape,
-          ),
-          listTileTheme: ListTileThemeData(
-            shape: shape,
-          ),
-          inputDecorationTheme: inputDecorationTheme.copyWith(
-            fillColor: ThemeData.dark().cardColor,
-          ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      darkTheme: ThemeData.dark().copyWith(
+        cardTheme: CardTheme(
+          shape: shape,
         ),
-        themeMode: ThemeMode.system,
-        navigatorKey: navigatorKey,
-        theme: ThemeData.light().copyWith(
-          cardTheme: CardTheme(
-            shape: shape,
-          ),
-          listTileTheme: ListTileThemeData(
-            shape: shape,
-          ),
-          inputDecorationTheme: inputDecorationTheme.copyWith(
-            fillColor: ThemeData.light().cardColor,
-          ),
+        listTileTheme: ListTileThemeData(
+          shape: shape,
         ),
-        home: SplashPage(),
+        inputDecorationTheme: inputDecorationTheme.copyWith(
+          fillColor: ThemeData.dark().cardColor,
+        ),
       ),
+      themeMode: ThemeMode.system,
+      navigatorKey: navigatorKey,
+      theme: ThemeData.light().copyWith(
+        cardTheme: CardTheme(
+          shape: shape,
+        ),
+        listTileTheme: ListTileThemeData(
+          shape: shape,
+        ),
+        inputDecorationTheme: inputDecorationTheme.copyWith(
+          fillColor: ThemeData.light().cardColor,
+        ),
+      ),
+      builder: (BuildContext builderContext, Widget? child) {
+        return Overlay(
+          initialEntries: <OverlayEntry>[
+            OverlayEntry(
+              builder: (BuildContext context) => BlurInactiveWidget(
+                child: GuardScreen(child: child ?? SizedBox()),
+              ),
+            )
+          ],
+        );
+      },
+      home: SplashPage(),
     );
   }
 }
