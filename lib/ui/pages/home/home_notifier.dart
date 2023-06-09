@@ -47,6 +47,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
           list: passwordTemp.valueOrNull ?? [],
           sync: sync,
         );
+        await _sharedPrefService.save(lastData);
         return lastData;
       }),
     );
