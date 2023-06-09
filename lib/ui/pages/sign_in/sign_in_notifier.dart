@@ -49,9 +49,11 @@ class SignInNotifier extends StateNotifier<SignInState> {
     timer = Timer(
       Duration(minutes: 3),
       () async {
-        _googleApiService.signOut();
         state = state.copyWith(
-          googleSignInAccount: AsyncData(null),
+          googleSignInAccount: await AsyncValue.guard(() async {
+            await _googleApiService.signOut();
+            return null;
+          }),
         );
       },
     );

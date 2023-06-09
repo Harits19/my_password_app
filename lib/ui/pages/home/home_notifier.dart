@@ -52,12 +52,12 @@ class HomeNotifier extends StateNotifier<HomeState> {
     );
   }
 
-
-
-  void getListPassword() {
-    final result = _sharedPrefService.getListPassword();
+  void getListPassword() async {
     state = state.copyWith(
-      passwords: AsyncData(result),
+      passwords: await AsyncValue.guard(() async {
+        final result = _sharedPrefService.getListPassword();
+        return result;
+      }),
     );
   }
 

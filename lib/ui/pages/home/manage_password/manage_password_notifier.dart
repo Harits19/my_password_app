@@ -48,36 +48,43 @@ class ManagePasswordNotifier extends StateNotifier<ManagePasswordState> {
     myPrint('addPassword');
     final value = state.passwords.valueOrNull ?? [];
     state = state.copyWith(result: AsyncLoading());
-    await Future.delayed(Duration(seconds: 1));
-    if (value.contains(state.passwordModel)) {
-      state = state.copyWith(
-        result: AsyncError('Duplicate data', StackTrace.current),
-      );
-      return;
-    }
-    final newValue = [...value, state.passwordModel];
-    await _sharedPrefService.save(newValue);
-    state = state.copyWith(result: AsyncData('Success add data'));
+    state = state.copyWith(
+        result: await AsyncValue.guard(() async {
+      await Future.delayed(Duration(seconds: 1));
+      if (value.contains(state.passwordModel)) {
+        throw 'Duplicate data';
+      }
+      final newValue = [...value, state.passwordModel];
+      await _sharedPrefService.save(newValue);
+      return 'Success add data';
+    }));
   }
 
   void deletePassword() async {
     final value = state.passwords.valueOrNull ?? [];
     print('called');
     state = state.copyWith(result: AsyncLoading());
-    await Future.delayed(Duration(seconds: 1));
-    value.remove(state.passwordModel);
-    await _sharedPrefService.save([...value]);
-    state = state.copyWith(result: AsyncData('Success delete data'));
+    state = state.copyWith(
+      result: await AsyncValue.guard(() async {
+        await Future.delayed(Duration(seconds: 1));
+        value.remove(state.passwordModel);
+        await _sharedPrefService.save([...value]);
+        return 'Success delete data';
+      }),
+    );
   }
 
   void updatePassword() async {
     final value = state.passwords.valueOrNull ?? [];
     print('called');
     state = state.copyWith(result: AsyncLoading());
-    await Future.delayed(Duration(seconds: 1));
-    value.remove(state.selectedPasswordModel);
-    await _sharedPrefService.save([...value, state.passwordModel]);
-    state = state.copyWith(result: AsyncData('Success update data'));
+    state = state.copyWith(
+        result: await AsyncValue.guard(() async {
+      await Future.delayed(Duration(seconds: 1));
+      value.remove(state.selectedPasswordModel);
+      await _sharedPrefService.save([...value, state.passwordModel]);
+      return 'Success update data';
+    }));
   }
 
   void setEditable(bool? editable) {
