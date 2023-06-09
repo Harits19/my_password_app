@@ -54,10 +54,7 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   void getListPassword() async {
     state = state.copyWith(
-      passwords: await AsyncValue.guard(() async {
-        final result = _sharedPrefService.getListPassword();
-        return result;
-      }),
+      passwords: AsyncData(_sharedPrefService.getListPassword()),
     );
   }
 
