@@ -6,6 +6,7 @@ import 'package:my_password_app/ui/pages/home/views/drawer_view.dart';
 import 'package:my_password_app/ui/pages/home/views/floating_button_view.dart';
 import 'package:my_password_app/ui/pages/home/views/password_view.dart';
 import 'package:my_password_app/ui/widgets/text_field_widget.dart';
+import 'package:my_password_app/ui/widgets/widget_util.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -16,9 +17,31 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomeV2PageState extends ConsumerState<HomePage> {
   @override
+  void initState() {
+    super.initState();
+    ref.listenManual(homeNotifier.select((value) => value.passwords),
+        (previous, next) {
+      next.when(
+        loading: WidgetUtil.showLoading,
+        error: (error, stackTrace) {
+          WidgetUtil.safePop();
+          WidgetUtil.showError(
+            error,
+            stackTrace: stackTrace,
+          );
+        },
+        data: (data) {
+          WidgetUtil.safePop();
+        },
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final listPassword = ref.watch(homeNotifier).showedList;
+    final hWatch = ref.watch(homeNotifier);
     final hRead = ref.read(homeNotifier.notifier);
+    final listPassword = hWatch.showedList;
 
     return Scaffold(
       floatingActionButton: FloatingButtonView(),

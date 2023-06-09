@@ -29,4 +29,6 @@ extension BuildContextExtension on BuildContext {
     bool isDarkMode = brightness == Brightness.dark;
     return isDarkMode;
   }
+
+  Size get mSize => MediaQuery.of(this).size;
 }

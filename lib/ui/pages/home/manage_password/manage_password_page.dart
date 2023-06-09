@@ -1,6 +1,7 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_password_app/core/extensions/context_extension.dart';
 import 'package:my_password_app/core/services/generate_password_service.dart';
 import 'package:my_password_app/core/models/password_model.dart';
 import 'package:my_password_app/ui/konstans/k_size.dart';
@@ -79,9 +80,11 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
     final passwordLength = mpWatch.passwordLength;
 
     Widget copy(String val) {
-      return IconButton(
-        icon: Icon(Icons.copy),
-        onPressed: () {
+      if (!widget.isReadOnly) return SizedBox();
+      return InkWell(
+        child: Icon(Icons.copy),
+        borderRadius: BorderRadius.circular(context.mSize.width),
+        onTap: () {
           if (val.isNotEmpty) {
             FlutterClipboard.copy(val);
             WidgetUtil.showSuccess('Success copy');
@@ -184,10 +187,11 @@ class _ManagePasswordPageState extends ConsumerState<ManagePasswordPage> {
                     child: Text("Generate random password"),
                     onPressed: () {
                       try {
-                        final temp = ref.read(generatePasswordService).getRandomString(
-                          length: passwordLength,
-                          passwordConfig: mpWatch.passwordConfig,
-                        );
+                        final temp =
+                            ref.read(generatePasswordService).getRandomString(
+                                  length: passwordLength,
+                                  passwordConfig: mpWatch.passwordConfig,
+                                );
                         mpWatch.password.text = temp;
                       } catch (e) {
                         WidgetUtil.showError(e);

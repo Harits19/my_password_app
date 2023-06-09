@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:my_password_app/app.dart';
 import 'package:my_password_app/core/utils/my_print.dart';
+import 'package:my_password_app/ui/widgets/loading_widget.dart';
 
 class WidgetUtil {
   static BuildContext get context => navigatorKey.currentContext!;
@@ -14,9 +15,7 @@ class WidgetUtil {
         barrierDismissible: false,
         builder: (context) => WillPopScope(
           onWillPop: () async => false,
-          child: Center(
-            child: CircularProgressIndicator(),
-          ),
+          child: LoadingWidget(),
         ),
       );
     });

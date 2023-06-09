@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/services/google_drive_service.dart';
 import 'package:my_password_app/core/services/shared_pref_service.dart';
-import 'package:my_password_app/core/models/password_model.dart';
 import 'package:my_password_app/ui/pages/home/home_state.dart';
 import 'package:my_password_app/ui/pages/sign_in/sign_in_notifier.dart';
 
@@ -31,18 +30,33 @@ class HomeNotifier extends StateNotifier<HomeState> {
 
   final GoogleDriveService _googleDriveService;
   final SharedPrefService _sharedPrefService;
-  void check() async {
-    state.googleSignInAccount.whenData((account) async {
-      if (account == null) return;
-      final dummyList = List.generate(
-          10,
-          (index) =>
-              PasswordModel(name: 'name $index', password: 'password $index'));
-      _googleDriveService.syncPasswordList(
-        account: account,
-        list: dummyList,
-      );
-    });
+  void sycnData({
+    required bool isPush,
+  }) async {
+    final passwordTemp = state.passwords;
+    state = state.copyWith(
+      passwords: AsyncLoading(),
+    );
+    state = state.copyWith(
+      passwords: await AsyncValue.guard(() async {
+        final account = state.googleSignInAccount.valueOrNull;
+        if (account == null) return [];
+        final lastData = await _googleDriveService.syncPasswordList(
+          account: account,
+          list: passwordTemp.valueOrNull ?? [],
+          isPush: isPush,
+        );
+        return lastData;
+      }),
+    );
+  }
+
+  void push() {
+    sycnData(isPush: true);
+  }
+
+  void pull() {
+    sycnData(isPush: false);
   }
 
   void getListPassword() {

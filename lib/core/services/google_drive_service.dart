@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
 import 'package:http/http.dart' as http;
 import 'package:my_password_app/core/models/password_model.dart';
+import 'package:my_password_app/core/utils/my_print.dart';
 import 'package:path_provider/path_provider.dart' as path;
 
 final googleDriveService = Provider<GoogleDriveService>((ref) {
@@ -13,9 +14,10 @@ final googleDriveService = Provider<GoogleDriveService>((ref) {
 });
 
 class GoogleDriveService {
-  Future<void> syncPasswordList({
+  Future<List<PasswordModel>> syncPasswordList({
     required GoogleSignInAccount account,
     required List<PasswordModel> list,
+    required bool isPush,
   }) async {
     final driveApi = await _driveApi(account);
 
@@ -27,6 +29,7 @@ class GoogleDriveService {
     final file = File(name: _fileName(account));
 
     if ((result.files?.isEmpty ?? true) || result.files!.first.id == null) {
+      myPrint('file on drive not found');
       final jsonString = jsonEncode(list.map((e) => e.toJson()).toList());
       final media = _toMedia(jsonString);
 
@@ -34,18 +37,26 @@ class GoogleDriveService {
         file,
         uploadMedia: media,
       );
+      return list;
     } else {
+      myPrint('file on drive found');
       final driveId = result.files!.first.id!;
-      final lastData = await getLastData(driveId, account, driveApi);
-      // TODO remove duplicate
-      final jsonString = jsonEncode(list.map((e) => e.toJson()).toList());
+      myPrint('driveId $driveId');
+      var finalData = <PasswordModel>[];
+      if (isPush) {
+        finalData = list;
+      } else {
+        finalData = await getLastData(driveId, account, driveApi);
+      }
+      final jsonString = jsonEncode(finalData.map((e) => e.toJson()).toList());
       final media = _toMedia(jsonString);
 
-      driveApi.files.update(
+      await driveApi.files.update(
         file,
         driveId,
         uploadMedia: media,
       );
+      return finalData;
     }
   }
 

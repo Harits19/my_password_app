@@ -41,6 +41,11 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
 
         print(themeData.colorScheme.error);
         final errorText = field.errorText;
+        final decoration = widget.decoration;
+        final controller = widget.controller;
+        controller?.addListener(() {
+          field.didChange(controller.text);
+        });
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -50,7 +55,12 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                   field.didChange(val);
                   widget.onChanged?.call(val);
                 },
-                decoration: widget.decoration,
+                decoration: decoration.copyWith(
+                  suffixIcon: Material(
+                    color: Colors.transparent,
+                    child: decoration.suffixIcon,
+                  ),
+                ),
                 readOnly: widget.readOnly,
                 controller: widget.controller,
                 maxLines: widget.maxLines,
