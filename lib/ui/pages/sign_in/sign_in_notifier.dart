@@ -25,6 +25,12 @@ class SignInNotifier extends StateNotifier<SignInState> {
 
   Timer? timer;
 
+  @override
+  void dispose() {
+    super.dispose();
+    timer?.cancel();
+  }
+
   void signIn() async {
     try {
       state = state.copyWith(
@@ -46,7 +52,7 @@ class SignInNotifier extends StateNotifier<SignInState> {
     myPrint('restartTimer');
     timer?.cancel();
     timer = Timer(
-      Duration(seconds: 3),
+      Duration(minutes: 3),
       () async {
         _googleApiService.signOut();
         state = state.copyWith(
