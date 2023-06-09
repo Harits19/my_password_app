@@ -74,7 +74,9 @@ class _HomeV2PageState extends ConsumerState<HomePage> {
             ),
             Opacity(
               opacity: 0,
+              
               child: FloatingActionButton(
+                heroTag: 'FloatingActionButtonDummy',
                 onPressed: () {},
               ),
             )

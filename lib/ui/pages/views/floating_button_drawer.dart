@@ -6,7 +6,7 @@ class FloatingButtonDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      heroTag: 'floatingButton2',
+      heroTag: 'FloatingButtonDrawer',
       onPressed: () {
         // passwordRead.sync();
         // return;

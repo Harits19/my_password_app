@@ -22,6 +22,7 @@ class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
       spacing: 8,
       children: [
         FloatingActionButton(
+          heroTag: 'FloatingActionButtonMerge',
           child: Icon(Icons.merge),
           onPressed: () {
             AlertDialogWidget.show(
@@ -40,6 +41,7 @@ class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
           },
         ),
         FloatingActionButton(
+          heroTag: 'FloatingActionButtonPush',
           child: Icon(Icons.upload),
           onPressed: () {
             AlertDialogWidget.show(
@@ -57,6 +59,7 @@ class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
           },
         ),
         FloatingActionButton(
+          heroTag: 'FloatingActionButtonPull',
           child: Icon(Icons.download),
           onPressed: () {
             AlertDialogWidget.show(
@@ -75,7 +78,7 @@ class _FloatingButtonViewState extends ConsumerState<FloatingButtonView> {
           },
         ),
         FloatingActionButton(
-          heroTag: 'floatingButton1',
+          heroTag: 'FloatingActionButtonManagePasswordPage',
           onPressed: () async {
             await ManagePasswordPage.show(
               context: context,

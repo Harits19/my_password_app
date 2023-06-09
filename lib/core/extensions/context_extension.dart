@@ -14,9 +14,12 @@ extension BuildContextExtension on BuildContext {
   }
 
   void popAll(Widget page) {
-    Navigator.of(this).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => page),
-        (Route<dynamic> route) => false);
+    Navigator.of(this).popUntil((route) => route.isFirst);
+    Navigator.pushReplacement(
+        this,
+        MaterialPageRoute(
+          builder: (context) => page,
+        ));
   }
 
   bool get isDarkMode {
