@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io' as io;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart';
@@ -8,7 +7,6 @@ import 'package:my_password_app/core/enums/sync_enum.dart';
 import 'package:my_password_app/core/models/password_model.dart';
 import 'package:my_password_app/core/services/encrypt_data_service.dart';
 import 'package:my_password_app/core/utils/my_print.dart';
-import 'package:path_provider/path_provider.dart' as path;
 
 final googleDriveService = Provider<GoogleDriveService>((ref) {
   return GoogleDriveService(
@@ -84,19 +82,7 @@ class GoogleDriveService {
     if (!(result is Media)) {
       throw "Not Receive Media Object";
     }
-
-    final dataStore = await result.stream.toList();
-    if (await dataStore.isEmpty) {
-      return [];
-    }
-
-    final tempDir = await path
-        .getTemporaryDirectory(); //Get temp folder using Path Provider
-    final tempPath = tempDir.path; //Get path to that location
-    final file = io.File('$tempPath/temporary_file'); //Create a dummy file
-    await file.writeAsBytes(dataStore
-        .first); //Write to that file from the datastore you created from the Media stream
-    String jsonString = file.readAsStringSync(); // Read String from the file
+    final jsonString = await utf8.decodeStream(result.stream);
     print("jsonString => $jsonString"); //Finally you have your text
     final jsonMap = json.decode(_encryptDataService.decode(jsonString));
     print("jsonMap => $jsonMap");
