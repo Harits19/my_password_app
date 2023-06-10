@@ -1,10 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_password_app/core/models/async_value_model.dart';
 import 'package:my_password_app/core/models/password_model.dart';
 
 class HomeState {
   final AsyncValue<GoogleSignInAccount?> googleSignInAccount;
-  final AsyncValue<List<PasswordModel>> passwords;
+  final AsyncValueModel<List<PasswordModel>> passwords;
   final String search;
 
   HomeState({
@@ -15,7 +16,7 @@ class HomeState {
 
   HomeState copyWith({
     AsyncValue<GoogleSignInAccount?>? googleSignInAccount,
-    AsyncValue<List<PasswordModel>>? passwords,
+    AsyncValueModel<List<PasswordModel>>? passwords,
     String? search,
   }) {
     return HomeState(
@@ -26,7 +27,7 @@ class HomeState {
   }
 
   List<PasswordModel> get showedList {
-    final passwords = this.passwords.valueOrNull ?? [];
+    final passwords = this.passwords.value;
     bool check(String? val) {
       return (val?.toLowerCase().contains(search.toLowerCase()) ?? false);
     }

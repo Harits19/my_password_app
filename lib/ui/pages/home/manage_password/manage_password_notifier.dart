@@ -46,7 +46,7 @@ class ManagePasswordNotifier extends StateNotifier<ManagePasswordState> {
 
   void addPassword() async {
     myPrint('addPassword');
-    final value = state.passwords.valueOrNull ?? [];
+    final value = state.passwords.value;
     state = state.copyWith(result: AsyncLoading());
     state = state.copyWith(
         result: await AsyncValue.guard(() async {
@@ -61,7 +61,7 @@ class ManagePasswordNotifier extends StateNotifier<ManagePasswordState> {
   }
 
   void deletePassword() async {
-    final value = state.passwords.valueOrNull ?? [];
+    final value = state.passwords.value;
     print('called');
     state = state.copyWith(result: AsyncLoading());
     state = state.copyWith(
@@ -75,7 +75,7 @@ class ManagePasswordNotifier extends StateNotifier<ManagePasswordState> {
   }
 
   void updatePassword() async {
-    final value = state.passwords.valueOrNull ?? [];
+    final value = state.passwords.value;
     print('called');
     state = state.copyWith(result: AsyncLoading());
     state = state.copyWith(

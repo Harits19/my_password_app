@@ -15,8 +15,9 @@ class SnackbarWidget extends StatelessWidget {
 
   static void showError(
     BuildContext context,
-    Object error,
+    Object? error,
   ) async {
+    if (error == null) return;
     WidgetUtil.checkWidget(() {
       mySnackBar(
         context,

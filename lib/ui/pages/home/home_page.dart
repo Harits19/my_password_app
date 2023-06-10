@@ -20,21 +20,17 @@ class _HomeV2PageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
+    // return;
     ref.listenManual(homeNotifier.select((value) => value.passwords),
         (previous, next) {
-      next.when(
-        loading: () => LoadingWidget.dialog(context),
-        error: (error, stackTrace) {
-          WidgetUtil.safePop(context);
-          SnackbarWidget.showError(
-            context,
-            error,
-          );
-        },
-        data: (data) {
-          WidgetUtil.safePop(context);
-        },
-      );
+      if (next.isLoading) {
+        LoadingWidget.dialog(context);
+      } else {
+        WidgetUtil.safePop(context);
+      }
+      if (next.hasError) {
+        SnackbarWidget.showError(context, next.error);
+      }
     });
   }
 
@@ -74,7 +70,6 @@ class _HomeV2PageState extends ConsumerState<HomePage> {
             ),
             Opacity(
               opacity: 0,
-              
               child: FloatingActionButton(
                 heroTag: 'FloatingActionButtonDummy',
                 onPressed: () {},

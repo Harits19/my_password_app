@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_password_app/core/enums/generate_enum.dart';
+import 'package:my_password_app/core/models/async_value_model.dart';
 import 'package:my_password_app/core/models/password_model.dart';
 
 class ManagePasswordState {
   final AsyncValue<String> result;
-  final AsyncValue<List<PasswordModel>> passwords;
+  final AsyncValueModel<List<PasswordModel>> passwords;
   final TextEditingController name, password, email, note;
   final PasswordModel? selectedPasswordModel;
   final int passwordLength;
